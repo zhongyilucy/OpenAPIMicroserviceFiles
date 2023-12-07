@@ -1,0 +1,146 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ContactApp",
+    "description": "The API documentation for contacts management application",
+    "contact": {
+      "email": "bgreen45@Knights.students.ucf.edu"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://fourthreethreeone.xyz/LAMPAPI"
+    }
+  ],
+  "paths": {
+    "/AddContact": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Adds a contact",
+        "description": "Adds a contact to the contact appdatabase",
+        "operationId": "addContact",
+        "requestBody": {
+          "description": "Contact",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/Contact"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": null
+          },
+          "404": {
+            "description": "URL Not Found",
+            "content": null
+          }
+        },
+        "x-codegen-request-body-name": "contactItem"
+      }
+    },
+    "/SearchContact": {
+      "post": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "Searches contacts",
+        "description": "Searches contacts from the contact app database",
+        "operationId": "searchContact",
+        "requestBody": {
+          "description": "Contact Search",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/Search"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": null
+          },
+          "404": {
+            "description": "URL Not Found",
+            "content": null
+          }
+        },
+        "x-codegen-request-body-name": "searchItem"
+      }
+    },
+    "/DeleteContact": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Deletes Contact",
+        "description": "Deletes contact from database",
+        "operationId": "deleteContact",
+        "requestBody": {
+          "description": "Contact",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/Delete"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "404": {
+            "description": "URL Not Found",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "contactItem"
+      }
+    },
+    "/EditContact": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Edits a contact",
+        "description": "edits a contact in the database",
+        "operationId": "editContact",
+        "requestBody": {
+          "description": "Contact",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Edit"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "404": {
+            "description": "URL Not Found",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "contactItem"
+      }
+    }
+  }
+}

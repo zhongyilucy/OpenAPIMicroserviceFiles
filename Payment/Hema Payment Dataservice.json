@@ -1,0 +1,345 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Hema Payment Dataservice",
+    "description": "This service enables consumers to perform payment refunds actions",
+    "version": "1.1.0"
+  },
+  "tags": [
+    {
+      "name": "Payment",
+      "description": "Payment"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://business.hema.digital",
+      "description": "Hema business layer (prod)"
+    },
+    {
+      "url": "https://int.business-preprod.hema.digital",
+      "description": "Hema business layer (int)"
+    }
+  ],
+  "paths": {
+    "/omni-payments/v1/orders/{orderId}/refunds": {
+      "post": {
+        "summary": "Create the refund for payment",
+        "description": "Use this endpoint to create the refund",
+        "tags": [
+          "Payment"
+        ],
+        "security": [
+          {
+            "oauth": [
+              "omni-payments.system.refund.write"
+            ]
+          }
+        ],
+        "operationId": "CreateRefund",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/orderId"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRefund"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Refund is accepted for processing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Refund"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Empty request body, or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/Throttled"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "oauth": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://auth.hema.digital/token",
+            "scopes": {
+              "omni-payments.system.refund.write": "Allows to write refund data"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "NotificationRequest": {
+        "type": "object",
+        "properties": {
+          "live": {
+            "type": "boolean"
+          },
+          "notificationItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NotificationRequestItem"
+            }
+          }
+        },
+        "required": [
+          "live",
+          "notificationItems"
+        ]
+      },
+      "NotificationRequestItem": {
+        "type": "object",
+        "properties": {
+          "NotificationRequestItem": {
+            "$ref": "#/components/schemas/NotificationItem"
+          }
+        },
+        "required": [
+          "NotificationRequestItem"
+        ]
+      },
+      "NotificationItem": {
+        "type": "object",
+        "properties": {
+          "additionalData": {
+            "$ref": "#/components/schemas/AdditionalData"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "eventCode": {
+            "type": "string"
+          },
+          "eventDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "merchantAccountCode": {
+            "type": "string"
+          },
+          "merchantReference": {
+            "type": "string"
+          },
+          "originalReference": {
+            "type": "string"
+          },
+          "pspReference": {
+            "type": "string"
+          },
+          "paymentMethod": {
+            "type": "string"
+          },
+          "operations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "REFUND"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "additionalData",
+          "amount",
+          "eventDate",
+          "eventCode",
+          "pspReference",
+          "merchantAccountCode",
+          "merchantReference",
+          "success"
+        ]
+      },
+      "AdditionalData": {
+        "type": "object",
+        "properties": {
+          "hmacSignature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "hmacSignature"
+        ]
+      },
+      "Amount": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        }
+      },
+      "orderId": {
+        "title": "Order ID",
+        "description": "Identity of the order, in numerical string format",
+        "type": "string",
+        "minLength": 1,
+        "example": "975680072681",
+        "nullable": false
+      },
+      "CreateRefund": {
+        "title": "CreateRefund",
+        "properties": {
+          "amount": {
+            "title": "The amount of refund",
+            "description": "This is the amount that will be refunded to the customer via the original payment method of the order",
+            "type": "number",
+            "format": "float",
+            "example": 10.1
+          },
+          "reasonType": {
+            "title": "The reason type for the refund",
+            "description": "Provide the reason on why this refund is initiated",
+            "type": "string",
+            "enum": [
+              "CANCELLATION",
+              "REIMBURSEMENT",
+              "RETURN"
+            ]
+          },
+          "reason": {
+            "title": "The reason message for the refund",
+            "description": "A free text field which allows a more verbose reason of the refund",
+            "type": "string",
+            "minLength": 1,
+            "example": "Product damaged",
+            "nullable": false
+          }
+        },
+        "required": [
+          "amount",
+          "reasonType"
+        ]
+      },
+      "Refund": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "description": "The unique identifier of the refund",
+            "type": "string",
+            "format": "uuid",
+            "example": "b35cd4e3-979d-484f-81a8-ab671bdea659"
+          },
+          "orderId": {
+            "$ref": "#/components/schemas/orderId"
+          },
+          "createdAt": {
+            "title": "Date of the creation of refund",
+            "description": "The ISO-8601 formatted date with UTC timezone which describes when the refund was initialized",
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-01-27T13:10:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "orderId"
+        ]
+      },
+      "RequestValidationError": {
+        "title": "Request validation error",
+        "properties": {
+          "title": {
+            "title": "Error title",
+            "type": "string"
+          },
+          "message": {
+            "title": "Error message",
+            "type": "string"
+          },
+          "code": {
+            "title": "Error code",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "message"
+        ]
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid"
+      },
+      "NotFound": {
+        "description": "Resource not found"
+      },
+      "Gone": {
+        "description": "Access to resource is no longer available"
+      },
+      "Forbidden": {
+        "description": "Client has no access to the resource"
+      },
+      "Throttled": {
+        "description": "Traffic to this service is throttled"
+      },
+      "InternalServerError": {
+        "description": "Unexpected error in the execution of the request"
+      },
+      "ServiceUnavailable": {
+        "description": "This service is unavailable to process requests at this moment"
+      }
+    }
+  }
+}

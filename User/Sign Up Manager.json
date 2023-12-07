@@ -1,0 +1,80 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Sign Up Manager",
+    "description": "API Endpoints signing up users into the databased",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/Viggie1/Contact-Manager/1.0.0"
+    },
+    {
+      "url": "http://virtserver.swaggerhub.com/Viggie1/Contact-Manager/1.0.0"
+    }
+  ],
+  "paths": {
+    "/SignUp.php": {
+      "post": {
+        "summary": "Signs Up",
+        "description": "Signs a user up into the database.",
+        "requestBody": {
+          "description": "SignUp",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUp"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "404": {
+            "description": "URL Not Found",
+            "content": {}
+          },
+          "409": {
+            "description": "Duplicate username",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SignUp": {
+        "required": [
+          "firstName",
+          "lastName",
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "username": {
+            "type": "string",
+            "example": "jDoe123"
+          },
+          "password": {
+            "type": "string",
+            "example": "superDoe123!"
+          }
+        }
+      }
+    }
+  }
+}

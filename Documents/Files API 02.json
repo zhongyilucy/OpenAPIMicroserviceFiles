@@ -1,0 +1,165 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Files API",
+    "description": "This API modifies, manages, and retrieves files uploaded by users to the system",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.11"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "https://petstore3.swagger.io/api/v3"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Upload - File"
+    }
+  ],
+  "paths":{
+    "/upload/": {
+      "post": {
+        "deprecated": false,
+        "description": "Upload a file",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": { "schema": { "properties": { "foo": { "type": "string" } } } }
+            }
+          }
+        },
+        "summary": "",
+        "tags": ["Upload - File"],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "properties": { "foo": { "type": "string" } } } }
+          }
+        }
+      }
+    },
+    "/upload/files/count": {
+      "get": {
+        "deprecated": false,
+        "description": "Retrieve the total number of uploaded files",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": { "schema": { "properties": { "foo": { "type": "string" } } } }
+            }
+          }
+        },
+        "summary": "",
+        "tags": ["Upload - File"],
+        "parameters": []
+      }
+    },
+    "/upload/files": {
+      "get": {
+        "deprecated": false,
+        "description": "Retrieve all file documents",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": { "schema": { "properties": { "foo": { "type": "string" } } } }
+            }
+          }
+        },
+        "summary": "",
+        "tags": ["Upload - File"],
+        "parameters": []
+      }
+    },
+    "/upload/files/{id}": {
+      "get": {
+        "deprecated": false,
+        "description": "Retrieve a single file depending on its id",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": { "schema": { "properties": { "foo": { "type": "string" } } } }
+            }
+          }
+        },
+        "summary": "",
+        "tags": ["Upload - File"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ]
+      },
+      "delete": {
+        "deprecated": false,
+        "description": "Delete an uploaded file",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": { "schema": { "properties": { "foo": { "type": "string" } } } }
+            }
+          }
+        },
+        "summary": "",
+        "tags": ["Upload - File"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ]
+      }
+    },
+    "/upload/search/{id}": {
+      "get": {
+        "deprecated": false,
+        "description": "Search for an uploaded file",
+        "responses": {
+          "200": {
+            "description": "response",
+            "content": {
+              "application/json": { "schema": { "properties": { "foo": { "type": "string" } } } }
+            }
+          }
+        },
+        "summary": "",
+        "tags": ["Upload - File"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ]
+      }
+    }
+  }
+}

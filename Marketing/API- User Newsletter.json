@@ -1,0 +1,227 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API- User Newsletter",
+    "description": "Managing newsletter subscriptions of users",
+    "version": "1.2.2"
+  },
+  "servers": [
+    {
+      "url": "https:/business.hema.digital",
+      "description": "Hema business layer (prod)"
+    },
+    {
+      "url": "https:/business-int.hema.digital",
+      "description": "Hema business layer (int)"
+    }
+  ],
+  "tags": [
+    {
+      "name": "By UserId",
+      "description": "subscriptions by userId"
+    }
+  ],
+  "paths": {
+    "/newsletter/v1/newsletters/{type}/user/optin": {
+      "post": {
+        "tags": [
+          "By UserId"
+        ],
+        "description": "Set newsletter subscription on for user",
+        "operationId": "SetUserNewsletterSubscriptionOn",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "description": "Type of the subscription",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SubscriptionTypeType"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterUserSubscribeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Success",
+            "content": {}
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "oauth": [
+              "myprofile.all"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/newsletter/v1/newsletters/{type}/user/optout": {
+      "post": {
+        "tags": [
+          "By UserId"
+        ],
+        "description": "Turn newsletter subscription off for user",
+        "operationId": "SetUserNewsletterSubscriptionOff",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "description": "Type of the subscription",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SubscriptionTypeType"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterUserUnsubscribeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Success",
+            "content": {}
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "oauth": [
+              "myprofile.all"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "NewsletterSubscriptions": {
+        "type": "object",
+        "properties": {
+          "IsLoyaltyMember": {
+            "type": "boolean"
+          },
+          "IsPilotMember": {
+            "type": "boolean"
+          },
+          "NewsletterTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "NewsletterUserSubscribeRequest": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "A userId to identify the account. if \"bearer\" is passed, theuserId is derived from the Bearer token"
+          },
+          "cultureName": {
+            "$ref": "#/components/schemas/CultureNameType"
+          },
+          "subscribeSource": {
+            "$ref": "#/components/schemas/SubscribeSourceType"
+          }
+        }
+      },
+      "NewsletterUserUnsubscribeRequest": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "A userId to identify the account. if \"bearer\" is passed, theuserId is derived from the Bearer token"
+          },
+          "cultureName": {
+            "$ref": "#/components/schemas/CultureNameType"
+          }
+        }
+      },
+      "CultureNameType": {
+        "type": "string",
+        "enum": [
+          "nl-NL",
+          "de-DE",
+          "fr-BE",
+          "nl-BE",
+          "fr-FR",
+          "en-GB"
+        ]
+      },
+      "SubscribeSourceType": {
+        "type": "string",
+        "enum": [
+          "TICKETS_ORDERPROCES",
+          "TICKETS_SUBSCRIPTION",
+          "PHOTO_FE_CAMPAGNE",
+          "PHOTO_FE_REGISTRATION",
+          "PHOTO_ORDERPROCES",
+          "PHOTO_RAPIDPRINTSERVICE",
+          "PHOTO_SUBSCRIPTION",
+          "PHOTO_SOFTWAREDOWNLOAD",
+          "PHOTO_REGISTRATION",
+          "PHOTO_ACTIONMODAL",
+          "WEB_APP",
+          "WEB_SUBSCRIPTION",
+          "WEB_ORDERPROCES",
+          "WEB_FOOTER",
+          "WEB_POPUP",
+          "WEB_PREFERENCEPAGE",
+          "ZORG_SUBSCRIPTION",
+          "ZORG_CAMPAIGN",
+          "ZORG_PAKKETWIJZER",
+          "ZORG_PREMIEMELDER"
+        ]
+      },
+      "SubscriptionTypeType": {
+        "type": "string",
+        "enum": [
+          "Webshop",
+          "APS",
+          "Loyalty",
+          "Tickets",
+          "Insurance-health",
+          "Insurance-non-life",
+          "Photo-Commercial",
+          "Photo-SMS"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "oauth": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://auth.hema.digital/token",
+            "scopes": {
+              "profile.newsletters.write": "Allows to change newsletter subscriptions",
+              "profile.newsletters.read": "Allows to check newsletter subscriptions",
+              "myprofile.all": "Allows to read and write MyProfile"
+            }
+          }
+        }
+      }
+    }
+  }
+}

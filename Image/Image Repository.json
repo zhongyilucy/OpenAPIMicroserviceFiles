@@ -1,0 +1,184 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Image Repository",
+    "description": "This repository provides images of within the system.",
+    "contact": {
+      "email": "support@allread.ai"
+    },
+    "license": {
+      "name": "© 2023 AllRead Machine Learning Technologies.  All rights reserved",
+      "url": "https://www.allread.ai"
+    }
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/jesus.tejedor/media-repository/1.0.0"
+    }
+  ],
+  "tags": [
+    {
+      "name": "image",
+      "description": "CRUD over image metada. Create and update only allowed over metadata"
+    }
+  ],
+  "paths": {
+    "/image/{id}": {
+      "get": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Get the image file as jpg binary by ID related to certain unique Id",
+        "description": "An image that it has at least a metaobject.  To retrieve the image file, the id on Image Scheme is used.\n",
+        "operationId": "getImageById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the unique identifier that is associated with the image",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "quality",
+            "in": "query",
+            "description": "The amount of JPEG compression is typically measured as a  percentage of the quality level. An image at 100% quality has (almost) no loss, and 1% quality is a very low quality image.  In general, quality levels of 90% or higher are considered  \\\"high quality\\\", 80%-90% is \\\"medium quality\\\",  and 70%-80% is low quality.\n",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pyr_down",
+            "in": "query",
+            "description": "An image pyramid is a collection of images  - all arising from a single original image - that are successively  downsampled until some desired stopping point is reached. Every iteration reduces the image size to half.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 3,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Image"
+                }
+              },
+              "image/jpg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid uuid supplied"
+          },
+          "404": {
+            "description": "Image not found"
+          }
+        }
+      }
+    },
+    "/image": {
+      "post": {
+        "tags": [
+          "image"
+        ],
+        "summary": "create an image on database and this operation will check if the",
+        "description": "Set an image",
+        "operationId": "createImageMeta",
+        "requestBody": {
+          "description": "Image to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Image"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Expected response to a valid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Image"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Location not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Image": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "stream_name": {
+            "type": "string",
+            "example": "lane_1_cam_0"
+          },
+          "time": {
+            "type": "integer",
+            "description": "Unix timestamp 13 digits milliseconds",
+            "format": "int64",
+            "example": 1661268817000
+          },
+          "width": {
+            "type": "integer",
+            "description": "image height expressed in pixels",
+            "format": "int32",
+            "example": 1920
+          },
+          "height": {
+            "type": "integer",
+            "description": "image height expressed in pixels",
+            "format": "int32",
+            "example": 1080
+          },
+          "size": {
+            "type": "integer",
+            "description": "physical size of the image expressed in bytes",
+            "format": "int64",
+            "example": 3482
+          }
+        }
+      }
+    }
+  }
+}

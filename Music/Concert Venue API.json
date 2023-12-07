@@ -1,0 +1,241 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/JASONPARADISO/JP_OneMoreSongAgain/1.0.0"
+    }
+  ],
+  "info": {
+    "description":"This is an API that can search and manage venues for concerts.",
+    "version": "1.0.0",
+    "title": "Concert Venue API",
+    "contact": {
+      "email": "jason.paradiso@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "venues",
+      "description": "search/add/update/delete venues"
+    }
+  ],
+  "paths": {
+    "/venues": {
+      "get": {
+        "tags": [
+          "venues"
+        ],
+        "summary": "searches for setlists performed in specific venues",
+        "operationId": "searchVenue",
+        "description": "Use these parameters to search for an artist\n",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "venueName",
+            "description": "Search for the venue by name",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Danforth Music Hall"
+            }
+          },
+          {
+            "in": "query",
+            "name": "streetAddress",
+            "description": "The street address of the venue",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "147 Danforth Ave"
+            }
+          },
+          {
+            "in": "query",
+            "name": "city",
+            "description": "The city of the venue",
+            "schema": {
+              "type": "string",
+              "example": "Toronto"
+            }
+          },
+          {
+            "in": "query",
+            "name": "province",
+            "description": "The province/territory/state of the venue",
+            "schema": {
+              "type": "string",
+              "example": "Ontario"
+            }
+          },
+          {
+            "in": "query",
+            "name": "postCode",
+            "description": "The postal code of the venue.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "M4K 1N2"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/venues"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "venues"
+        ],
+        "summary": "adds a venue",
+        "description": "Use this to add a venue",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/venues"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Venue added"
+          },
+          "400": {
+            "description": "Invalid postal code"
+          },
+          "409": {
+            "description": "The venue already exists"
+          }
+        }
+      }
+    },
+    "/venues/{venueId}": {
+      "put": {
+        "tags": [
+          "venues"
+        ],
+        "summary": "updates a venue",
+        "description": "Use this to update an existing venue",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "venueId",
+            "description": "The ID assigned to the venue",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "GHJK-ASDF-TYUI-QWER"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/venues"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Venue updated"
+          },
+          "400": {
+            "description": "Invalid <tt>venueId</tt>"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "venues"
+        ],
+        "summary": "deletes a venue",
+        "description": "Use this to delete an existing venue",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "venueId",
+            "description": "The ID assigned to the venue",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "GHJK-ASDF-TYUI-QWER"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Venue deleted"
+          },
+          "400": {
+            "description": "Invalid <tt>venueId</tt>"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "venues": {
+        "required": [
+          "venueName",
+          "postCode"
+        ],
+        "type": "object",
+        "properties": {
+          "venueName": {
+            "type": "string",
+            "example": "Danforth Music Hall"
+          },
+          "venueId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "GHJK-ASDF-TYUI-QWER"
+          },
+          "streetAddress": {
+            "type": "string",
+            "example": "147 Danforth Ave"
+          },
+          "city": {
+            "type": "string",
+            "example": "Toronto"
+          },
+          "province": {
+            "type": "string",
+            "example": "Ontario"
+          },
+          "postCode": {
+            "type": "string",
+            "example": "M4K 1N2"
+          },
+          "website": {
+            "type": "string",
+            "format": "url",
+            "example": "http://thedanforth.com/"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Contact management",
+    "description": "This is the API documentation for add, delete, edit, and search contacts",
+    "contact": {
+      "email": "brandon.i.holtzman@knights.ucf.edu"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://jesustestserver.xyz/LAMPAPI"
+    }
+  ],
+  "paths": {
+    "/AddContact.php": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Adds a new Contact",
+        "description": "Adds a new Contact",
+        "operationId": "addContact",
+        "requestBody": {
+          "description": "Add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contact"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "404": {
+            "description": "URL Not Found",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "NewContact"
+      }
+    },
+    "/DeleteContact.php": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Deletes a Contact",
+        "description": "Deletes a Contact",
+        "operationId": "deleteContact",
+        "requestBody": {
+          "description": "Add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Delete"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "404": {
+            "description": "URL Not Found",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "TargetContact"
+      }
+    },
+    "/EditContact.php": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Edits a Contact",
+        "description": "Edits a Contact",
+        "operationId": "editContact",
+        "requestBody": {
+          "description": "Add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/editContact"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "404": {
+            "description": "URL Not Found",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "TargetContact"
+      }
+    },
+    "/SearchContacts.php": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Searches for a Contact",
+        "description": "Searches for a Contact",
+        "operationId": "searchContact",
+        "requestBody": {
+          "description": "Add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Search"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          },
+          "404": {
+            "description": "URL Not Found",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "SearchQuery"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Contact": {
+        "required": [
+          "Email",
+          "FirstName",
+          "ID",
+          "LastName",
+          "Phone"
+        ],
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "integer",
+            "example": 102
+          },
+          "Email": {
+            "type": "string",
+            "example": "thisemail@website.com"
+          },
+          "Phone": {
+            "type": "string",
+            "example": "999-999-9998"
+          },
+          "FirstName": {
+            "type": "string",
+            "example": "Joe"
+          },
+          "LastName": {
+            "type": "string",
+            "example": "Who"
+          }
+        }
+      },
+      "Delete": {
+        "required": [
+          "ID"
+        ],
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "integer",
+            "example": 216
+          }
+        }
+      },
+      "editContact": {
+        "required": [
+          "Email",
+          "FirstName",
+          "ID",
+          "LastName",
+          "Phone"
+        ],
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "integer",
+            "example": 213
+          },
+          "Email": {
+            "type": "string",
+            "example": "John@website.com"
+          },
+          "Phone": {
+            "type": "string",
+            "example": "999-999-0008"
+          },
+          "FirstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "LastName": {
+            "type": "string",
+            "example": "Doe"
+          }
+        }
+      },
+      "Search": {
+        "required": [
+          "ID",
+          "search"
+        ],
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "integer",
+            "example": 102
+          },
+          "search": {
+            "type": "string",
+            "example": "e"
+          }
+        }
+      }
+    }
+  }
+}

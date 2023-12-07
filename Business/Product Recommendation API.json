@@ -1,0 +1,170 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Product Recommendation API",
+    "description": "Product Recommendation API Specification",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "paths": {
+    "/rules/{ruleCode}/execute": {
+      "post": {
+        "summary": "Product recommendation for a specific rule code and product code",
+        "parameters": [
+          {
+            "name": "ruleCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "rule code for product recommendation"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponsePayload"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErroResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RequestPayload": {
+        "type": "object",
+        "properties": {
+          "productShortCode": {
+            "type": "string",
+            "description": "The short code of the product",
+            "example": "OR"
+          },
+          "sourceChannel": {
+            "type": "string",
+            "description": "The source channel",
+            "example": "SEO"
+          },
+          "brokerCode": {
+            "type": "string",
+            "description": "Broker code",
+            "example": "HDFCBANK"
+          },
+          "agentCode": {
+            "type": "string",
+            "description": "The agent code",
+            "example": "AG18000"
+          },
+          "ruleInputParams": {
+            "type": "object",
+            "properties": {
+              "isDiabetic": {
+                "type": "string",
+                "description": "Indicates if the person is diabetic",
+                "example": true
+              },
+              "familyComposition": {
+                "type": "string",
+                "description": "The family composition",
+                "example": "2A"
+              },
+              "age": {
+                "type": "string",
+                "description": "The age of the person",
+                "example": 38
+              },
+              "homeAddress": {
+                "type": "object",
+                "properties": {
+                  "pincode": {
+                    "type": "string",
+                    "description": "The home address pincode",
+                    "example": 122018
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ResponsePayload": {
+        "type": "object",
+        "properties": {
+          "ruleOutputParams": {
+            "type": "object",
+            "properties": {
+              "products": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "productShortCode": {
+            "type": "string",
+            "description": "The product short code",
+            "example": "OS"
+          },
+          "sumInsured": {
+            "type": "integer",
+            "description": "The sum insured",
+            "example": 1000000
+          },
+          "aggregateDeductible": {
+            "type": "integer",
+            "description": "Aggregate deductible amount",
+            "example": 1000000
+          }
+        }
+      },
+      "ErroResponse": {
+        "type": "object",
+        "description": "Client error response",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

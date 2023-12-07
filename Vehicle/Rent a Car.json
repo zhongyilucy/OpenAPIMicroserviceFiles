@@ -1,0 +1,254 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/RentalCompany/Rent-a-Car/1.0.0"
+    }
+  ],
+  "info": {
+    "description": "This is a simple API to rent a car.",
+    "version": "1.0.0",
+    "title": "Rent a Car",
+    "contact": {
+      "email": "you@your-company.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "cars",
+      "description": "Company cars"
+    },
+    {
+      "name": "orders",
+      "description": "Reservation orders"
+    }
+  ],
+  "paths": {
+    "/cars": {
+      "get": {
+        "tags": [
+          "cars"
+        ],
+        "summary": "access to cars inventory",
+        "operationId": "getCars",
+        "description": "List all company cars with current rent status\nand availability date\n",
+        "parameters": [
+          {
+            "name": "searchString",
+            "in": "query",
+            "description": "search string to filter inventory",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cars with their statuses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Car"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Create reservation / order",
+        "description": "Create reservation Order\n",
+        "parameters": [
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Order data",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Order"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Order has been created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Confirmation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to process this order request"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Cancel order",
+        "operationId": "cancelOrder",
+        "description": "Order can be cancelled",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "Order ID",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OrderId"
+            }
+          }
+        ],
+        "responses": {
+          "203": {
+            "description": "Order cancelled"
+          },
+          "400": {
+            "description": "Not found / other issue"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Car": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "status",
+          "image",
+          "pricePerDay"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/CarId"
+          },
+          "name": {
+            "type": "string",
+            "example": "Volvo XC90 Diesel 2017 AT",
+            "minLength": 5,
+            "maxLength": 60
+          },
+          "status": {
+            "$ref": "#/components/schemas/CarStatus"
+          },
+          "description": {
+            "type": "string",
+            "example": "Marvelous family car, category A, with additional baby seats, removed roof, and lot of space in the trunk\n"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://jaw.pl/wp-content/uploads/2019/08/auto-87068_960_720.jpg"
+          },
+          "pricePerDay": {
+            "description": "rent price per day",
+            "type": "number",
+            "format": "float",
+            "example": 120,
+            "minimum": 40,
+            "maximum": 1000
+          },
+          "availableAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "nextReservationAt": {
+            "$ref": "#/components/schemas/DateTime"
+          }
+        }
+      },
+      "DateTime": {
+        "type": "string",
+        "format": "date-time",
+        "example": "2022-12-01T09:00:00.001Z"
+      },
+      "CarId": {
+        "type": "string",
+        "format": "uuid",
+        "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+      },
+      "CarStatus": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "available",
+            "enum": [
+              "available",
+              "cleaning",
+              "rented",
+              "in_service",
+              "disabled"
+            ]
+          },
+          "readyIn": {
+            "type": "string",
+            "example": "fresh and ready from 14:00 today"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "required": [
+          "carId",
+          "from",
+          "to",
+          "contactPhone"
+        ],
+        "properties": {
+          "carId": {
+            "$ref": "#/components/schemas/CarId"
+          },
+          "from": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "to": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "contactPhone": {
+            "type": "string",
+            "example": "+00 111-222-333",
+            "pattern": "^\\+[0-9]{2} [0-9-]{6,}$"
+          }
+        }
+      },
+      "Confirmation": {
+        "type": "object",
+        "required": [
+          "orderId"
+        ],
+        "properties": {
+          "orderId": {
+            "$ref": "#/components/schemas/OrderId"
+          }
+        }
+      },
+      "OrderId": {
+        "type": "string",
+        "example": "JGDCJYDGUS7DC68S7D6CS"
+      }
+    }
+  }
+}

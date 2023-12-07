@@ -1,0 +1,184 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/JASONPARADISO/JP_OneMoreSongAgain/1.0.0"
+    }
+  ],
+  "info": {
+    "description":"This is an API that can search and manage music artists.",
+    "version": "1.0.0",
+    "title": "Artist API",
+    "contact": {
+      "email": "jason.paradiso@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "artists",
+      "description": "search/add/delete artists"
+    },
+    {
+      "name": "venues",
+      "description": "search/add/update/delete venues"
+    },
+    {
+      "name": "setlists",
+      "description": "search/add/update/delete setlists"
+    }
+  ],
+  "paths": {
+    "/artists": {
+      "get": {
+        "tags": [
+          "artists"
+        ],
+        "summary": "searches the music artists",
+        "operationId": "searchArtist",
+        "description": "Use these parameters to search for an music artist",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "artistName",
+            "description": "Search for the artist by name",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "The Kount",
+              "maximum": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "artistId",
+            "description": "Search for the artist based on the ID assigned once imported",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "QWER-TYUI-ASDF-GHJK"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Maximum number of records to return",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "maximum": 50,
+              "example": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/artists"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "artists"
+        ],
+        "summary": "adds an artist",
+        "operationId": "addArtist",
+        "description": "Use this to add an artist",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/artists"
+              }
+            }
+          },
+          "description": "The artist to add"
+        },
+        "responses": {
+          "201": {
+            "description": "Artist added"
+          },
+          "400": {
+            "description": "Invalid musicbrainz ID. check https://musicbrainz.org/"
+          },
+          "409": {
+            "description": "Artist already exists"
+          }
+        }
+      }
+    },
+    "/artist/{artistId}": {
+      "delete": {
+        "tags": [
+          "artists"
+        ],
+        "summary": "deletes an artist",
+        "description": "Use this to delete an existing artist",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "artistId",
+            "description": "The ID assigned to the artist once imported",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "GHJK-ASDF-TYUI-QWER"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Artist deleted"
+          },
+          "400": {
+            "description": "Invalid <tt>artistId</tt>"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "artists": {
+        "type": "object",
+        "required": [
+          "mbid",
+          "artistName"
+        ],
+        "properties": {
+          "mbid": {
+            "type": "string",
+            "format": "uuid",
+            "example": "QWER-TYUI-ASDF-GHJK"
+          },
+          "artistId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "GHJK-ASDF-TYUI-QWER"
+          },
+          "artistName": {
+            "type": "string",
+            "example": "The Kount"
+          }
+        }
+      }
+    }
+  }
+}

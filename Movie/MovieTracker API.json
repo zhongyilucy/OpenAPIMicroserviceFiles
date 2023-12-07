@@ -1,0 +1,624 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "MovieTracker API",
+    "description": "The MovieTracker API manages the movies that users want to watch.",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/users/movies": {
+      "get": {
+        "tags": [
+          "User's movies"
+        ],
+        "summary": "Get user movies",
+        "description": "If no parameters are provided, it returns every 'userMovie' object associated with the user, otherwise returns either saved or watched movies.",
+        "operationId": "getUserMovies",
+        "parameters": [
+          {
+            "name": "saved",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "watched",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Receiving desired movies list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/SavedMovieListDTO"
+                    },
+                    {
+                      "$ref": "#/components/schemas/WatchedMovieListDTO"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AllMovieListDTO"
+                    }
+                  ]
+                },
+                "examples": {
+                  "all": {
+                    "description": "When no parameters are provided",
+                    "summary": "AllMoviesDTO",
+                    "value": {
+                      "saved": {
+                        "id": 1,
+                        "title": "Movie from user's saved movies list",
+                        "director": "John Doe",
+                        "genres": [
+                          "comedy",
+                          "drama"
+                        ],
+                        "mainActors": [
+                          "John Doe",
+                          "Dohn Joey"
+                        ],
+                        "releaseDate": "2023-01-01T00:00:00.000Z",
+                        "runtime": 102,
+                        "platform": "Test platform"
+                      },
+                      "watched": {
+                        "id": 2,
+                        "title": "Movie from user's watched movies list",
+                        "director": "John Doe",
+                        "genres": [
+                          "horror"
+                        ],
+                        "mainActors": [
+                          "Scary actor"
+                        ],
+                        "releaseDate": "2023-01-01T00:00:00.000Z",
+                        "runtime": 80,
+                        "platform": "Test platform"
+                      }
+                    }
+                  },
+                  "saved": {
+                    "description": "saved=true",
+                    "summary": "SavedMoviesDTO",
+                    "value": {
+                      "saved": {
+                        "id": 1,
+                        "title": "Movie from user's saved movies list",
+                        "director": "John Doe",
+                        "genres": [
+                          "comedy",
+                          "drama"
+                        ],
+                        "mainActors": [
+                          "John Doe",
+                          "Dohn Joey"
+                        ],
+                        "releaseDate": "2023-01-01T00:00:00.000Z",
+                        "runtime": 102,
+                        "platform": "Test platform"
+                      }
+                    }
+                  },
+                  "watched": {
+                    "description": "watched=true",
+                    "summary": "WatchedMoviesDTO",
+                    "value": {
+                      "watched": {
+                        "id": 2,
+                        "title": "Movie from user's watched movies list",
+                        "director": "John Doe",
+                        "genres": [
+                          "horror"
+                        ],
+                        "mainActors": [
+                          "Scary actor"
+                        ],
+                        "releaseDate": "2023-01-01T00:00:00.000Z",
+                        "runtime": 80,
+                        "platform": "Test platform"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User's movies"
+        ],
+        "summary": "Add a new movie to the user's movie list",
+        "description": "Id represents the movie's id in the database. The lists should be specified within the request body.",
+        "operationId": "addUserMovie",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserMovieDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Movie is added to given lists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserMovieResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Movie is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "examples": {
+                  "errorMessage": {
+                    "summary": "Movie not found",
+                    "value": {
+                      "status": "error",
+                      "message": "Movie not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User's movies"
+        ],
+        "operationId": "deleteUserMovie",
+        "summary": "Delete a movie from the user",
+        "description": "Delete a movie from one (or both) of the user's list(s), depending on given request parameters",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "saved",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "watched",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movie deleted from list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserMovieResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The provided userMovie id is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                },
+                "examples": {
+                  "errorMessage": {
+                    "summary": "Id not found",
+                    "value": {
+                      "status": "error",
+                      "message": "Id not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies": {
+      "get": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Get all movies from the database",
+        "operationId": "getAllMovies",
+        "responses": {
+          "200": {
+            "description": "Received all movies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllMoviesDTO"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Success",
+                    "value": {
+                      "movies": {
+                        "id": 1,
+                        "title": "Exciting new movie",
+                        "director": "John Doe",
+                        "genres": [
+                          "action"
+                        ],
+                        "mainActors": [
+                          "John Doe",
+                          "Dohn Joey"
+                        ],
+                        "releaseDate": "2023-12-12T00:00:00.000Z",
+                        "runtime": 120,
+                        "platform": "Exctigin new platform"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Add a new movie to the database",
+        "operationId": "addMovie",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieDTO"
+              },
+              "examples": {
+                "example": {
+                  "summary": "Request body",
+                  "value": {
+                    "title": "Exciting new movie",
+                    "director": "John Doe",
+                    "genres": [
+                      "action"
+                    ],
+                    "mainActors": [
+                      "John Doe",
+                      "Dohn Joey"
+                    ],
+                    "releaseDate": "2023-12-12T00:00:00.000Z",
+                    "runtime": 120,
+                    "platform": "Exctigin new platform"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Adding new movie was successful.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieDTO"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Success",
+                    "value": {
+                      "id": 1,
+                      "title": "Exciting new movie",
+                      "director": "John Doe",
+                      "genres": [
+                        "action"
+                      ],
+                      "mainActors": [
+                        "John Doe",
+                        "Dohn Joey"
+                      ],
+                      "releaseDate": "2023-12-12T00:00:00.000Z",
+                      "runtime": 120,
+                      "platform": "Exctigin new platform"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user is not an admin."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserDTO": {
+        "required": [
+          "email",
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "default": "username"
+          },
+          "password": {
+            "type": "string",
+            "default": "password"
+          },
+          "email": {
+            "type": "string",
+            "default": "email@email.com"
+          }
+        }
+      },
+      "UserMovieDTO": {
+        "required": [
+          "id",
+          "saved",
+          "watched"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "watched": {
+            "type": "boolean"
+          },
+          "saved": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RegistrationDTO": {
+        "required": [
+          "email",
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "default": "username"
+          },
+          "password": {
+            "maxLength": 2147483647,
+            "minLength": 8,
+            "type": "string",
+            "default": "password"
+          },
+          "email": {
+            "type": "string",
+            "default": "default@email.com"
+          }
+        }
+      },
+      "RegistrationResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The created user's id.",
+            "format": "int64",
+            "default": 1
+          },
+          "username": {
+            "type": "string",
+            "description": "Created user's username",
+            "default": "newUser"
+          }
+        }
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "MovieDTO": {
+        "required": [
+          "director",
+          "genres",
+          "mainActors",
+          "platform",
+          "releaseDate",
+          "runtime",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "default": 1
+          },
+          "title": {
+            "type": "string",
+            "default": "Exciting new movie"
+          },
+          "director": {
+            "type": "string",
+            "default": "John Doe"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mainActors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "runtime": {
+            "type": "integer",
+            "format": "int64",
+            "default": 90
+          },
+          "platform": {
+            "type": "string",
+            "default": "Test platform"
+          }
+        }
+      },
+      "LoginDTO": {
+        "required": [
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "default": "username"
+          },
+          "password": {
+            "type": "string",
+            "default": "password"
+          }
+        }
+      },
+      "LoginResponseDTO": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "ok"
+          },
+          "token": {
+            "type": "string",
+            "default": "tokenValue"
+          }
+        }
+      },
+      "UserMovieResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "default": 1
+          },
+          "title": {
+            "type": "string",
+            "default": "Movie title"
+          },
+          "watched": {
+            "type": "boolean"
+          },
+          "saved": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SavedMovieListDTO": {
+        "type": "object",
+        "properties": {
+          "saved": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieDTO"
+            }
+          }
+        }
+      },
+      "WatchedMovieListDTO": {
+        "type": "object",
+        "properties": {
+          "watched": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieDTO"
+            }
+          }
+        }
+      },
+      "AllMovieListDTO": {
+        "type": "object",
+        "properties": {
+          "saved": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieDTO"
+            }
+          },
+          "watched": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieDTO"
+            }
+          }
+        }
+      },
+      "AllMoviesDTO": {
+        "type": "object",
+        "properties": {
+          "movies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovieDTO"
+            }
+          }
+        }
+      }
+    }
+  }
+}

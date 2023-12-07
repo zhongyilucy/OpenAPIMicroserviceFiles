@@ -1,0 +1,611 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ClaimsList",
+    "description": "Common ClaimsList API",
+    "version": "10.125.1"
+  },
+  "paths": {
+    "/claims/": {
+      "get": {
+        "tags": [
+          "claims"
+        ],
+        "summary": "Get a list of claims for the member",
+        "description": "Returns a list of claims associated with search criteria\nSearch can be performed using Member First Name, Last Name, Claim Number or by Claim Status.\nbilled amount in UI = claim_amount\nplan payed amount in UI = payer_paid_amount\n",
+        "operationId": "claims_list",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/AcceptHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/AuthorizationHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/ContentTypeHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/RefererHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/UserAgentHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/ForwardedForHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/UserNameHeader/10.0.1#/components/parameters/UserNameHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/WebSessionIdHeader/10.0.1#/components/parameters/WebSessionIdHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/CorrelationIdHeader/10.0.1#/components/parameters/CorrelationIdHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/IdentitiesHeader/10.0.3#/components/parameters/IdentitiesHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/orderingParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageSizeParam"
+          },
+          {
+            "name": "first_name",
+            "in": "query",
+            "description": "Member's first name to be used for search by first name.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "last_name",
+            "in": "query",
+            "description": "Member's last name to be used for search by last name",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "claim_number",
+            "in": "query",
+            "description": "Unique claim number associated with the claim",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "claim_status",
+            "in": "query",
+            "description": "Claim status associated with the claim.\nThis can be 'draft' or 'submitted' for draft or submitted claims.\n",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "claim_provider_name",
+            "in": "query",
+            "description": "Search by Provider name",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "claim_provider_npi",
+            "in": "query",
+            "description": "Search by Provider NPI",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider_id",
+            "in": "query",
+            "description": "Search by Provider ID. This provider can be any of the providers associated with the claim.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "claim_type_of_service",
+            "in": "query",
+            "description": "Claim service type associated with the claim",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "member_name",
+            "in": "query",
+            "description": "Fuzzy search on all name fields (first, middle, last names etc)",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "member_id",
+            "in": "query",
+            "description": "Unique member identifier when wanting to view a specific Member's claims",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "member_number",
+            "in": "query",
+            "description": "*** DEPRECATED *** Use member_id\nUnique member identifier when a member wishes to view another member's claims e.g. dependents \n",
+            "deprecated": true,
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "member_display_identifier",
+            "in": "query",
+            "description": "Member display identifier. This corresponds to the Member.member_display_identifier field. \nIf this value is passed, payer should return claims based on member_display_identifier.\n$ref: 'https://api.swaggerhub.com/domains/Zipari-Core-Services/MemberModel/10.49.1#/components/schemas/Member/properties/member_display_identifier'\n",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "claim_type",
+            "in": "query",
+            "description": "The product category of claim. This corresponds to the Claim.claim_type field.\nIf this value is passed, payer should return claims based on claim_type.\n",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ClaimModel/10.111.1#/components/schemas/Claim/properties/claim_type"
+            }
+          },
+          {
+            "name": "claim_subtype",
+            "in": "query",
+            "description": "This corresponds to the Claim.claim_subtype field.\nIf this value is passed, payer should return claims based on claim_subtype.\n",
+            "required": false,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subscriber_number",
+            "in": "query",
+            "description": "Unique Subscriber identifier. This corresponds to the Member.subscriber_number field. \nIf this value is passed, payer should return claims for all members of the house-hold.\n$ref: 'https://api.swaggerhub.com/domains/Zipari-Core-Services/MemberModel/10.49.1#/components/schemas/Member/properties/subscriber_number'\n",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "service_from_date",
+            "in": "query",
+            "description": "Service Date From filter in YYYY-MM-DD format",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "service_to_date",
+            "in": "query",
+            "description": "Service Date To filter in YYYY-MM-DD format",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "submitted_date_gte",
+            "in": "query",
+            "description": "Filter claims whose submitted Date is greater than or equal to the date passed in YYYY-MM-DD format",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "submitted_date_lte",
+            "in": "query",
+            "description": "Filter claims whose submitted Date is less than or equal to the date passed in YYYY-MM-DD format",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "policy_id",
+            "in": "query",
+            "description": "Unique policy id.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "claim_amount_gte",
+            "in": "query",
+            "description": "Filter for claims with claim amount greater than or equal to specified amount.\nClaims with amount greater than or equal to the value passed in this parameter will be listed in the response.\nThe value is a dollar amount. It should be sent with 2 decimal digits.\n",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "name": "claim_amount_lte",
+            "in": "query",
+            "description": "Filter for claims with claim amount less than or equal to specified amount.\nClaims with amount less than or equal to the value passed in this parameter will be listed in the response.\nThe value is a dollar amount. It should be sent with 2 decimal digits.\n",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "name": "paid_date_after",
+            "in": "query",
+            "description": "Filters for entries with paid_date after the specified date. Claims\nwith an paid date after the date passed in this parameter will be listed in the response.\n",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "paid_date_before",
+            "in": "query",
+            "description": "Filters for entries with paid_date before the specified date. Claims\nwith a paid date before the date passed in this parameter will be listed in the response.\n",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "payee_name",
+            "in": "query",
+            "description": "Filters by the name of the provider or facility to be paid.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "payee_type",
+            "in": "query",
+            "description": "Filters by the payee_type (example - subscriber or provider) to be paid.\n$ref: 'https://api.swaggerhub.com/domains/Zipari-Core-Services/PayeeInformationModel/10.8.1#/components/schemas/PayeeInformation/properties/payee_type'\n",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "check_number",
+            "in": "query",
+            "description": "Filters by check_number in payee_information.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rendering_provider_id",
+            "in": "query",
+            "description": "Filters by claims having this rendering provider id. This corresponds to Provider.id and can be used in Provider Detail API, for example.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "billing_provider_id",
+            "in": "query",
+            "description": "Filters by claims having this billing provider id. This corresponds to Provider.id and can be used in Provider Detail API, for example.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "related_claim_id",
+            "in": "query",
+            "description": "Filter claims related to the passed claim ID to retrieve other adjusted versions of that claim.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "procedure_code",
+            "in": "query",
+            "description": "Filters by claims having this procedure code.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search_string",
+            "in": "query",
+            "description": "Fuzzy search that can be implemented by Payer's as they see necessary for their requirements.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "should_all_filters_exact_match",
+            "in": "query",
+            "description": "This flag is used for exact and partial matches. All the fields configured to do partial versus exact searches will be operated with this flag.",
+            "required": false,
+            "explode": false,
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "label",
+            "in": "query",
+            "description": "Filters by claims that have this label.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "exclude_negative_adjusted_claims",
+            "in": "query",
+            "description": "This flag is used to exclude negative adjusted claims.",
+            "required": false,
+            "explode": false,
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "benefit_service_id",
+            "in": "query",
+            "description": "Filter claims by benefit service identifier.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "benefit_period_id",
+            "in": "query",
+            "description": "Filter claims by benefit period identifier.",
+            "required": false,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accumulator_type_id",
+            "in": "query",
+            "description": "This filter is specifically to be used when the BenefitsList response includes accumulator_type_id.",
+            "required": false,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accumulator_type",
+            "in": "query",
+            "description": "Filter claims by type of accumulator e.g. Visits, Deductibles.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "benefit_applies_to",
+            "in": "query",
+            "description": "Filter claims by benefits applied to self or family.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "participation_level",
+            "in": "query",
+            "description": "Filter claims by participation level e.g. in_network, out_of_network.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "explanation_of_benefit_id",
+            "in": "query",
+            "description": "Filter claims by EOB identifier.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "secondary_id",
+            "in": "query",
+            "description": "Filter claims by secondary claim identifier.",
+            "required": false,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of claim objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "count",
+                    "results"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Count representing the total number of objects available to be returned in the results array."
+                    },
+                    "next": {
+                      "type": "integer",
+                      "description": "Query identifier defined by the api developer for getting the next set of records."
+                    },
+                    "previous": {
+                      "type": "integer",
+                      "description": "Query identifier defined by the api developer for getting the previous set of records."
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ClaimModel/10.111.1#/components/schemas/Claim"
+                      }
+                    }
+                  }
+                }
+              },
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "description": "Returns the List of Claims as a CSV file."
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary",
+                  "description": "Returns the List of Claims as a PDF file."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

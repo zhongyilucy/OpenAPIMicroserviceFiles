@@ -1,0 +1,685 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Billing Account Management",
+    "description": "This is Swagger UI environment generated for the Billing Account Management specification",
+    "version": "1.8"
+  },
+  "tags": [
+    {
+      "name": "billingAccount"
+    }
+  ],
+  "paths": {
+    "/billingAccount/{id}": {
+      "get": {
+        "tags": [
+          "billingAccount"
+        ],
+        "summary": "Retrieves a Billing Account by Account Id",
+        "description": "This operation retrieves a BillingAccount entity. Attribute selection is enabled for all first level attributes.",
+        "operationId": "retrieveBillingAccount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifier of the account/MSISDN - SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to provide in response",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "msisdn",
+            "in": "query",
+            "description": "Populate the value with 'Yes' if provided id is MSISDN",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "market",
+            "in": "query",
+            "description": "Identifier market ID of the account ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingAccount"
+                },
+                "examples": {
+                  "Sample Response 1 (Account ID)": {
+                    "value": "{\n    \"accountCharacteristic\": [\n        {\n            \"name\": \"AccountMaximumBalance\",\n            \"unit\": \"JMD\",\n            \"value\": \"1000.00\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountId\",\n            \"value\": \"102626\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountName\",\n            \"value\": \"000102626\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountTypeDisplayName\",\n            \"value\": \"Debtor\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountTypeId\",\n            \"value\": \"2000005\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountCurrencyId\",\n            \"value\": \"2000003\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountCurrency\",\n            \"value\": \"JMD\",\n            \"valueType\": \"string\"\n        }\n    ],\n    \"market\": \"Jamaica\",\n    \"ratingType\": \"Asset|Receivable\",\n    \"accountType\": \"Debtor (JMD)\",\n    \"name\": \"00-0102-626\",\n    \"creditLimit\": {\n        \"unit\": \"JMD\"\n    },\n    \"href\": \"https://$HOST:30140/perest/api/v1/billingAccount/102626\",\n    \"id\": \"102626\",\n    \"lastModified\": \"2022-07-28T10:38:21\",\n    \"state\": \"Active\",\n    \"accountBalance\": [\n        {\n            \"accountingEntry\": \"Credit\",\n            \"amount\": {\n                \"value\": \"100.00\",\n                \"unit\": \"JMD\"\n            },\n            \"balanceType\": \"Adjustment:CN00001017227\",\n            \"balanceAmount\": {\n                \"value\": \"-100.00\",\n                \"unit\": \"JMD\"\n            },\n            \"validFor\": {\n                \"endDateTime\": \"9999-12-30T23:59:59\",\n                \"startDateTime\": \"2022-07-28T10:35:51\"\n            }\n        }\n    ],\n    \"relatedParty\": [\n        {\n            \"name\": \"ACC_Cus\",\n            \"@referredType\": \"customer\",\n            \"href\": \"https://$HOST:30140/perest/api/v1/customer/101907\",\n            \"id\": \"101907\"\n        }\n    ]\n}"
+                  },
+                  "Sample Response 2 (MSISDN)": {
+                    "value": "{\n    \"accountCharacteristic\": [\n        {\n            \"name\": \"AccountMaximumBalance\",\n            \"unit\": \"JMD\",\n            \"value\": \"1000.00\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"CurrentBalance\",\n            \"unit\": \"JMD\",\n            \"value\": \"67.00\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AvailableCredit\",\n            \"unit\": \"JMD\",\n            \"value\": \"67.00\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountId\",\n            \"value\": \"117128\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountName\",\n            \"value\": \"0100117128\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountTypeDisplayName\",\n            \"value\": \"Prepaid\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountTypeId\",\n            \"value\": \"2000011\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountCurrencyId\",\n            \"value\": \"2000003\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountCurrency\",\n            \"value\": \"JMD\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountStatusCode\",\n            \"value\": \"4\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountBalanceExpiryDate\",\n            \"value\": \"2022-10-24T12:36:48\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountCancellationDate\",\n            \"value\": \"2022-11-13T12:36:48\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountFirstUseDate\",\n            \"value\": \"2022-10-04T12:36:48\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"AccountRestrictionDate\",\n            \"value\": \"2022-10-22T12:36:48\",\n            \"valueType\": \"string\"\n        },\n        {\n            \"name\": \"Service Number\",\n            \"value\": \"11289598041\",\n            \"valueType\": \"string\"\n        }\n    ],\n    \"accountType\": \"Prepaid (JMD)\",\n    \"relatedParty\": [\n        {\n            \"name\": \"11289598041\",\n            \"@referredType\": \"customer\",\n            \"href\": \"https://$HOST:30140/perest/api/v1/customer/114488\",\n            \"id\": \"114488\"\n        }\n    ],\n    \"market\": \"Jamaica\",\n    \"ratingType\": \"Liability|Payable\",\n    \"restrictionDate\": \"2022-10-22T12:36:48\",\n    \"name\": \"01-0011-7128\",\n    \"creditLimit\": {\n        \"value\": 0.0,\n        \"unit\": \"JMD\"\n    },\n    \"href\": \"https://$HOST:30140/perest/api/v1/billingAccount/117128\",\n    \"id\": \"117128\",\n    \"lastModified\": \"2022-11-13T12:36:48\",\n    \"state\": \"Cancelled\",\n    \"accountBalance\": [\n        {\n            \"accountingEntry\": \"Credit\",\n            \"amount\": {\n                \"value\": \"67.00\",\n                \"unit\": \"JMD\"\n            },\n            \"balanceType\": \"Payment:P_topup_0000114604\",\n            \"balanceAmount\": {\n                \"value\": \"67.00\",\n                \"unit\": \"JMD\"\n            },\n            \"validFor\": {\n                \"endDateTime\": \"9999-12-30T23:59:59\",\n                \"startDateTime\": \"2022-10-04T12:36:48\"\n            }\n        }\n    ],\n    \"msisdn\": \"11289598041\",\n    \"balanceExpiryDate\": \"2022-10-24T12:36:48\"\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will include information about error code and short description of error. The error in the response will be indicative of the first occurrence of the problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Unitel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| S. No. | Error Code | Error Message | Purpose |\n|--------|------------|---------------|---------|\n| 1. | E84103 | PERESTAPI_FIELD_NOT_EXIST | To validate the field value exists in the system. | \n| 2. | E84113 | PERESTAPI_ELEMENT_MISMATCH | To validate elements passed in input are matching or not. |\n| 3. | E83559 | CBAPI_FIELDS_INVALID_VALUE | To validate the passed attributes in fields parameter |\n| 4. | E83562 | CBAPI_INVALID_FIELD_NAME | The parameter field name is invalid |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/billingAccount": {
+      "get": {
+        "tags": [
+          "billingAccount"
+        ],
+        "summary": "Retrieves list of Billing Account entities by search criteria",
+        "description": "This operation retrieves list of BillingAccount entity",
+        "operationId": "listBillingAccount",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to be provided in response",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "market",
+            "in": "query",
+            "description": "market of the Account.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Optional. For retrieving billing accounts where the balance date is greater than or equal to startDate, format: yyyy-mm-ddThh:nn:ss. Note: If startDate is not provided it is defaulted to MIN_DATE. If no start and endDate provided startDate is set to beginning of current day",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Optional. For retrieving billing accounts where balance date is less than or equal to the endDate, format: yyyy-mm-ddThh:nn:ss. If endDate is not provided it is defaulted to MAX_DATE. If no startDate and endDate provided endDate is set to end of current day",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "To retrieve data by account id - SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountName",
+            "in": "query",
+            "description": "To retrieve data by account name - SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_NAME",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "To retrieve data by customer node id - SV_MAPPING: ACCOUNT_TRE_V.CUSTOMER_NODE_ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filters results based on account type SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_TYPE_DISPLAY_NAME",
+            "schema": {
+              "type": "string",
+              "format": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Requested index for start of resources to be provided in response",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Requested number of resources to be provided in response",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "scn",
+            "in": "query",
+            "description": "Oracle system change number used for data read consistency. Default to empty string if configuration item SV_MAPPING: API_CONFIGURATION1.USE_FLASHBACK is not ON",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingAccount_List"
+                },
+                "examples": {
+                  "Sample Response 1 (Account ID)": {
+                    "value": "{\n    \"billingAccounts\": [\n        {\n            \"accountCharacteristic\": [\n                {\n                    \"name\": \"AccountMaximumBalance\",\n                    \"unit\": \"JMD\",\n                    \"value\": \"1000.00\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountId\",\n                    \"value\": \"138514\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountName\",\n                    \"value\": \"0100000278\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountTypeDisplayName\",\n                    \"value\": \"Debtor\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountTypeId\",\n                    \"value\": \"2000005\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCurrencyId\",\n                    \"value\": \"2000003\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCurrency\",\n                    \"value\": \"JMD\",\n                    \"valueType\": \"string\"\n                }\n            ],\n            \"market\": \"Jamaica\",\n            \"ratingType\": \"Asset|Receivable\",\n            \"accountType\": \"Debtor (JMD)\",\n            \"name\": \"01-0000-0278\",\n            \"creditLimit\": {\n                \"unit\": \"JMD\"\n            },\n            \"href\": \"http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/billingAccount/138514\",\n            \"id\": \"138514\",\n            \"lastModified\": \"2023-04-26T15:10:29\",\n            \"state\": \"Active\",\n            \"accountBalance\": [\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"690.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:P00001502954\",\n                    \"balanceAmount\": {\n                        \"value\": \"-690.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"2023-02-16T22:05:04\",\n                        \"startDateTime\": \"2023-02-16T18:22:27\"\n                    }\n                },\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"1000.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:P00001503135\",\n                    \"balanceAmount\": {\n                        \"value\": \"-1690.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"2023-02-16T22:13:12\",\n                        \"startDateTime\": \"2023-02-16T22:05:05\"\n                    }\n                },\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"690.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:P00001503143\",\n                    \"balanceAmount\": {\n                        \"value\": \"-2380.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"2023-02-16T22:47:27\",\n                        \"startDateTime\": \"2023-02-16T22:13:13\"\n                    }\n                },\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"690.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:P00001503176\",\n                    \"balanceAmount\": {\n                        \"value\": \"-3070.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"2023-03-31T09:13:58\",\n                        \"startDateTime\": \"2023-02-16T22:47:28\"\n                    }\n                },\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"200.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:P00001649003\",\n                    \"balanceAmount\": {\n                        \"value\": \"-3270.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"2023-04-26T14:10:24\",\n                        \"startDateTime\": \"2023-03-31T09:13:59\"\n                    }\n                },\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"10000.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:P00001686419\",\n                    \"balanceAmount\": {\n                        \"value\": \"-13270.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"9999-12-30T23:59:59\",\n                        \"startDateTime\": \"2023-04-26T14:10:25\"\n                    }\n                }\n            ],\n            \"relatedParty\": [\n                {\n                    \"name\": \"sas D\",\n                    \"@referredType\": \"customer\",\n                    \"href\": \"http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/customer/128850\",\n                    \"id\": \"128850\"\n                }\n            ]\n        }\n    ],\n    \"pagination\": {\n        \"limit\": 1,\n        \"totalRecords\": 1,\n        \"offset\": 0,\n        \"remainingRecords\": 0,\n        \"scn\": null\n    }\n}"
+                  },
+                  "Sample Response 2 (offset=1 & limit=3)": {
+                    "value": "{\n    \"billingAccounts\": [\n        {\n            \"accountCharacteristic\": [\n                {\n                    \"name\": \"AccountMaximumBalance\",\n                    \"unit\": \"JMD\",\n                    \"value\": \"1000.00\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"CurrentBalance\",\n                    \"unit\": \"JMD\",\n                    \"value\": \"20.00\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AvailableCredit\",\n                    \"unit\": \"JMD\",\n                    \"value\": \"20.00\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountId\",\n                    \"value\": \"163737\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountName\",\n                    \"value\": \"0100011668\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountTypeDisplayName\",\n                    \"value\": \"Prepaid\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountTypeId\",\n                    \"value\": \"2000011\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCurrencyId\",\n                    \"value\": \"2000003\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCurrency\",\n                    \"value\": \"JMD\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountStatusCode\",\n                    \"value\": \"1\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountBalanceExpiryDate\",\n                    \"value\": \"2023-04-26T23:55:47\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCancellationDate\",\n                    \"value\": \"2023-04-30T23:55:47\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountFirstUseDate\",\n                    \"value\": \"2023-04-25T23:55:47\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountRestrictionDate\",\n                    \"value\": \"2023-04-23T23:55:47\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"Pre-Cancellation Date\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"Service Number\",\n                    \"value\": \"18762228046\",\n                    \"valueType\": \"string\"\n                }\n            ],\n            \"accountType\": \"Prepaid (JMD)\",\n            \"relatedParty\": [\n                {\n                    \"name\": \"Asha_19_05\",\n                    \"@referredType\": \"customer\",\n                    \"href\": \"http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/customer/140801\",\n                    \"id\": \"140801\"\n                }\n            ],\n            \"market\": \"Jamaica\",\n            \"ratingType\": \"Liability|Payable\",\n            \"restrictionDate\": \"2023-04-23T23:55:47\",\n            \"name\": \"01-0001-1668\",\n            \"creditLimit\": {\n                \"value\": 0.0,\n                \"unit\": \"JMD\"\n            },\n            \"href\": \"http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/billingAccount/163737\",\n            \"id\": \"163737\",\n            \"lastModified\": \"2023-04-26T00:57:08\",\n            \"state\": \"Active\",\n            \"accountBalance\": [\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"10.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:P00001685627\",\n                    \"balanceAmount\": {\n                        \"value\": \"10.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"2023-04-26T00:56:48\",\n                        \"startDateTime\": \"2023-04-25T23:55:47\"\n                    }\n                },\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"10.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:P00001685817\",\n                    \"balanceAmount\": {\n                        \"value\": \"20.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"9999-12-30T23:59:59\",\n                        \"startDateTime\": \"2023-04-26T00:56:49\"\n                    }\n                }\n            ],\n            \"msisdn\": \"18762228046\",\n            \"balanceExpiryDate\": \"2023-04-26T23:55:47\"\n        },\n        {\n            \"accountCharacteristic\": [\n                {\n                    \"name\": \"AccountMaximumBalance\",\n                    \"unit\": \"JMD\",\n                    \"value\": \"1000.00\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountId\",\n                    \"value\": \"163757\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountName\",\n                    \"value\": \"0100011721\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountTypeDisplayName\",\n                    \"value\": \"Debtor\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountTypeId\",\n                    \"value\": \"2000005\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCurrencyId\",\n                    \"value\": \"2000003\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCurrency\",\n                    \"value\": \"JMD\",\n                    \"valueType\": \"string\"\n                }\n            ],\n            \"accountType\": \"Debtor (JMD)\",\n            \"relatedParty\": [\n                {\n                    \"name\": \"PrabhuPrabhu \",\n                    \"@referredType\": \"customer\",\n                    \"href\": \"http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/customer/140817\",\n                    \"id\": \"140817\"\n                }\n            ],\n            \"market\": \"Jamaica\",\n            \"ratingType\": \"Asset|Receivable\",\n            \"restrictionDate\": \"0001-01-01T00:00:00\",\n            \"name\": \"01-0001-1721\",\n            \"creditLimit\": {\n                \"value\": 0.0,\n                \"unit\": \"JMD\"\n            },\n            \"href\": \"http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/billingAccount/163757\",\n            \"id\": \"163757\",\n            \"lastModified\": \"2023-04-26T09:30:56\",\n            \"state\": \"Active\",\n            \"accountBalance\": [],\n            \"balanceExpiryDate\": \"0001-01-01T00:00:00\"\n        },\n        {\n            \"accountCharacteristic\": [\n                {\n                    \"name\": \"AccountMaximumBalance\",\n                    \"unit\": \"JMD\",\n                    \"value\": \"1000.00\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"CurrentBalance\",\n                    \"unit\": \"JMD\",\n                    \"value\": \"1500.00\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"UnbilledAmount\",\n                    \"unit\": \"JMD\",\n                    \"value\": \"190.00\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AvailableCredit\",\n                    \"unit\": \"JMD\",\n                    \"value\": \"1500.00\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountId\",\n                    \"value\": \"30005262\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountName\",\n                    \"value\": \"0100008090\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountTypeDisplayName\",\n                    \"value\": \"Prepaid\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountTypeId\",\n                    \"value\": \"2000011\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCurrencyId\",\n                    \"value\": \"2000003\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCurrency\",\n                    \"value\": \"JMD\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountStatusCode\",\n                    \"value\": \"1\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountBalanceExpiryDate\",\n                    \"value\": \"2023-04-30T05:40:22\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCancellationDate\",\n                    \"value\": \"2023-05-04T05:40:22\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountFirstUseDate\",\n                    \"value\": \"2023-03-23T13:50:10\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountRestrictionDate\",\n                    \"value\": \"2023-04-27T05:40:22\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"Pre-Cancellation Date\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"Service Number\",\n                    \"value\": \"18762226575\",\n                    \"valueType\": \"string\"\n                }\n            ],\n            \"accountType\": \"Prepaid (JMD)\",\n            \"relatedParty\": [\n                {\n                    \"name\": \"Shrashti reactive 005\",\n                    \"@referredType\": \"customer\",\n                    \"href\": \"http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/customer/30003880\",\n                    \"id\": \"30003880\"\n                }\n            ],\n            \"market\": \"Jamaica\",\n            \"ratingType\": \"Liability|Payable\",\n            \"restrictionDate\": \"2023-04-27T05:40:22\",\n            \"name\": \"01-0000-8090\",\n            \"creditLimit\": {\n                \"value\": 0.0,\n                \"unit\": \"JMD\"\n            },\n            \"href\": \"http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/billingAccount/30005262\",\n            \"id\": \"30005262\",\n            \"lastModified\": \"2023-04-26T06:40:32\",\n            \"state\": \"Active\",\n            \"accountBalance\": [\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"1000.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:P_topup_0030003766\",\n                    \"balanceAmount\": {\n                        \"value\": \"1000.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"2023-03-27T09:41:21\",\n                        \"startDateTime\": \"2023-03-23T14:50:10\"\n                    }\n                },\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"100.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:P_topup_0030004163\",\n                    \"balanceAmount\": {\n                        \"value\": \"1100.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"2023-04-12T15:21:06\",\n                        \"startDateTime\": \"2023-03-27T09:41:22\"\n                    }\n                },\n                {\n                    \"accountingEntry\": \"Debit\",\n                    \"amount\": {\n                        \"value\": \"910.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Adjustment:BalExp_00300006707\",\n                    \"balanceAmount\": {\n                        \"value\": \"190.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"2023-04-26T05:40:21\",\n                        \"startDateTime\": \"2023-04-12T15:21:07\"\n                    }\n                },\n                {\n                    \"accountingEntry\": \"Credit\",\n                    \"amount\": {\n                        \"value\": \"1500.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"balanceType\": \"Payment:VOMS_TopUp0030006102\",\n                    \"balanceAmount\": {\n                        \"value\": \"1690.00\",\n                        \"unit\": \"JMD\"\n                    },\n                    \"validFor\": {\n                        \"endDateTime\": \"9999-12-30T23:59:59\",\n                        \"startDateTime\": \"2023-04-26T05:40:22\"\n                    }\n                }\n            ],\n            \"msisdn\": \"18762226575\",\n            \"balanceExpiryDate\": \"2023-04-30T05:40:22\"\n        }\n    ],\n    \"pagination\": {\n        \"limit\": 3,\n        \"totalRecords\": 121,\n        \"offset\": 1,\n        \"remainingRecords\": 117,\n        \"scn\": null\n    }\n}"
+                  },
+                  "Sample Response 3 (Customer ID)": {
+                    "value": "{\n    \"billingAccounts\": [\n        {\n            \"accountCharacteristic\": [\n                {\n                    \"name\": \"AccountMaximumBalance\",\n                    \"unit\": \"BBD\",\n                    \"value\": \"1000.00\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountId\",\n                    \"value\": \"30007123\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountName\",\n                    \"value\": \"0200000459\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountTypeDisplayName\",\n                    \"value\": \"Debtor\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountTypeId\",\n                    \"value\": \"2000003\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCurrencyId\",\n                    \"value\": \"2000005\",\n                    \"valueType\": \"string\"\n                },\n                {\n                    \"name\": \"AccountCurrency\",\n                    \"value\": \"BBD\",\n                    \"valueType\": \"string\"\n                }\n            ],\n            \"accountType\": \"Debtor (BBD)\",\n            \"relatedParty\": [\n                {\n                    \"name\": \"JS Postpaid \",\n                    \"@referredType\": \"customer\",\n                    \"href\": \"http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/customer/30005121\",\n                    \"id\": \"30005121\"\n                }\n            ],\n            \"market\": \"Barbados\",\n            \"ratingType\": \"Asset|Receivable\",\n            \"restrictionDate\": \"0001-01-01T00:00:00\",\n            \"name\": \"02-0000-0459\",\n            \"creditLimit\": {\n                \"value\": 0.0,\n                \"unit\": \"BBD\"\n            },\n            \"href\": \"http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/billingAccount/30007123\",\n            \"id\": \"30007123\",\n            \"lastModified\": \"2023-04-26T00:32:26\",\n            \"state\": \"Active\",\n            \"accountBalance\": [],\n            \"balanceExpiryDate\": \"0001-01-01T00:00:00\"\n        }\n    ],\n    \"pagination\": {\n        \"limit\": 1,\n        \"totalRecords\": 1,\n        \"offset\": 0,\n        \"remainingRecords\": 0,\n        \"scn\": null\n    }\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will include information about error code and short description of error. The error in the response will be indicative of the first occurrence of the problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Unitel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| S. No. | Error Code | Error Message | Purpose |\n|--------|------------|---------------|---------|\n| 1. | E84106 | PERESTAPI_ELEMENT_MISSING | To check mandatory element is passed or not. |\n| 2. | E84108 | PERESTAPI_ENTITY_NOT_FOUND_OR_NO_ACCESS | To validate the User's access privileges and/or the record does not exists in system |\n| 3. | E84103 | PERESTAPI_FIELD_NOT_EXIST | To validate the field value exists in the system. |\n| 4. | E84107 | PERESTAPI_INVALID_VALUE | To validate the input value |\n| 5. | E83562 | CBAPI_INVALID_FIELD_NAME | To validate the passed input parameters |\n| 6. | E84105 | PERESTAPI_INVALID_VALUE_FOR_CONVERSION | To validate the date being passed in format yyyy-mm-dd\"T\"hh:nn:ss |\n| 7. | E84100 | PERESTAPI_START_DATE_GREATER_THAN_END_DATE | To validate if start date is greater than end date |\n| 8. | E84113 | PERESTAPI_ELEMENT_MISMATCH | To validate elements passed in input are matching or not. |\n| 9. | E83559 | CBAPI_FIELDS_INVALID_VALUE | To validate the passed attributes in fields parameter |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BillingAccount_List": {
+        "required": [
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationRef"
+          },
+          "accountBalance": {
+            "type": "array",
+            "description": "Describes the list of billing account details",
+            "items": {
+              "$ref": "#/components/schemas/BillingAccount"
+            }
+          }
+        },
+        "description": "Billing Account List"
+      },
+      "AccountRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the transferred account. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the transferred account - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<Account PEREST URL>/<SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_ID>"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the transferred account. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_NAME"
+          }
+        },
+        "description": "Account reference. A account may be a party account or a financial account."
+      },
+      "AccountRelationship": {
+        "required": [
+          "relationshipType",
+          "validFor"
+        ],
+        "type": "object",
+        "properties": {
+          "relationshipType": {
+            "type": "string",
+            "description": "Transferred Account"
+          },
+          "account": {
+            "$ref": "#/components/schemas/AccountRef"
+          },
+          "validFor": {
+            "$ref": "#/components/schemas/TimePeriod"
+          }
+        },
+        "description": "Significant connection between accounts."
+      },
+      "AccountTaxExemption": {
+        "required": [
+          "issuingJurisdiction",
+          "validFor"
+        ],
+        "type": "object",
+        "properties": {
+          "issuingJurisdiction": {
+            "type": "string",
+            "description": "Name of the taxing jurisdiction for which taxes are exempt. SV_MAPPING: TAX_CLASS->TAX_EXEMPT RT"
+          },
+          "validFor": {
+            "$ref": "#/components/schemas/TimePeriod"
+          }
+        },
+        "description": "Proof of freedom from taxes imposed by a taxing jurisdiction"
+      },
+      "BillingAccount": {
+        "required": [
+          "name",
+          "relatedParty"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Http Response Code"
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the account. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Unique reference of the account - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<billingAccount PEREST URL>/ACCOUNT_TRE_V.ACCOUNT_ID"
+          },
+          "accountType": {
+            "type": "string",
+            "description": "Complete account type name. Example: \"Prepaid (JAM)\". SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_TYPE_DISPLAY_NAME"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of account. SV_MAPPING: ACCOUNT_TYPE_TRE_V.DESCRIPTION"
+          },
+          "lastModified": {
+            "type": "string",
+            "description": "Date of last modification of the account, format: yyyy-mm-ddThh:nn:ss. SV_MAPPING: ACCOUNT_TRE_V.LAST_MODIFIED",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the account. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_NAME"
+          },
+          "market": {
+            "type": "string",
+            "description": "Market of the account. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_NAME"
+          },
+          "ratingType": {
+            "type": "string",
+            "description": "Indicates whether the account follows a specific payment option such as prepaid or postpaid. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_CLASS_CODE (Account Class RT) | ACCOUNT_TRE_V.ACCOUNT_CATEGORY_CODE (Account Category RT)"
+          },
+          "state": {
+            "type": "string",
+            "description": "Contains the lifecycle state. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_STATUS_CODE (RT acctbal.ACCOUNT_STATUS)"
+          },
+          "accountBalance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccountBalance"
+            }
+          },
+          "accountRelationship": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccountRelationship"
+            }
+          },
+          "creditLimit": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "accountCharacteristic": {
+            "type": "array",
+            "description": "Characteristic name supported: CurrentBalance, UnbilledAmount, TotalInvoiceOverdue, AvailableCredit, TotalDisputed, InvoiceId, InvoiceUnbilledAmount, AccountId, AccountName, accountTypeDisplayName (truncated accountType name, e.g. \"Prepaid\"), AccountTypeId, AccountActionCode, AccountCurrencyId, AccountCurrency, AccountStatusCode, AccountAvailableCredit, AccountBalanceExpiryDate, AccountCancellationDate, AccountFirstUseDate, AccountRestrictionDate. Characteristic value supported: SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_BALANCE, ACCOUNT_TRE_V.UNBILLED_AMOUNT, Sum of ACCOUNT_HISTORY_TRE_V.CURRENT_DUE, ACCOUNT_TRE_V.AVAILABLE_CREDIT, (ACCOUNT_TRE_V.INVOICE_DISPUTED_AMOUNT + ACCOUNT_TRE_V.ACCOUNT_DISPUTED_AMOUNT), ACCOUNT_TRE_V.INVOICE_ID, ACCOUNT_TRE_V.INVOICE_UNBILLED_AMOUNT, ACCOUNT_TRE_V.ACCOUNT_ID, ACCOUNT_TRE_V.ACCOUNT_NAME, ACCOUNT_TRE_V.ACCOUNT_TYPE_DISPLAY_NAME, ACCOUNT_TRE_V.ACCOUNT_TYPE_ID, ACCOUNT_TRE_V.ACCOUNT_ACTION_CODE, ACCOUNT_TRE_V.ACCOUNT_CURRENCY_ID, ACCOUNT_TRE_V.ACCOUNT_STATUS_CODE, ACCOUNT_TRE_V.AVAILABLE_CREDIT, ACCOUNT_TRE_V.BALANCE_EXPIRY_DATE, ACCOUNT_TRE_V.GENERAL_1, ACCOUNT_TRE_V.FIRST_USE_DATE, ACCOUNT_TRE_V.ACCOUNT_RESTRICTION_DATE. Characteristic value type supported: string. Characteristic unit supported: Unit of measurement of the characteristic value",
+            "items": {
+              "$ref": "#/components/schemas/AccountCharacteristic"
+            }
+          },
+          "relatedParty": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RelatedParty"
+            }
+          },
+          "taxExemption": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccountTaxExemption"
+            }
+          },
+          "restrictionDate": {
+            "type": "string",
+            "description": "Date of account is due to change, to a restricted mode of operation, format: yyyy-mm-ddThh:nn:ss. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_RESTRICTION_DATE",
+            "format": "date-time"
+          },
+          "balanceExpiryDate": {
+            "type": "string",
+            "description": "The date and time the current balance of the account is due to expire, format: yyyy-mm-ddThh:nn:ss. SV_MAPPING: ACCOUNT_TRE_V.BALANCE_EXPIRY_DATE",
+            "format": "date-time"
+          }
+        },
+        "description": "An account used for billing purposes."
+      },
+      "AccountCharacteristic": {
+        "required": [
+          "name",
+          "value",
+          "valueType"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the characteristic."
+          },
+          "valueType": {
+            "type": "string",
+            "description": "The type of the value provided."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the characteristic provided as a string. The value of this attribute is depending on the corresponding name attribute value which indirectly determines the correct internal field to map."
+          },
+          "unit": {
+            "type": "string",
+            "description": "The unit of measurement of the characteristic."
+          }
+        },
+        "description": "Describes a given characteristic of an object or entity through a name/value/unit."
+      },
+      "Money": {
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "Currency (ISO4217 norm uses 3 letters to define the currency)"
+          },
+          "value": {
+            "type": "number",
+            "description": "A positive floating point number",
+            "format": "float"
+          }
+        },
+        "description": "A base / value business entity used to represent money"
+      },
+      "RelatedParty": {
+        "required": [
+          "@referredType",
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of a related entity. SV_MAPPING: ACCOUNT_TRE_V.CUSTOMER_NODE_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the related entity - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<Customer PEREST URL>/<SV_MAPPING: ACCOUNT_TRE_V.CUSTOMER_NODE_ID>"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the related entity. SV_MAPPING: CUSTOMER_NODE_TRE_V.NODE_NAME"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance when needed for disambiguation. SV_MAPPING: perestapi.REFERRED_TYPE->CUSTOMER RT"
+          }
+        },
+        "description": "Related Entity reference. A related party defines party or party role linked to a specific entity."
+      },
+      "TimePeriod": {
+        "type": "object",
+        "properties": {
+          "endDateTime": {
+            "type": "string",
+            "description": "End of the time period, using IETC-RFC-3339 format: yyyy-mm-ddThh:nn:ss",
+            "format": "date-time"
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "Start of the time period, using IETC-RFC-3339 format: yyyy-mm-ddThh:nn:ss",
+            "format": "date-time"
+          }
+        },
+        "description": "A period of time, either as a deadline (endDateTime only) a startDateTime only, or both"
+      },
+      "PaginationRef": {
+        "required": [
+          "limit",
+          "offset",
+          "remainingRecords",
+          "scn",
+          "totalRecords"
+        ],
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "description": "Requested index for start of items to be provided in response"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Requested number of items to be provided in response"
+          },
+          "remainingRecords": {
+            "type": "integer",
+            "description": "Remaining number of items to be fetched"
+          },
+          "totalRecords": {
+            "type": "integer",
+            "description": "Total number of items matching criteria"
+          },
+          "scn": {
+            "type": "string",
+            "description": "Oracle system change number for read consistency"
+          }
+        },
+        "description": "Query results and paging details."
+      },
+      "Error": {
+        "required": [
+          "code",
+          "reason"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Application relevant detail, defined in the API or a common list."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Explanation of the reason for the error which can be shown to a client user."
+          },
+          "message": {
+            "type": "string",
+            "description": "More details and corrective actions related to the error which can be shown to a client user."
+          },
+          "status": {
+            "type": "string",
+            "description": "HTTP Error code extension"
+          },
+          "referenceError": {
+            "type": "string",
+            "description": "URI of documentation describing the error.",
+            "format": "uri"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class."
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name."
+          }
+        },
+        "description": "Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)"
+      }
+    }
+  }
+}

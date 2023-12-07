@@ -1,0 +1,199 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "0.1",
+    "title": "Jobs API",
+    "description":"An API to Register, retrieve, and modify job opportunities in the system."
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/SHIBATAYUICHIRO/GetSitter/0.1"
+    }
+  ],
+  "paths": {
+    "/jobs": {
+      "post": {
+        "summary": "Create Job",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Job"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List All Jobs",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Job"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "with-some-data": {
+                    "summary": "With some data",
+                    "value": {
+                      "items": [
+                        {
+                          "id": 123,
+                          "creator_user_id": 345,
+                          "start_time": "2020-06-01T00:00:00.000Z",
+                          "end_time": "2020-06-02T00:00:00.000Z",
+                          "dog": {
+                            "name": "Fido",
+                            "age": 3,
+                            "breed": "Doberman",
+                            "size": "medium"
+                          },
+                          "activity": "walk"
+                        },
+                        {
+                          "id": 234,
+                          "creator_user_id": 345,
+                          "start_time": "2020-06-01T00:00:00.000Z",
+                          "end_time": "2020-06-03T00:00:00.000Z",
+                          "dog": {
+                            "name": "Rex",
+                            "age": 2,
+                            "breed": "Rottweiler",
+                            "size": "large"
+                          },
+                          "activity": "sit"
+                        },
+                        {
+                          "id": 234,
+                          "creator_user_id": 345,
+                          "start_time": "2020-06-01T00:00:00.000Z",
+                          "end_time": "2020-06-02T00:00:00.000Z",
+                          "dog": {
+                            "name": "Blossom",
+                            "age": 2,
+                            "breed": "Rottweiler",
+                            "size": "large"
+                          },
+                          "activity": "walk"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "integer"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "View Job",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Modify Job",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Job"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Job",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Job": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "creator_user_id": {
+            "type": "integer"
+          },
+          "start_time": {
+            "type": "string"
+          },
+          "end_time": {
+            "type": "string"
+          },
+          "activity": {
+            "type": "string"
+          },
+          "dog": {
+            "$ref": "#/components/schemas/Dog"
+          }
+        }
+      }
+    }
+  }
+}

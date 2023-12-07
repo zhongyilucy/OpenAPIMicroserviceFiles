@@ -1,0 +1,740 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Documents API",
+    "description": "This API provides a way to upload and manage documents online.",
+    "version": "v1.6.5",
+    "contact": {
+      "name": "administrator",
+      "email": "masdoc.squad@masmovil.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://documents.masstack.com/v1/",
+      "description": "production"
+    },
+    {
+      "url": "https://documents.sta.masstack.com/v1/",
+      "description": "staging"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Documents",
+      "description": "Binary documents bussines logic"
+    }
+  ],
+  "paths": {
+    "/orgs/{org_id}/documents": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Upload a document",
+        "description": "Upload a document from a file name and its content. The document unique identifier and its name are returned.",
+        "operationId": "uploadDocument",
+        "parameters": [
+          {
+            "name": "x-auth-owner",
+            "in": "header",
+            "required": false,
+            "description": "The string id related with the document owner. It is mandatory when document is not public",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2357893"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "description": "The string id related with one of Grupo Masmovil tenants",
+            "schema": {
+              "type": "string"
+            },
+            "example": "masmovil"
+          }
+        ],
+        "requestBody": {
+          "description": "File name, content and metadata for creating the document.",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "extension",
+                  "name",
+                  "content"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the document (without spaces). The document is renamed with this value.",
+                    "example": "personal_contract"
+                  },
+                  "extension": {
+                    "$ref": "#/components/schemas/DocExtension"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "description": "Free values (user-defined) to tag document. These values are normalized following the next rules:\n- All tags will be converted to lowercase\n- All whitespaces will be removed\n- Empty or blank tags are not allowed\n- Tags matching reserved words (null, undefined or nan) are not allowed",
+                    "maxItems": 5,
+                    "uniqueItems": true,
+                    "items": {
+                      "$ref": "#/components/schemas/DocTag"
+                    },
+                    "example": [
+                      "Draft",
+                      "Top_Secret",
+                      "v1.0"
+                    ]
+                  },
+                  "content": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Document content in binary format"
+                  }
+                }
+              },
+              "example": {
+                "name": "New_document",
+                "extension": "pdf",
+                "tags": [
+                  "DRAFT",
+                  "CONFIDENTIAL",
+                  "v1.0"
+                ]
+              },
+              "encoding": {
+                "content": {
+                  "contentType": "application/pdf, application/octet-stream, image/png, image/jpeg"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New Document is created. Expected response for a valid request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostDocumentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request input is not valid"
+          },
+          "401": {
+            "description": "Unauthorized. AuthN and AuthZ validations have fail"
+          },
+          "500": {
+            "description": "Not expected error"
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org_id}/documents/{documentId}": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Download a document",
+        "description": "Returns the document content as binary data, if document is present; else, returns an error message.",
+        "operationId": "downloadDocument",
+        "parameters": [
+          {
+            "name": "x-auth-owner",
+            "in": "header",
+            "required": false,
+            "description": "The string id related with the document owner. It is mandatory when document is not public",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2357893"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "description": "The string id related with one of Grupo Masmovil tenants",
+            "schema": {
+              "type": "string"
+            },
+            "example": "masmovil"
+          },
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "description": "The string id related with one of Grupo Masmovil tenants/organizations",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The document binary content. Expected response to a valid request.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary",
+                  "example": "binary file"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request input is not valid"
+          },
+          "401": {
+            "description": "Unauthorized. AuthN and AuthZ validations have fail"
+          },
+          "404": {
+            "description": "resource not found"
+          },
+          "410": {
+            "description": "resource is not longer available"
+          },
+          "500": {
+            "description": "Not expected error"
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org_id}/documents/{documentId}/public_url": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Generate a temporal public accesible download url",
+        "description": "Returns the url to download the specified document, if document is present and reachable; else, returns an error message.",
+        "operationId": "createPublicUrl",
+        "parameters": [
+          {
+            "name": "x-auth-owner",
+            "in": "header",
+            "required": false,
+            "description": "The string id related with the document owner. It is mandatory when document is not public",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2357893"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "description": "The string id related with one of Grupo Masmovil tenants",
+            "schema": {
+              "type": "string"
+            },
+            "example": "masmovil"
+          },
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "description": "The string id related with one of Grupo Masmovil tenants/organizations",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          }
+        ],
+        "requestBody": {
+          "description": "Duration before public url expires and becomes not accesible",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePublicUrlRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The generated public url. Expected response to a valid request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePublicUrlResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request input is not valid"
+          },
+          "401": {
+            "description": "Unauthorized. AuthN and AuthZ validations have fail"
+          },
+          "404": {
+            "description": "resource not found"
+          },
+          "410": {
+            "description": "resource is not longer available"
+          },
+          "500": {
+            "description": "Not expected error"
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orgs/{org_id}/documents/{documentId}/owner": {
+      "put": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Change document owner",
+        "description": "Changes document owner, if document exists and is already private; else, returns an error message.",
+        "operationId": "changeOwner",
+        "parameters": [
+          {
+            "name": "x-auth-owner",
+            "in": "header",
+            "required": false,
+            "description": "The string id related with the document owner. It is mandatory when document is not public",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2357893"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "description": "The string id related with one of Grupo Masmovil tenants",
+            "schema": {
+              "type": "string"
+            },
+            "example": "masmovil"
+          },
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "description": "The string id related with one of Grupo Masmovil tenants/organizations",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          }
+        ],
+        "requestBody": {
+          "description": "The identifier of the new owner to whom ownership of the document is transferred",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeOwnerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ownership change succeeded. Expected response to a valid request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeOwnerResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request input is not valid"
+          },
+          "401": {
+            "description": "Unauthorized. AuthN and AuthZ validations have fail"
+          },
+          "404": {
+            "description": "resource not found"
+          },
+          "410": {
+            "description": "resource is not longer available"
+          },
+          "500": {
+            "description": "Not expected error"
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorsResponse": {
+        "type": "array",
+        "description": "List of errors",
+        "items": {
+          "$ref": "#/components/schemas/Error"
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "title",
+          "ref",
+          "details"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "MDOC-001",
+            "description": "Error codes:\n *  MDOC_000\n *  MDOC_001\n *  MDOC_002\n *  MDOC_003\n *  MDOC_004\n *  MDOC_005\n *  MDOC_006"
+          },
+          "title": {
+            "type": "string",
+            "example": "RESOURCE_NOT_FOUND",
+            "description": "Error titles:\n * `PARAMETER_ERROR`\n * `INTERNAL_SERVER_ERROR`\n * `INVALID_INPUT`\n * `UNAUTHORIZED`\n * `RESOURCE_NOT_FOUND`\n * `RESOURCE_IS_NO_LONGER_AVAILABLE`\n * `CONFLICT`\n * `UNPROCESSABLE_ENTITY`"
+          },
+          "ref": {
+            "type": "string",
+            "example": "https://developers.masstack.com/en/docs/apis_consents_doc_swagger/2/schemas/#schemaerror",
+            "description": "Url of the error details in Developer portal"
+          },
+          "details": {
+            "type": "string",
+            "example": "Resource not found",
+            "description": "Message and details of the error"
+          }
+        },
+        "example": {
+          "code": "MDOC-XXX",
+          "title": "ERROR_TYPE",
+          "ref": "https://developers.masstack.com/en/docs/apis_documents_doc_swagger/1/schemas/#schemaerror",
+          "details": "Detailed description of the error"
+        }
+      },
+      "DocExtension": {
+        "type": "string",
+        "description": "Format of the document to be stored. It must match the format of the binary\nAllowed values: pdf, jpeg, jpg, png",
+        "example": "pdf"
+      },
+      "DocTag": {
+        "type": "string",
+        "description": "Free values (user-defined) to tag document. These values are normalized following the next rules:\n- All tags will be converted to lowercase\n- All whitespaces will be removed\n- Empty or blank tags are not allowed\n- Tags matching reserved words (null, undefined or nan) are not allowed",
+        "example": "DRAFT"
+      },
+      "PostDocumentResponse": {
+        "type": "object",
+        "required": [
+          "documentId"
+        ],
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851",
+            "description": "Document unique identifier"
+          }
+        }
+      },
+      "CreatePublicUrlRequest": {
+        "type": "object",
+        "properties": {
+          "expiresIn": {
+            "description": "Default to 24 hours. Max 24 hours. Validity duration time (ISO-8601 format) of the public url from now.",
+            "type": "string",
+            "example": "PT24H"
+          }
+        }
+      },
+      "CreatePublicUrlResponse": {
+        "type": "object",
+        "required": [
+          "expirationDate",
+          "publicUrl",
+          "contentType"
+        ],
+        "properties": {
+          "expirationDate": {
+            "description": "Timestamp (ISO-8601 format) at which public url becomes inaccesible.",
+            "type": "string",
+            "example": "2023-01-27T03:44:52.000Z"
+          },
+          "publicUrl": {
+            "description": "Signed url fully accessible without authentication or authorization.",
+            "type": "string",
+            "example": "https://storage.googleapis.com/mas-documents-prod/cbd2e693-d71a-4cee-8313-1972acc0394d"
+          },
+          "mediaType": {
+            "description": "Binary media type of the downloadable document",
+            "type": "string",
+            "example": "application/pdf"
+          }
+        }
+      },
+      "ChangeOwnerRequest": {
+        "type": "object",
+        "properties": {
+          "newOwner": {
+            "description": "The identifier of the new owner of the document",
+            "type": "string",
+            "example": "sUbScRiPtiOn_12123112a"
+          }
+        }
+      },
+      "ChangeOwnerResponse": {
+        "type": "object",
+        "required": [
+          "owner"
+        ],
+        "properties": {
+          "owner": {
+            "description": "The normalized identifier of the new owner of the document",
+            "type": "string",
+            "example": "subscription_12123112a"
+          }
+        }
+      },
+      "Extension": {
+        "type": "string",
+        "description": "Format of the form to be stored. It must match the format of the binary\nAllowed values: html, pdf",
+        "example": "pdf"
+      },
+      "Language": {
+        "type": "string",
+        "description": "Templates languages allowed\nAllowed values: ES, EN, EU, GL, CA, DE, UNDEFINED"
+      },
+      "Field": {
+        "type": "string",
+        "description": "It's field's name in a form",
+        "example": "NAME"
+      },
+      "Tag": {
+        "type": "string",
+        "description": "Free values (user-defined) to tag document. These values are normalized following the next rules:\n- All tags will be converted to lowercase\n- All whitespaces will be removed\n- Empty or blank tags are not allowed\n- Tags matching reserved words (null, undefined or nan) are not allowed",
+        "example": "DRAFT"
+      },
+      "Condition": {
+        "type": "string",
+        "description": "Tuple FLAG:VALUE (flag and expected value) that will evaluated to know if this section have to be filled",
+        "example": "GDPR:YES"
+      },
+      "Rule": {
+        "type": "object",
+        "required": [
+          "sectionExternalId",
+          "condition"
+        ],
+        "properties": {
+          "sectionExternalId": {
+            "type": "string",
+            "description": "Section external Id (section name normalized)",
+            "example": "contract_gdpr"
+          },
+          "condition": {
+            "$ref": "#/components/schemas/Condition"
+          }
+        }
+      },
+      "Page": {
+        "type": "integer",
+        "description": "Forms page to be shown",
+        "minimum": 0,
+        "default": 0,
+        "example": 0
+      },
+      "PageSize": {
+        "type": "integer",
+        "minimum": 1,
+        "default": 50,
+        "description": "Number of forms that will be shown by page",
+        "example": 50
+      },
+      "Actor": {
+        "type": "object",
+        "required": [
+          "alias",
+          "name",
+          "last_name",
+          "document_number",
+          "email",
+          "phone"
+        ],
+        "properties": {
+          "alias": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "document_number": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        }
+      },
+      "StepInfo": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "status",
+          "modification_date"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "0b9bbe95-f080-4317-b371-1f9ae0b9bf4f"
+          },
+          "type": {
+            "type": "string",
+            "example": "BIOMETRIC_SIGN"
+          },
+          "status": {
+            "type": "string",
+            "example": "closed"
+          },
+          "modification_date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-04-21T17:32:28Z"
+          }
+        }
+      },
+      "Language1": {
+        "type": "string",
+        "description": "Templates languages allowed to generate contract\nAllowed values: ES, EN, EU, GL, CA, DE, UNDEFINED"
+      },
+      "Condition1": {
+        "type": "string",
+        "description": "Tuple FLAG:VALUE (flag and expected value) that will evaluated to know if this template section have to be filled",
+        "example": "GDPR:YES"
+      },
+      "Tag1": {
+        "type": "string",
+        "description": "Free values (user-defined) to tag document filled. These values are normalized following the next rules:\n- All tags will be converted to lowercase\n- All whitespaces will be removed\n- Empty or blank tags are not allowed\n- Tags matching reserved words (null, undefined or nan) are not allowed",
+        "example": "DRAFT"
+      },
+      "DocumentId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique identifier of a document stored in mas-documents",
+        "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+      }
+    },
+    "securitySchemes": {
+      "AuthNToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT token provided By AuthN"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Request input is not valid",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorsResponse"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorsResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "The user is not authorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorsResponse"
+            }
+          }
+        }
+      },
+      "Gone": {
+        "description": "The specified resource is no longer available",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorsResponse"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "The request failed to be processed by the server",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorsResponse"
+            }
+          }
+        }
+      }
+    }
+  }
+}

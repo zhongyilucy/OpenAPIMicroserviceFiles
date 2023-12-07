@@ -1,0 +1,90 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/AMATTIUSSI/BankAPI/1.0.0"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "Bank account API",
+    "description": "This is a simple API that gets bank account details."
+  },
+  "paths": {
+    "/accounts/{cbu}": {
+      "get": {
+        "tags": [
+          "financial entity"
+        ],
+        "summary": "returns the data of a user",
+        "operationId": "getUserData",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cbu",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Juan Perez"
+          },
+          "email": {
+            "type": "string",
+            "example": "jperez@gmail.com"
+          },
+          "cuit": {
+            "type": "string",
+            "example": "20-23455422-5"
+          },
+          "telephone": {
+            "type": "number",
+            "example": 1134892476
+          },
+          "balance": {
+            "type": "number",
+            "example": 3000000
+          }
+        }
+      }
+    }
+  }
+}

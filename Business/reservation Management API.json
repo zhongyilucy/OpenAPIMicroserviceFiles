@@ -1,0 +1,1077 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "reservation Management API",
+    "description":"This API creates, manages, and retrieves reservations in the system.",
+    "contact": {
+      "email": "Muhammed.Ramadan@sbs.net"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/MUHAMMEDRAMADAN/ElEbrahyma/1.0.0"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/MUHAMMEDRAMADAN/Parking-System/1.0.1"
+    },
+    {
+      "url": "http://172.105.154.30:55555"
+    }
+  ],
+  "tags": [
+    {
+      "name": "reservation",
+      "description": ""
+    }
+  ],
+  "paths": {
+    "/reservations": {
+      "post": {
+        "tags": [
+          "reservation"
+        ],
+        "summary": "checkIn reservation",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "checkIn",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateReservationRequest"
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateReservation"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "reservation"
+        ],
+        "summary": "checkout reservation",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateReservationById",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateReservationRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateReservation"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/reservations/checkout": {
+      "put": {
+        "tags": [
+          "reservation"
+        ],
+        "summary": "checkout payment",
+        "description": "checkout reservation",
+        "operationId": "checkoutReservation",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CheckOutRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/requestBodies/Invoice"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/reservations/{reservationId}/invoice": {
+      "get": {
+        "tags": [
+          "reservation"
+        ],
+        "summary": "Find reservation invoice by ID",
+        "description": "Returns a single reservation invoice",
+        "operationId": "getInvoiceByReservationId",
+        "parameters": [
+          {
+            "name": "reservationId",
+            "in": "path",
+            "description": "ID of reservation  to return invoice",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/requestBodies/Invoice"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/reservations/list": {
+      "post": {
+        "tags": [
+          "reservation"
+        ],
+        "summary": "Find list of Reservations by filters",
+        "operationId": "getReservationsByFilters",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RequestGrid"
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UpdateVIPReservation"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+   "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+     "schemas": {
+      "CreateReservation": {
+        "required": [
+          "parkingId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "packageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "checkInDate": {
+            "description": "user checkIn date",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateVIPReservation": {
+        "required": [
+          "parkingId"
+        ],
+        "type": "object",
+        "properties": {
+          "packageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "checkInDate": {
+            "description": "user checkIn date",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateVIPReservation": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateVIPReservation"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "example": 10
+              }
+            }
+          }
+        ]
+      },
+      "Invoice": {
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reservationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "parkingId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "checkInDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-01-30T08:30:00Z"
+          },
+          "checkOutDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2021-01-30T08:30:00Z"
+          },
+          "invoiceMount": {
+            "type": "number",
+            "format": "double"
+          },
+          "rate": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "INVOICED",
+              "UNINVOICED"
+            ],
+            "example": "INVOICED"
+          }
+        }
+      },
+      "UpdateReservation": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateReservation"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "example": 10
+              },
+              "checkOutDate": {
+                "description": "employee starting date",
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        ]
+      },
+      "Reservations": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UpdateReservation"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "checkInDate": {
+                "description": "employee starting date",
+                "type": "string",
+                "format": "date-time"
+              },
+              "checkOutDate": {
+                "description": "employee starting date",
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        ]
+      },
+      "ParkingPolicyRequest": {
+        "required": [
+          "name",
+          "capacity"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": 10
+          },
+          "parkingId": {
+            "type": "string",
+            "format": "uuid",
+            "example": 10
+          },
+          "name": {
+            "type": "string",
+            "example": "theUser"
+          },
+          "minStay": {
+            "type": "integer"
+          },
+          "maxStay": {
+            "type": "integer"
+          },
+          "peakTimeCost": {
+            "type": "number"
+          },
+          "regularTimeCost": {
+            "type": "number"
+          },
+          "peakDates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PeakDates"
+            }
+          },
+          "outOfServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OutOfService"
+            }
+          },
+          "peakTimes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PeakTime"
+            }
+          }
+        }
+      },
+      "PeakDates": {
+        "required": [
+          "dateFrom",
+          "dateTo"
+        ],
+        "type": "object",
+        "properties": {
+          "dateFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "dateTo": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "OutOfService": {
+        "required": [
+          "dateFrom",
+          "dateTo"
+        ],
+        "type": "object",
+        "properties": {
+          "dateFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "dateTo": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "PeakTime": {
+        "required": [
+          "timeFrom",
+          "timeTo"
+        ],
+        "type": "object",
+        "properties": {
+          "timeFrom": {
+            "type": "string",
+            "format": "LocalTime",
+            "example": "16:03:19"
+          },
+          "timeTo": {
+            "type": "string",
+            "format": "LocalTime",
+            "example": "18:03:19"
+          }
+        }
+      },
+      "CreateParkingRequest": {
+        "required": [
+          "name",
+          "capacity"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "theUser"
+          },
+          "allocatedSlots": {
+            "type": "integer"
+          },
+          "capacity": {
+            "type": "integer"
+          },
+          "level_count": {
+            "type": "integer"
+          },
+          "gate_count": {
+            "type": "integer"
+          },
+          "employee_slots": {
+            "type": "integer",
+            "example": 5
+          },
+          "emergency_count": {
+            "type": "integer"
+          },
+          "Organization_ID": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organizationName": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "isFullReason": {
+            "type": "string"
+          },
+          "fullFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fullTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Active",
+              "Disabled"
+            ],
+            "example": "Active",
+            "description": "parking Status"
+          },
+          "gates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateGateRequest"
+            }
+          }
+        }
+      },
+      "ParkingData": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "MVP"
+          }
+        }
+      },
+      "CreateOrganizationRequest": {
+        "required": [
+          "name",
+          "currency",
+          "logo",
+          "phoneNumber",
+          "timeZone",
+          "email",
+          "address"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "MVP"
+          },
+          "currency": {
+            "type": "string",
+            "example": "SAR"
+          },
+          "logo": {
+            "type": "string",
+            "format": "byte"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "timeZone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        }
+      },
+      "CreatePaymentRequest": {
+        "required": [
+          "reservationId"
+        ],
+        "type": "object",
+        "properties": {
+          "reservationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "example": "Cash"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "receivedAmount": {
+            "type": "number"
+          }
+        }
+      },
+      "UpdatePaymentRequest": {
+        "required": [
+          "reservationId",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reservationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "example": "Cash"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "receivedAmount": {
+            "type": "number"
+          }
+        }
+      },
+      "UpdateParkingRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateParkingRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "example": 10
+              },
+              "freeSlots": {
+                "type": "integer"
+              },
+              "isFull": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      },
+      "CreateSlotRequest": {
+        "required": [
+          "parkingId",
+          "status",
+          "slotNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "parkingId": {
+            "type": "string",
+            "format": "uuid",
+            "example": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "running",
+              "closed"
+            ],
+            "example": "running"
+          },
+          "slotNumber": {
+            "type": "string",
+            "example": 1
+          }
+        }
+      },
+      "UpdateSlotRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateSlotRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          }
+        ]
+      },
+      "CreateGateRequest": {
+        "required": [
+          "parkingId",
+          "streetData"
+        ],
+        "type": "object",
+        "properties": {
+          "parkingId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "streetData": {
+            "type": "string"
+          },
+          "gateName": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "UpdateGateRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateGateRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "example": 10
+              }
+            }
+          }
+        ]
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "StatusResponse": {
+        "description": "Describes the status of a response",
+        "type": "object",
+        "properties": {
+          "statusCategory": {
+            "description": "Status category:\n * `OK` - Success response\n * `ERROR` - Error response\n * `WARNING` - warning response\n",
+            "enum": [
+              "OK",
+              "ERROR",
+              "WARNING"
+            ],
+            "type": "string"
+          },
+          "statusCode": {
+            "type": "string"
+          },
+          "statusMessage": {
+            "type": "string"
+          },
+          "additionalInfo": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Filter": {
+        "properties": {
+          "fieldName": {
+            "type": "string"
+          },
+          "operator": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "RequestGrid": {
+        "type": "object",
+        "properties": {
+          "pageNumber": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            }
+          }
+        }
+      },
+      "address": {
+        "required": [
+          "city",
+          "country"
+        ],
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "example": "cairo"
+          },
+          "country": {
+            "type": "string",
+            "example": "egypt"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "CreateVIPReservationRequest": {
+        "description": "reservation object that needs to be created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateVIPReservation"
+            }
+          }
+        }
+      },
+      "UpdateVIPReservationRequest": {
+        "description": "reservation object that needs to be created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateVIPReservation"
+            }
+          }
+        }
+      },
+      "CreateReservationRequest": {
+        "description": "reservation object that needs to be created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateReservation"
+            }
+          }
+        }
+      },
+      "UpdateReservationRequest": {
+        "description": "reservation object that needs to be updated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateReservation"
+            }
+          }
+        }
+      },
+      "ReservationsResponse": {
+        "description": "reservation object that needs to be updated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Reservations"
+            }
+          }
+        }
+      },
+      "CreateParkingRequest": {
+        "description": "User object that needs to be created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateParkingRequest"
+            }
+          }
+        }
+      },
+      "UpdateParkingRequest": {
+        "description": "User object that needs to be updated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateParkingRequest"
+            }
+          }
+        }
+      },
+      "CreateSlotRequest": {
+        "description": "User object that needs to be created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateSlotRequest"
+            }
+          }
+        }
+      },
+      "UpdateSlotRequest": {
+        "description": "User object that needs to be updated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateSlotRequest"
+            }
+          }
+        }
+      },
+      "CreateGateRequest": {
+        "description": "User object that needs to be created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateGateRequest"
+            }
+          }
+        }
+      },
+      "UpdateGateRequest": {
+        "description": "User object that needs to be updated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateGateRequest"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "Ok": {
+        "description": "Operation succeeded, 200"
+      },
+      "Created": {
+        "description": "Post resource done successfully, 201"
+      },
+      "BadRequest": {
+        "description": "Illegal input for operation, 400",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StatusResponse"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Entity not found, 404",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StatusResponse"
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error, 500",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StatusResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized, 401",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StatusResponse"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "User Logout API",
+    "description":"This API is for user logout",
+    "contact": {
+      "email": "Muhammed.Ramadan@sbs.net"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/MUHAMMEDRAMADAN/ElEbrahyma/1.0.0"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/MUHAMMEDRAMADAN/Parking-System/1.0.1"
+    },
+    {
+      "url": "http://172.105.154.30:55555"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": ""
+    },
+    {
+      "name": "user",
+      "description": ""
+    },
+    {
+      "name": "reservation",
+      "description": ""
+    }
+  ],
+  "paths": {
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "LoginUserRequest": {
+        "required": [
+          "phone",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "example": "phone"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          }
+        }
+      },
+      "LoginResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UpdateUserRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "roles"
+            ],
+            "properties": {
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "token": {
+                "type": "string"
+              },
+              "parkingId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "isRegistered": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        ]
+      }
+      }
+    }
+  }

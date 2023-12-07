@@ -1,0 +1,266 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "Global endpoint (default).",
+      "url": "https://api.pdfblocks.com"
+    },
+    {
+      "description": "European-only endpoint.",
+      "url": "https://eu.api.pdfblocks.com"
+    }
+  ],
+  "info": {
+    "contact": {
+      "email": "support@pdfblocks.com",
+      "name": "PDF Blocks Support",
+      "url": "https://www.pdfblocks.com/support"
+    },
+    "description": "PDF Blocks is a secure, reliable, and fast API to add watermarks to PDF documents.",
+    "termsOfService": "https://www.pdfblocks.com/terms",
+    "title": "Add PDF Watermarks API",
+    "version": "1.5.0",
+    "x-apisguru-categories": [
+      "text"
+    ],
+    "x-logo": {
+      "url": "https://api.apis.guru/v2/cache/logo/https_www.pdfblocks.com_assets_images_pdfblocks-logo.svg"
+    },
+    "x-origin": [
+      {
+        "format": "openapi",
+        "url": "https://www.pdfblocks.com/assets/specs/pdfblocks.openapi.yaml",
+        "version": "3.0"
+      }
+    ],
+    "x-providerName": "pdfblocks.com"
+  },
+  "externalDocs": {
+    "description": "Documentation and examples",
+    "url": "https://www.pdfblocks.com/docs/api/v1"
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "paths": {
+    "/v1/add_watermark/image": {
+      "post": {
+        "description": "Add an image watermark to each page of a PDF document.",
+        "externalDocs": {
+          "description": "Documentation and examples",
+          "url": "https://www.pdfblocks.com/docs/api/v1/add-watermark-image"
+        },
+        "operationId": "addImageWatermarkV1",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "description": "The input PDF document",
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "image": {
+                    "description": "The image to add as a watermark. The format of the image can be either PNG or JPEG.",
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "margin": {
+                    "default": 1,
+                    "description": "The distance in inches from the border of the page to the image watermark.",
+                    "example": 1,
+                    "format": "float",
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "transparency": {
+                    "default": 50,
+                    "description": "The transparency level for the image watermark from 0 (opaque) to 100 (transparent).",
+                    "example": 50,
+                    "format": "int32",
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "file",
+                  "image"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "summary": "Add an image watermark to a PDF"
+      }
+    },
+    "/v1/add_watermark/text": {
+      "post": {
+        "description": "Add a text watermark to each page of a PDF document. Choose from several watermark templates.",
+        "externalDocs": {
+          "description": "Documentation and examples",
+          "url": "https://www.pdfblocks.com/docs/api/v1/add-watermark-text"
+        },
+        "operationId": "addTextWatermarkV1",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "color": {
+                    "default": "Gray",
+                    "description": "The color of the text watermark.",
+                    "enum": [
+                      "Red",
+                      "Blue",
+                      "Gray",
+                      "Black"
+                    ],
+                    "example": "Gray",
+                    "type": "string"
+                  },
+                  "file": {
+                    "description": "The input PDF document",
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "line_1": {
+                    "description": "The first line of text of the watermark.",
+                    "example": "Jane Doe",
+                    "maxLength": 32,
+                    "type": "string"
+                  },
+                  "line_2": {
+                    "description": "The second line of text of the watermark.",
+                    "example": "ACME, Inc",
+                    "maxLength": 32,
+                    "type": "string"
+                  },
+                  "line_3": {
+                    "description": "The third line of text of the watermark.",
+                    "example": "Confidential",
+                    "maxLength": 32,
+                    "type": "string"
+                  },
+                  "margin": {
+                    "default": 1,
+                    "description": "The distance in inches from the border of the page to the text watermark.",
+                    "example": 1,
+                    "format": "float",
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "template": {
+                    "default": 1001,
+                    "description": "The [id of the text watermark template](https://www.pdfblocks.com/docs/api/v1/text-watermark-templates.pdf).",
+                    "example": 1001,
+                    "format": "int32",
+                    "maximum": 66537,
+                    "minimum": 1001,
+                    "type": "integer"
+                  },
+                  "transparency": {
+                    "default": 75,
+                    "description": "The transparency level for the text watermark from 0 (opaque) to 100 (transparent).",
+                    "example": 75,
+                    "format": "int32",
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "file",
+                  "line_1"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/success"
+          },
+          "4XX": {
+            "$ref": "#/components/responses/error"
+          }
+        },
+        "summary": "Add a text watermark to a PDF"
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "error": {
+        "content": {
+          "application/problem+json": {
+            "example": {
+              "errors": {
+                "file": [
+                  "Could not parse the PDF document. The file may be invalid or corrupt."
+                ]
+              },
+              "status": 400,
+              "title": "One or more validation errors occurred.",
+              "type": "https://www.pdfblocks.com/docs/api/v1/error/400"
+            },
+            "schema": {
+              "properties": {
+                "errors": {
+                  "type": "object"
+                },
+                "status": {
+                  "type": "integer"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "type": {
+                  "format": "url",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "description": "Error"
+      },
+      "success": {
+        "content": {
+          "application/pdf": {
+            "schema": {
+              "description": "The output PDF document",
+              "format": "binary",
+              "type": "string"
+            }
+          }
+        },
+        "description": "The document was processed succesfully."
+      }
+    },
+    "securitySchemes": {
+      "apiKey": {
+        "description": "Find your API key in [your dashboard](https://dashboard.pdfblocks.com/users/sign_in), or [get a free API key](https://www.pdfblocks.com/try-free).",
+        "in": "header",
+        "name": "X-Api-Key",
+        "type": "apiKey"
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/Z5313062/F10A_PIKACHU/1.0.0"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "Database API",
+    "description": "The API gets information from the database"
+  },
+  "tags": [
+    {
+      "name": "Database",
+      "description": "Database operations"
+    }
+  ],
+  "paths": {
+    "/database": {
+      "get": {
+        "tags": [
+          "Database"
+        ],
+        "description": "Retrieves the user list from the database",
+        "operationId": "getUserListFromDatabase",
+        "responses": {
+          "200": {
+            "description": "retrieved user list successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "u_id": {
+                            "type": "integer"
+                          },
+                          "current_u_id": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

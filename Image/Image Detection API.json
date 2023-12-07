@@ -1,0 +1,75 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Image Detection API",
+    "description": "API's for image Detection.",
+    "version": "0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.double4.ai"
+    }
+  ],
+  "paths": {
+    "/detect": {
+      "get": {
+        "description": "API for Object Detection.",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "https://gcbimages.storage.googleapis.com/segmentation_images/nonhybrid/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB_revised_anchor_hybrid.jpg"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "object field in response is empty if model fails to to detect object.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "0": {
+                    "value": "{\"image_name\" : \"https://gcbimages.storage.googleapis.com/segmentation_images/nonhybrid/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB_revised_anchor_hybrid.jpg\",\"object\" : [{ \"TLX\" : \"199\", \"TLY\" : \"407\", \"BRX\" : \"392\", \"BRY\" : \"604\", \"CenterX\" : \"295\", \"CenterY\" : \"505\", \"Label\" : \"Wheel\", \"accuracy\" : \"94.2064881325\"},{ \"TLX\" : \"897\", \"TLY\" : \"412\", \"BRX\" : \"1095\", \"BRY\" : \"607\", \"CenterX\" : \"996\", \"CenterY\" : \"509\", \"Label\" : \"Wheel\", \"accuracy\" : \"93.9613282681\"},{ \"TLX\" : \"1036\", \"TLY\" : \"290\", \"BRX\" : \"1110\", \"BRY\" : \"353\", \"CenterX\" : \"1073\", \"CenterY\" : \"321\", \"Label\" : \"Gas cap\", \"accuracy\" : \"89.8922801018\"},{ \"TLX\" : \"477\", \"TLY\" : \"174\", \"BRX\" : \"737\", \"BRY\" : \"314\", \"CenterX\" : \"607\", \"CenterY\" : \"244\", \"Label\" : \"Windows\", \"accuracy\" : \"88.5309636593\"},{ \"TLX\" : \"910\", \"TLY\" : \"312\", \"BRX\" : \"989\", \"BRY\" : \"346\", \"CenterX\" : \"949\", \"CenterY\" : \"329\", \"Label\" : \"Door handle\", \"accuracy\" : \"87.0871603489\"},{ \"TLX\" : \"742\", \"TLY\" : \"178\", \"BRX\" : \"1055\", \"BRY\" : \"297\", \"CenterX\" : \"898\", \"CenterY\" : \"237\", \"Label\" : \"Windows\", \"accuracy\" : \"86.0446572304\"},{ \"TLX\" : \"137\", \"TLY\" : \"317\", \"BRX\" : \"224\", \"BRY\" : \"367\", \"CenterX\" : \"180\", \"CenterY\" : \"342\", \"Label\" : \"Front Head lights\", \"accuracy\" : \"84.0585708618\"},{ \"TLX\" : \"1130\", \"TLY\" : \"283\", \"BRX\" : \"1194\", \"BRY\" : \"339\", \"CenterX\" : \"1162\", \"CenterY\" : \"311\", \"Label\" : \"Rear Lights\", \"accuracy\" : \"83.2178235054\"},{ \"TLX\" : \"623\", \"TLY\" : \"332\", \"BRX\" : \"711\", \"BRY\" : \"370\", \"CenterX\" : \"667\", \"CenterY\" : \"351\", \"Label\" : \"Door handle\", \"accuracy\" : \"78.3695816994\"},{ \"TLX\" : \"450\", \"TLY\" : \"252\", \"BRX\" : \"517\", \"BRY\" : \"320\", \"CenterX\" : \"483\", \"CenterY\" : \"286\", \"Label\" : \"Front Head lights\", \"accuracy\" : \"86.7949187756\"}]}\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.double4.ai"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://api.double4.ai"
+        }
+      ]
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    },
+    {
+      "bearerAuth": []
+    }
+  ]
+}

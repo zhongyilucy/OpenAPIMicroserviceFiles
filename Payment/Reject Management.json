@@ -1,0 +1,800 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Reject Management",
+    "description": "This is the Swagger specification to Reject Payments",
+    "version": "1.8"
+  },
+  "tags": [
+    {
+      "name": "reject"
+    }
+  ],
+  "paths": {
+    "/reject": {
+      "post": {
+        "tags": [
+          "reject"
+        ],
+        "summary": "Rejects payments",
+        "description": "This operation rejects payment.",
+        "operationId": "createPaymentReject",
+        "requestBody": {
+          "description": "Payment id to rejected",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/Reject_Create"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Rejected",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reject"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "id"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the account. SV_MAPPING: PayReqst.ToCustAcctNumID_I or SV_MAPPING: for Payment -> PAYMENT_TRE_V.TO_ACCOUNT_ID, for Refund -> Issue.AdjToAcctNum_X "
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the account. SV_MAPPING: PayReqst.ToCustAcctNum_X or SV_MAPPING: PAYMENT_TRE_V.TO_ACCOUNT_NAME"
+          },
+          "accountType": {
+            "type": "string",
+            "description": "Complete account type name. Example: \"Prepaid (JMD)\". SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_TYPE_DISPLAY_NAME"
+          },
+          "accountTypeDisplayName": {
+            "type": "string",
+            "description": "Truncated account tyoe name. Example: \"Prepaid\""
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the account - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<billingAccount PEREST URL>/PayReqst.ToCustAcctNumID_I or <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<billingAccount PEREST URL>/PAYMENT_TRE_V.TO_ACCOUNT_ID>"
+          }
+        },
+        "description": "Account reference. A account may be a party account or a financial account."
+      },
+      "BankCardType": {
+        "required": [
+          "cardNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Card type. SV_MAPPING: PayReqst.CardType_R or SV_MAPPING: PAYMENT_TRE_V.GENERAL_4",
+            "x-refdata-source": "RT-Card Type"
+          },
+          "cardNumber": {
+            "type": "string",
+            "description": "Card number. SV_MAPPING: PayReqst.CreditCardLastNo_X or SV_MAPPING: PAYMENT_TRE_V.GENERAL_5"
+          },
+          "expirationDate": {
+            "type": "string",
+            "description": "Expiry Date. SV_MAPPING: PayReqst.CardExpyDate_X or SV_MAPPING: PAYMENT_TRE_V.GENERAL_6",
+            "format": "date-time"
+          },
+          "nameOnCard": {
+            "type": "string",
+            "description": "Name on Card. SV_MAPPING: PayReqst.UI_CreditCardHolderName_X"
+          }
+        },
+        "description": "Details of Credit Card"
+      },
+      "LoyaltyPointsType": {
+        "required": [
+          "loyaltyPointsConsumed",
+          "loyaltyPointsConversionFactor"
+        ],
+        "type": "object",
+        "properties": {
+          "loyaltyPointsConsumed": {
+            "type": "string",
+            "description": "loyalty Points Consumed. SV_MAPPING: PayReqst.UI_LoyaltyPointsConsumed_I"
+          },
+          "loyaltyPointsConversionFactor": {
+            "type": "string",
+            "description": "loyalty Points Conversion Factor. SV_MAPPING: PayReqst.UI_LoyaltyPointsConvFactor_C"
+          }
+        },
+        "description": "Details of Loyalty Points"
+      },
+      "GenericType": {
+        "required": [
+          "details",
+          "method",
+          "uniqueReference"
+        ],
+        "type": "object",
+        "properties": {
+          "method": {
+            "type": "string",
+            "description": "Payment method of the Generic payment type. SV_MAPPING: PayReqst.PayMethod_R",
+            "x-refdata-source": "RT-PAYMENT_METHOD_GENERIC"
+          },
+          "details": {
+            "type": "string",
+            "description": "Payment details. The field list display is depending on the selected method. SV_MAPPING: PayReqst.PayDetails_R"
+          },
+          "uniqueReference": {
+            "type": "string",
+            "description": "Method type unique reference. SV_MAPPING: PayReqst.PayExtRefNum_X"
+          },
+          "description": {
+            "type": "string",
+            "description": "Method type description. SV_MAPPING: PayReqst.PayDesc_X"
+          }
+        },
+        "description": "Details of Generic payment type"
+      },
+      "CaseRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the case"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the case"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of case"
+          },
+          "status": {
+            "type": "string",
+            "description": "The Status of case. Possible Values New|Open|Closed"
+          }
+        },
+        "description": "The Case data structure"
+      },
+      "ChannelRef": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Payment Location. Mandatory for request from third party systems. If not provided It will be the default payment location CSR belongs to. It's reference data whose value should be based on abbreviation from reference type 'perestapi.imp.SALES_CHANNEL'. Example: CSR, eshop, DigiLoan, etc. SV_MAPPING: PayReqst.PayLoc_R or SV_MAPPING: for Payment -> PAYMENT_TRE_V.PAYMENT_LOCATION_CODE, for Refund (Debit Note adjustment) -> Issue.RefundChannel_R",
+            "x-refdata-source": "RT-Payment Location"
+          }
+        },
+        "description": "The channel to which the resource reference to. e.g. location from where the payment is made (Source System)."
+      },
+      "Characteristic": {
+        "required": [
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the characteristic."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the characteristic"
+          }
+        },
+        "description": "Describes a given characteristic of an object or entity through a name/value pair."
+      },
+      "EntityRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of a related entity (Invoice ID, Adjustment ID, etc.). SV_MAPPING: INVOICE_TRE_V.INVOICE_ID | ADJUSTMENT_TRE_V.ADJUSTMENT_ID. For @referredType as productOfferingPrice, it is productOfferingPrice Id. For @referredType as productOrder, it is ProductOrder Id"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the related entity (Account Number-Invoice ID, Adjustment Name, etc.). SV_MAPPING: INVOICE_TRE_V.CUSTOMER_INVOICE_STR | ADJUSTMENT_TRE_V.ADJUSTMENT_NR. For @referredType as productOfferingPrice, it is name of the productOfferingPrice"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance when needed for disambiguation. Possible Values invoice | adjustment | productOfferingPrice | etc."
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name. For @referredType as productOfferingPrice, it is the priceType from perestapi.PRICE_TYPE RT"
+          },
+          "date": {
+            "type": "string",
+            "description": "Invoice generated date or Adjustment applied date. SV_MAPPING: INVOICE_TRE_V.EFFECTIVE_DATE | ADJUSTMENT_TRE_V.ADJUSTMENT_RECEIVED_DATE. Format: yyyy-mm-ddThh:nn:ss",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of a related entity (Invoice Status, Adjustment Status, etc.). SV_MAPPING: Abbreviation from RT perestapi.CUSTOMER_BILL_STATE for Invoice status | ADJUSTMENT_TRE_V.ADJUSTMENT_STATUS_CODE.",
+            "x-refdata-source": "RT-perestapi.CUSTOMER_BILL_STATE|RT-ADJUSTMENT_STATUS"
+          }
+        },
+        "description": "Entity reference schema to be use for all entityRef class."
+      },
+      "Money": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "Currency (ISO4217 norm uses 3 letters to define the currency). SV_MAPPING: PayReqst.PayCurrency_R | PayReqst.ToAcctCur_R"
+          },
+          "value": {
+            "type": "number",
+            "description": "A positive floating point number. SV_MAPPING: PayReqst.TotalPayAmt_C | PAYMENT_INVOICE.AMOUNT",
+            "format": "float"
+          }
+        },
+        "description": "A base / value business entity used to represent money"
+      },
+      "AttachmentRefOrValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this particular attachment. SV_MAPPING: PAYMENT_TRE_V.RECEIPT_NR"
+          },
+          "attachmentType": {
+            "type": "string",
+            "description": "Default to value 'payment'"
+          },
+          "content": {
+            "type": "string",
+            "description": "The actual contents of the attachment object, if embedded, encoded as base64"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "Attachment mime type such as extension file for video, picture and document. Default to html. SV MAPPING: RT perestapi.imp.MIME_TYPE"
+          }
+        },
+        "description": "An attachment by value or by reference."
+      },
+      "Payment": {
+        "required": [
+          "account",
+          "paymentMethod"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of Payment. SV_MAPPING: PayReqst.PayRecNo_X or SV_MAPPING: PAYMENT_TRE_V.RECEIPT_NR"
+          },
+          "href": {
+            "type": "string",
+            "description": "Hypertext Reference of the Payment - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<Payment PEREST URL>/<PayReqst.PayRecNo_X> or <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<Payment PEREST URL>/<PAYMENT_TRE_V.PAYMENT_ID>"
+          },
+          "paymentDate": {
+            "type": "string",
+            "description": "Date when the payment was performed. SV_MAPPING: PayReqst.PayRecDate_T or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_RECEIVED_DATE.  Format: yyyy-mm-ddThh:nn:ss",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the payment. SV_MAPPING: PayReqst.CBPayStatus_R or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_STATUS_CODE",
+            "x-refdata-source": "RT-Payment Status"
+          },
+          "account": {
+            "$ref": "#/components/schemas/AccountRef"
+          },
+          "case": {
+            "$ref": "#/components/schemas/CaseRef"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/ChannelRef"
+          },
+          "paymentItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentItem"
+            }
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethodRefOrValue"
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "paymentDocument": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttachmentRefOrValue"
+            }
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Characteristic name supported: AutoAllocate | ReceiptRef | EntryDate | CreatedBy | RejectionDate | RejectionReason | CustomerReceiptNumber | ExternalReferenceNumber | BatchNumber | RejectedBy | VATType | VATId | Memo | InvoiceAccountId | InvoiceCustomerNodeId| orderCreationPending | MSISDN, Characteristic value supported: AutoAllocate -> SV_MAPPING: PayReqst.UI_AutoAllocate_B | ReceiptRef -> SV_MAPPING: <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<document PEREST URL>/<documentId> | EntryDate -> SV_MAPPING: PayReqst.PayEntryDate_T or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_DATE | CreatedBy -> SV_MAPPING: PayReqst.CreatedBy_X or SV_MAPPING: PAYMENT_TRE_V.OPERATOR_ID | RejectionDate -> SV_MAPPING: PayReqst.RejectDate_T or SV_MAPPING: PAYMENT_TRE_V.REJECTED_DATE | RejectionReason -> SV_MAPPING: PayReqst.RejectReason_R or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_REJECTED_CODE | CustomerReceiptNumber -> SV_MAPPING: PayReqst.PayCustRecNum_X or SV_MAPPING: PAYMENT_TRE_V.RECEIPT_NR | ExternalReferenceNumber -> SV_MAPPING: PayReqst.PayExtRefNum_X | BatchNumber -> SV_MAPPING: PAYMENT_BATCH.PAYMENT_BATCH_NR | RejectedBy -> SV_MAPPING: PayReqst.RejectOperator_R | VATType -> SV_MAPPING: PayReqst.VATType_R | VATId -> SV_MAPPING: PayReqst.VATId_X | Memo -> SV_MAPPING: PayReqst.UI_Memo_X | InvoiceAccountId -> SV_MAPPING: PayReqst.ToAccount_R | InvoiceCustomerNodeId -> SV_MAPPING: PayReqst.ToCustAcctName_R | MSISDN -> SV_MAPPING: PayReqst.MSISDN_X | orderCreationPending -> SV_MAPPING: Used by Customer Connect; No implementation in baseline; Can be used by project to identify where order creation is not done yet.",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            },
+            "x-refdata-source": "RT-BOOLEAN|||||CM-Payment_Rejection_Reason||||CM-User|||||"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          },
+          "taxAmount": {
+            "$ref": "#/components/schemas/Money"
+          }
+        },
+        "description": "The Payment resource represents a performed payment. It contains both information about the payment and the payment method used to perform it. Payment information will be derived from PE Class Payreqst first, if there is no value found, it will check PAYMENT_TRE_V table"
+      },
+      "Payment_Create": {
+        "required": [
+          "account",
+          "paymentMethod",
+          "totalAmount"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of Payment. SV_MAPPING: PayReqst.PayRecNo_X"
+          },
+          "paymentDate": {
+            "type": "string",
+            "description": "Date when the payment was performed. SV_MAPPING: PayReqst.PayRecDate_T",
+            "format": "date-time"
+          },
+          "account": {
+            "$ref": "#/components/schemas/AccountRef"
+          },
+          "case": {
+            "$ref": "#/components/schemas/CaseRef"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/ChannelRef"
+          },
+          "paymentItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentItem"
+            }
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethodRefOrValue"
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Characteristic name supported: ReceiptRef | BatchNumber | CreatedBy | CustomerReceiptNumber | EntryDate | ExternalReferenceNumber | RejectionDate | RejectedBy | RejectionReason | AutoAllocate | VATType | VATId | Memo | InvoiceAccountId | InvoiceCustomerNodeId | orderCreationPending, Characteristic value supported: ReceiptRef -> SV_MAPPING: <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<document PEREST URL>/<documentId | BatchNumber -> SV_MAPPING: PAYMENT_BATCH.PAYMENT_BATCH_NR | CreatedBy -> SV_MAPPING: PayReqst.CreatedBy_X or SV_MAPPING: PAYMENT_TRE_V.OPERATOR_ID | CustomerReceiptNumber -> SV_MAPPING: PayReqst.PayCustRecNum_X or SV_MAPPING: PAYMENT_TRE_V.RECEIPT_NR | EntryDate -> SV_MAPPING: PayReqst.PayEntryDate_T or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_DATE | ExternalReferenceNumber -> SV_MAPPING: PayReqst.PayExtRefNum_X | RejectionDate -> SV_MAPPING: PayReqst.RejectDate_T or SV_MAPPING: PAYMENT_TRE_V.REJECTED_DATE | RejectedBy -> SV_MAPPING: PayReqst.RejectOperator_R | RejectionReason -> SV_MAPPING: PayReqst.RejectReason_R or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_REJECTED_CODE | AutoAllocate -> SV_MAPPING: PayReqst.UI_AutoAllocate_B | VATType -> SV_MAPPING: PayReqst.VATType_R | VATId -> SV_MAPPING: PayReqst.VATId_X | Memo -> SV_MAPPING: PayReqst.UI_Memo_X | InvoiceAccountId -> SV_MAPPING: PayReqst.ToAccount_R | InvoiceCustomerNodeId -> SV_MAPPING: PayReqst.ToCustAcctName_R | orderCreationPending -> SV_MAPPING: Used by Customer Connect; No implementation in baseline; Can be used by project to identify where order creation is not done yet",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            },
+            "x-refdata-source": "RT-BOOLEAN|||||"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          }
+        },
+        "description": "The Payment resource represents a performed payment. It contains both information about the payment and the payment method used to perform it.\nSkipped properties: id,href,status,statusDate,paymentDate"
+      },
+      "Payment_List": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationRef"
+          },
+          "payment": {
+            "type": "array",
+            "description": "Describes the list of payments with details",
+            "items": {
+              "$ref": "#/components/schemas/Payment"
+            }
+          }
+        },
+        "description": "Payment List"
+      },
+      "Payment_Update": {
+        "required": [
+          "op",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "Represents the operation to be performed. Possible value: add, SV_MAPPING: perestapi.OPERATION->Abbreviation"
+          },
+          "path": {
+            "type": "string",
+            "description": "Path of the operation to be performed."
+          },
+          "value": {
+            "$ref": "#/components/schemas/Payment_Create"
+          }
+        },
+        "description": "The list of Payment resource to be created."
+      },
+      "PaymentItem": {
+        "required": [
+          "item"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "item": {
+            "$ref": "#/components/schemas/EntityRef"
+          },
+          "taxAmount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/Money"
+          }
+        },
+        "description": "The paymentItem is the result of lettering process. It enables to assign automatically or manually part of incoming payment amount to a bill"
+      },
+      "PaymentMethodRefOrValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the payment method. SV_MAPPING: Payment_Type.ObjKey",
+            "x-refdata-source": "CM-Payment_Type"
+          },
+          "Name": {
+            "type": "string",
+            "description": "Friendly name assigned to the payment method. SV_MAPPING: Payment_Type.DisplayName_X"
+          },
+          "details": {
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BankCardType"
+              },
+              {
+                "$ref": "#/components/schemas/LoyaltyPointsType"
+              },
+              {
+                "$ref": "#/components/schemas/GenericType"
+              }
+            ],
+            "properties": {},
+            "description": "Details of the payment method. This object's type depends on the value of the @type field. Credit Card -> BankCardType, perestapi.sample.LoyaltyPoints -> LoyaltyPointsType, GenericPayment -> GenericType"
+          },
+          "@type": {
+            "type": "string",
+            "description": "For Payment: when sub-classing, this defines the sub-class entity name. Possible Values Cash | Credit Card | perestapi.sample.LoyaltyPoints | GenericPayment | paymtd.PaymentMethod (must be used only in combination with paymentMethodId property), SV_MAPPING: Payment_Type.Name; For Refund: see Description",
+            "x-refdata-source": "CM-Payment_Type"
+          },
+          "paymentMethodId": {
+            "type": "string",
+            "description": "Unique identifier of the payment method. Used only when @type is Payment Method. FORMAT: <Customer Node id>|<Customer Node DA Id>|<perestapi.dPaymentMethod.name>. SV_MAPPING: Payment_Type.PaymentMethodId_X (PAYMENT_TRE_V.GENERAL_1). If payment cannot be found in perestapi.dPaymentMethod for particular customer, than error will be raised."
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the paymentMethod. Populated only if paymentMethod is defined in PAYMENT_TRE_V.GENERAL_1 (i.e. derived via perestapi.dPaymentMethod Customer Node DA) <http://<HOSTNAME>:<PORT>/<paymentMethod URL>/<Customer Node Id|perestapi.dPaymentMethod DA Id|Payment Method Name >"
+          }
+        },
+        "description": "Two types of payment method definitions are possible. The first is used for compatibility on environments without 'paytmd' code pack is installed. The second is intended to support 'paymtd' code pack. 1) Link to the resource that holds information about the payment mean used to complete the operation. Note for Refund, values are stored in Issue.AdjGeneral03_X in delimited format: @type:<value>|details:<field1=value1>,<field2=value2> etc..., e.g @type:bankCard|details:brand=MasterCard,cardNumber=00000000000000000 etc. 2) Defines link to specific method of payment (e.g. direct debit with all details associated). Payment Method is stored in Customer Node DA list perestapi.dPaymentMethod. Data is stored in Customer Node DA list paymtd.dCustomerPaymentMethodDetail. Each payment methods attributes are mapped to the columns in paymtd.dCustomerPaymentMethodDetail by means of DA paymtd.dCustomerPaymentMethodSchemaType (see apiPaymentMethod.json for more details). Payment Method must be first created with POST Payment API"
+      },
+      "PaymentRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of Payment. SV_MAPPING: for Reject - PayReqst.PayRecNo_X, for Refund - Issue.BI_Adj_PaymentRefNum_X"
+          },
+          "href": {
+            "type": "string",
+            "description": "Hypertext Reference of the Payment - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<Payment PEREST URL>/<PayReqst.PayRecNo_X>"
+          }
+        },
+        "description": "If an immediate payment has been done at the product order submission, the payment information are captured and stored (as a reference) in the order."
+      },
+      "Comment": {
+        "required": [
+          "action"
+        ],
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "description": "Operation performed on comment. Possible value add. SV_MAPPING: perestapi.OPERATION",
+            "x-refdata-source": "RT-perestapi.OPERATION"
+          },
+          "id": {
+            "type": "string",
+            "description": "Comment id. SV_MAPPING:Comment.ObjectKey"
+          },
+          "name": {
+            "type": "string",
+            "description": "Comment name. SV_MAPPING:Comment.Name"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comment text. SV_MAPPING:Comment.CommentFull_M"
+          }
+        },
+        "description": "Defines the Comment object"
+      },
+      "PaginationRef": {
+        "required": [
+          "limit",
+          "offset",
+          "remainingRecords",
+          "scn",
+          "totalRecords"
+        ],
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "description": "Requested index for start of items to be provided in response",
+            "format": "int64"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Requested number of items to be provided in response",
+            "format": "int64"
+          },
+          "remainingRecords": {
+            "type": "integer",
+            "description": "Remaining number of items to be fetched",
+            "format": "int64"
+          },
+          "totalRecords": {
+            "type": "integer",
+            "description": "Total number of items matching criteria",
+            "format": "int64"
+          },
+          "scn": {
+            "type": "string",
+            "description": "Oracle system change number for read consistency"
+          }
+        },
+        "description": "Query results and paging details."
+      },
+      "Error": {
+        "required": [
+          "code",
+          "reason"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Application relevant detail, defined in the API or a common list."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Explanation of the reason for the error which can be shown to a client user."
+          },
+          "message": {
+            "type": "string",
+            "description": "Details information related to the error which can be shown to a client user."
+          },
+          "action": {
+            "type": "string",
+            "description": "Corrective actions for the error which can be shown to a client user."
+          },
+          "status": {
+            "type": "string",
+            "description": "HTTP Error code extension"
+          },
+          "referenceError": {
+            "type": "string",
+            "description": "URI of documentation describing the error.",
+            "format": "uri"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub - classing, this defines the super - class."
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON - Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub - classing, this defines the sub - class entity name."
+          }
+        },
+        "description": "Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)"
+      },
+      "Reject_Create": {
+        "required": [
+          "payment",
+          "rejectReason"
+        ],
+        "type": "object",
+        "properties": {
+          "payment": {
+            "$ref": "#/components/schemas/PaymentRef"
+          },
+          "rejectReason": {
+            "type": "string",
+            "description": "Text describing the contents of the reject. SV_MAPPING: PayReqst.RejectReason_R"
+          },
+          "rejectDate": {
+            "type": "string",
+            "description": "Date when the reject was performed. SV_MAPPING: PayReqst.RejectDate_T",
+            "format": "date-time"
+          },
+          "case": {
+            "$ref": "#/components/schemas/CaseRef"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          }
+        },
+        "description": "Resource representing a performed Reject. It contains both information about the refund and the payment method used to perform it."
+      },
+      "Reject": {
+        "required": [
+          "href",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of rejected payment. SV_MAPPING: PayReqst.PayRecNo_X"
+          },
+          "href": {
+            "type": "string",
+            "description": "Hypertext Reference of the reject - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<Reject PEREST URL>/<PayReqst.PayRecNo_X>"
+          },
+          "rejectDate": {
+            "type": "string",
+            "description": "Date when the rejection was performed. SV_MAPPING: PayReqst.RejectDate_T",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the Reject. SV_MAPPING: PayReqst.UpdatePayReqstType_R"
+          },
+          "account": {
+            "$ref": "#/components/schemas/AccountRef"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/ChannelRef"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethodRefOrValue"
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          },
+          "rejectReason": {
+            "type": "string",
+            "description": "Text describing reason for reject. SV_MAPPING: PayReqst.RejectReason_R"
+          }
+        },
+        "description": "The resource represents a performed payment rejection. It contains information about the rejected payment and rejection reason."
+      },
+      "RelatedParty": {
+        "required": [
+          "@referredType",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "SV_MAPPING: CUSTOMER_NODE_TRE_V.CUSTOMER_NODE_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the related entity - <http://<HOSTNAME>:<PORT>/<Customer URL>/<SV_MAPPING: CUSTOMER_NODE_TRE_V.CUSTOMER_NODE_ID>"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance. Default: customer"
+          }
+        },
+        "description": "RelatedParty reference. A related party defines party or party role linked to a specific entity."
+      }
+    }
+  }
+}

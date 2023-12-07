@@ -1,0 +1,444 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "description": "This API helps to get details of wine retailer in a given location",
+    "version": "1.2.1",
+    "title": "Find Retailer Services API",
+    "contact": {
+      "email": "apisupport@directwines.com"
+    }
+  },
+  "paths": {
+    "/location/retailers/{state-code}/{retailer-id}": {
+      "get": {
+        "summary": "Return details about a wine retailer in a given state.",
+        "operationId": "getRetailer",
+        "description": "This **Get Retailer** API returns details about a specific wine retailer within a U.S. state.\n\nThis API is only available on websites serving the United States\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "state-code",
+            "description": "A 2 letter alphanumeric code representing a U.S. state.   For example:- **'CA'** represents *California*,  **'CT'** represents *Connecticut* *etc*",
+            "required": true,
+            "example": "IN",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "retailer-id",
+            "description": "A valid retailer id,  representing a valid retailer for the given state.\n\nThe client must obtain this retailer id,  prior to calling this API \n",
+            "required": true,
+            "example": "B100009510",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesful Response.  Any matching permissions will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetailerResponse"
+                },
+                "examples": {
+                  "Successful-Response": {
+                    "$ref": "#/components/examples/GetRetailer-Success"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/apis/Direct_Wines/CommonAPIModelsSuite/1.7.0#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.  Most likely this will occur if this API is used outside of the United States",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/apis/Direct_Wines/CommonAPIModelsSuite/1.7.0#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StateSummary": {
+        "type": "object",
+        "properties": {
+          "stateCode": {
+            "type": "string",
+            "description": "This is the 2 letter state code.\n",
+            "example": "CT"
+          },
+          "stateName": {
+            "type": "string",
+            "example": "Connecticut"
+          },
+          "internalStateId": {
+            "type": "string",
+            "deprecated": true,
+            "description": "This is an internal representation of the 2 letter state code.\n\nIt is a deprecated value that should not be used,  and will be removed in a future version of the API.\n"
+          },
+          "numZones": {
+            "description": "The number of stated zones supported by this state,  where a state zone denote a retailer serving a geographical area within a state.\n\nIn most instances a state is served by a single retailer and this value will return as 1.\n",
+            "type": "integer",
+            "example": 1
+          },
+          "zones": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of 0 or more state zones, that are supported within a state.  A state zone denote an arbitrary geographical area within a state that is served by a specific retailer.            \n",
+            "example": [
+              "CTZ1"
+            ]
+          }
+        },
+        "required": [
+          "stateCode",
+          "stateName",
+          "numZones"
+        ]
+      },
+      "RetailerSummary": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the retailer",
+            "example": "Wine Republic"
+          },
+          "id": {
+            "type": "string",
+            "description": "An internal id representing the retailer",
+            "example": "B100010305"
+          },
+          "processingAddress": {
+            "$ref": "#/components/schemas/RetailerAddress"
+          },
+          "billingAddress": {
+            "$ref": "#/components/schemas/RetailerAddress"
+          },
+          "messages": {
+            "$ref": "#/components/schemas/RetailerMessages"
+          }
+        },
+        "required": [
+          "name",
+          "id",
+          "processingAddress",
+          "billingAddress"
+        ]
+      },
+      "RetailerMessages": {
+        "type": "object",
+        "description": "This is a map of informational messages about the retailer.\n\nThese are normally only used for internal purposes to allow UI customisation\n",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "example": {
+          "order-confirmation": "Thank you for shopping with Wine Republic today.",
+          "about-information": "Welcome to Wine Republic.  We are a licensed wine retailer for all your wine-buying needs"
+        }
+      },
+      "RetailerAddress": {
+        "description": "This is used to define an address related to a retailer.",
+        "type": "object",
+        "discriminator": {
+          "propertyName": "type"
+        },
+        "required": [
+          "address1",
+          "city",
+          "country",
+          "addressType"
+        ],
+        "properties": {
+          "address1": {
+            "description": "This is address line 1 of the post address.",
+            "type": "string"
+          },
+          "address2": {
+            "description": "This is address line 1 of the post address.",
+            "type": "string"
+          },
+          "city": {
+            "description": "The address city.",
+            "type": "string"
+          },
+          "zipCode": {
+            "description": "The zipcode of the address.",
+            "type": "string"
+          },
+          "state": {
+            "description": "The 2 letter alphanumeric state code representing a U.S. state",
+            "type": "string"
+          },
+          "country": {
+            "description": "This is used to define country in the postal address.",
+            "type": "string"
+          }
+        },
+        "example": {
+          "address1": "333 Lordship Blvd",
+          "address2": "",
+          "city": "Boynton Beach",
+          "zipCode": 33426,
+          "state": "FL",
+          "country": "US"
+        }
+      },
+      "FulfillmentContext": {
+        "description": "The **fulfillment context** describes details about how a *shipping group* within an *order* will be a fulfilled.\n\nA *default* fulfillment context is assigned to an order as once a shopping location context.\nThis context is then used to inform the shopping journey for the customer.   For example:-\n-  Where appropriate,  it identifies an appropriate retailer for the associated shopping location.\n-  It ensures the right type of compliant wines are offered for the associated shopping location.\n",
+        "type": "object",
+        "properties": {
+          "shippingSpeed": {
+            "type": "string",
+            "description": "A 'Shipping Speed', in this context is, a business categorisation to reflect support for concurrent fulfillment regimes within a given state.   \n\nAll states will support a 'Regular Shipping Speed' which is the default fulfillment regime for that state\n\nSome states may then support alternate fulfillment regimes.  As these regimes most typically result in a faster delivery capability they are referred to as 'Faster' and even 'Fastest'\n\nIt is important to note that this 'Shipping Speed' property does not relate to the 'Shipping Method' associated with a delivery.  The 'Shipping Method more typically relates to differnt options provided by a courier service.  As an example; a courier service such as Fedex might offer an 'Express' delivery and a 'Standard' delivery with different prices and SLAs.\n",
+            "enum": [
+              "Regular",
+              "Faster",
+              "Fastest"
+            ],
+            "example": "Regular"
+          },
+          "shippingModel": {
+            "type": "string",
+            "description": "This is an internal code which represents the associated shipping model",
+            "example": "3TISS"
+          },
+          "complianceType": {
+            "type": "string",
+            "description": "The type of compliance scheme that applies to this fulfillment",
+            "enum": [
+              "ThreeTier",
+              "WineryDirect"
+            ],
+            "example": "ThreeTier"
+          },
+          "stateZone": {
+            "type": "string",
+            "description": "The State Zone associated with this fulfillment context",
+            "example": "CA1"
+          },
+          "retailerName": {
+            "type": "string",
+            "example": "Lionstone West"
+          },
+          "retailerId": {
+            "type": "string",
+            "example": "B100010319"
+          },
+          "taxBasis": {
+            "type": "string",
+            "default": "CUSTOMER",
+            "enum": [
+              "CUSTOMER",
+              "RETAILER"
+            ]
+          }
+        }
+      },
+      "MultipleStatesResponse": {
+        "allOf": [
+          {
+            "$ref": "https://api.swaggerhub.com/apis/Direct_Wines/CommonAPIModelsSuite/1.7.0#/components/schemas/ApiResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "response": {
+                "$ref": "#/components/schemas/MultipleStatesDetail"
+              }
+            }
+          }
+        ]
+      },
+      "MultipleStatesDetail": {
+        "type": "object",
+        "properties": {
+          "numStates": {
+            "type": "integer",
+            "description": "The number of returned states"
+          },
+          "states": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StateSummary"
+            }
+          }
+        }
+      },
+      "RetailerResponse": {
+        "allOf": [
+          {
+            "$ref": "https://api.swaggerhub.com/apis/Direct_Wines/CommonAPIModelsSuite/1.7.0#/components/schemas/ApiResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "response": {
+                "$ref": "#/components/schemas/RetailerSummary"
+              }
+            }
+          }
+        ]
+      },
+      "FulfillmentOptionsResponse": {
+        "allOf": [
+          {
+            "$ref": "https://api.swaggerhub.com/apis/Direct_Wines/CommonAPIModelsSuite/1.7.0#/components/schemas/ApiResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "response": {
+                "$ref": "#/components/schemas/FulfillmentOptionsDetail"
+              }
+            }
+          }
+        ]
+      },
+      "FulfillmentOptionsDetail": {
+        "type": "object",
+        "properties": {
+          "numOptions": {
+            "type": "integer",
+            "description": "The number of returned states"
+          },
+          "contextOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FulfillmentContext"
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "GetStates-Success": {
+        "summary": "Successful Example Response",
+        "value": {
+          "statusMessage": "successful",
+          "statusCode": 0,
+          "response": {
+            "numStates": 2,
+            "states": [
+              {
+                "stateCode": "CA",
+                "stateName": "California",
+                "internalStateId": 1046,
+                "numZones": 2,
+                "zones": [
+                  "CAZ1",
+                  "CAZ2"
+                ]
+              },
+              {
+                "stateCode": "CT",
+                "stateName": "Connecticut",
+                "internalStateId": 1049,
+                "numZones": 1,
+                "zones": [
+                  "CTZ1"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "GetRetailer-Success": {
+        "summary": "Successful Example Response",
+        "value": {
+          "statusMessage": "successful",
+          "statusCode": 0,
+          "response": {
+            "name": "Wine Republic",
+            "id": "B100009510",
+            "processingAddress": {
+              "address1": "5430 Coldwater Rd",
+              "city": "Fort Wayne",
+              "zipCode": 46825,
+              "state": "IN"
+            },
+            "billingAddress": {
+              "address1": "4520 Lima Rd",
+              "city": "Fort Wayne",
+              "zipCode": 46808,
+              "state": "IN"
+            },
+            "messages": {
+              "order-confirmation": "Thank you for shopping with Wine Republic today.",
+              "about-information": "Welcome to Wine Republic.  We are a licensed wine retailer for all your wine-buying needs"
+            }
+          }
+        }
+      },
+      "GetFulfillmentOptions-SingleZone-SingleSpeed-Success": {
+        "summary": "Success - Single Fulfillment Option available",
+        "value": {
+          "statusMessage": "successful",
+          "statusCode": 0,
+          "response": {
+            "numOptions": 1,
+            "contextOptions": [
+              {
+                "shippingSpeed": "Regular",
+                "shippingModel": "3-Tier",
+                "complianceType": "ThreeTier",
+                "stateZone": "CTZ1",
+                "retailerId": "B100000246",
+                "taxBasis": "RETAILER"
+              }
+            ]
+          }
+        }
+      },
+      "GetFulfillmentOptions-SingleZone-MultipleSpeed-Success": {
+        "summary": "Success - Multiple Fulfillment Options available",
+        "value": {
+          "statusMessage": "successful",
+          "statusCode": 0,
+          "response": {
+            "numOptions": 2,
+            "contextOptions": [
+              {
+                "shippingSpeed": "Regular",
+                "shippingModel": "3-Tier",
+                "complianceType": "ThreeTier",
+                "stateZone": "NYZ1",
+                "retailerId": "B100000247",
+                "taxBasis": "RETAILER"
+              },
+              {
+                "shippingSpeed": "Faster",
+                "shippingModel": "WD",
+                "complianceType": "WineryDirect",
+                "stateZone": "NYZ1",
+                "retailerId": "B100000259",
+                "taxBasis": "CUSTOMER"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

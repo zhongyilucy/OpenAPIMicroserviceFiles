@@ -1,0 +1,138 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "Base URL for Register and Login",
+      "url": "http://mrt-k.online:8088/"
+    }
+  ],
+  "info": {
+    "title": "API Documentation for Payment History",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/retrieve-tickets": {
+      "get": {
+        "summary": "Tickets Retrieval",
+        "description": "Retrieves a list of tickets for the authenticated user.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Cookie",
+            "description": "The cookie containing the session token.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "mrt-k-session=jwt"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of tickets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Ticket"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/insert-ticket": {
+      "post": {
+        "summary": "Ticket Insertion",
+        "description": "Inserts a ticket with the provided code.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Cookie",
+            "description": "The cookie containing the session token.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "mrt-k-session=jwt"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SingleValuePayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Ticket Insertion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ticket"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed Ticket Insertion",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "null"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Ticket": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "binary",
+            "example": 1111001100
+          },
+          "referencedPaymentCode": {
+            "type": "string",
+            "example": "John Doe#1685007404"
+          },
+          "username": {
+            "type": "string",
+            "example": "John Doe"
+          }
+        },
+        "required": [
+          "image",
+          "referencedPaymentCode",
+          "username"
+        ]
+      },
+      "SingleValuePayload": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "example": "John Doe#1685007404"
+          }
+        },
+        "required": [
+          "value"
+        ]
+      }
+    }
+  }
+}

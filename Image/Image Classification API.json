@@ -1,0 +1,207 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Image Classification API",
+    "description": "API's for image classification.",
+    "version": "0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.double4.ai"
+    }
+  ],
+  "paths": {
+    "/class": {
+      "get": {
+        "description": "API for image classification.",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "https://gcbimages.storage.googleapis.com/segmentation_images/nonhybrid/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB_revised_anchor_hybrid.jpg"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response has 2 results if the confidence is less than 95%.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "classifications": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "confidence": {
+                            "type": "number"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "0": {
+                    "value": "{\n  \"classifications\": [\n    {\n      \"accuracy\": 100.0, \n      \"type\": \"driver_side\"\n    }\n  ]\n}\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.double4.ai"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://api.double4.ai"
+        }
+      ]
+    },
+    "/classchain": {
+      "get": {
+        "description": "API for image classification which uses/chains other classification models for increased accuracy.",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "https://gcbimages.storage.googleapis.com/segmentation_images/nonhybrid/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB_revised_anchor_hybrid.jpg"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "By default multiple classification models are chained if the value is not passed  or all value is passed. When value other than all or empty value is passed, only default classification models used in class endpoint are used.",
+            "example": "all"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response has 2 results if the confidence is less than 95%.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "classifications": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "confidence": {
+                            "type": "number"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "0": {
+                    "value": "{\n  \"classifications\": [\n    {\n      \"accuracy\": 100.0, \n      \"type\": \"driver_side\"\n    }\n  ]\n}\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.double4.ai"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://api.double4.ai"
+        }
+      ]
+    },
+    "/classattributes": {
+      "get": {
+        "description": "API for image classification to detect if the image has doors open and if the image is passenger side or driver side angle with cut in half.",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "https://gcbimages.storage.googleapis.com/segmentation_images/nonhybrid/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB_revised_anchor_hybrid.jpg"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response has 2 fields isdooropenimage and ishalfcutimage. isdooropenimage has values 0 and 1. 0 means vehicle image with doors closed and 1 means vehicle image with doors open. ishalfcutimage has values 0 and 1. 1 means vehicle image is passenger side or driver side angle with cut in half, 0 means not.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ishalfcutimage": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "examples": {
+                  "0": {
+                    "value": "{\n  \"isdooropenimage\": 0,\n  \"ishalfcutimage\": 0\n}\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.double4.ai"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://api.double4.ai"
+        }
+      ]
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    },
+    {
+      "bearerAuth": []
+    }
+  ]
+}

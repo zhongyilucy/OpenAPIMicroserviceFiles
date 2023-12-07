@@ -1,0 +1,123 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "createOrder",
+    "description": "create order API",
+    "version": "0.1"
+  },
+  "servers": [
+    {
+      "url": "https://orderapi-procurement-process.cp4ba-automation-685c4d909dba5536870f4da931535b5a-0000.us-south.containers.appdomain.cloud"
+    }
+  ],
+  "paths": {
+    "/order/create": {
+      "post": {
+        "description": "create order API",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productDesc": {
+                    "type": "string"
+                  },
+                  "orderCreatedBy": {
+                    "type": "string"
+                  },
+                  "orderCompletionDate": {
+                    "type": "string"
+                  },
+                  "productID": {
+                    "type": "string"
+                  },
+                  "orderID": {
+                    "type": "string"
+                  },
+                  "vendorID": {
+                    "type": "string"
+                  },
+                  "orderReleaseDate": {
+                    "type": "string"
+                  },
+                  "orderStatus": {
+                    "type": "string"
+                  },
+                  "productCount": {
+                    "type": "string"
+                  },
+                  "orderAuthorizedBy": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "0": {
+                  "value": "{\n    \"orderID\": \"\",\n    \"productID\": \"DELL1401\",\n    \"productDesc\": \"Dell\",\n    \"productCount\": \"30\",\n    \"vendorID\": \"abc@mac.com\",\n    \"orderReleaseDate\": \"02-06-2023\",\n    \"orderCompletionDate\": null,\n    \"orderStatus\": \"\",\n    \"orderAuthorizedBy\": \"Vivek\",\n    \"orderCreatedBy\": \"vivek\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "create Order API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "productDesc": {
+                      "type": "string"
+                    },
+                    "orderCreatedBy": {
+                      "type": "string"
+                    },
+                    "orderCompletionDate": {
+                      "type": "string"
+                    },
+                    "comments": {
+                      "type": "string"
+                    },
+                    "productID": {
+                      "type": "string"
+                    },
+                    "orderID": {
+                      "type": "string"
+                    },
+                    "vendorID": {
+                      "type": "string"
+                    },
+                    "orderReleaseDate": {
+                      "type": "string"
+                    },
+                    "orderStatus": {
+                      "type": "string"
+                    },
+                    "productCount": {
+                      "type": "string"
+                    },
+                    "orderAuthorizedBy": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://orderapi-procurement-process.cp4ba-automation-685c4d909dba5536870f4da931535b5a-0000.us-south.containers.appdomain.cloud"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://orderapi-procurement-process.cp4ba-automation-685c4d909dba5536870f4da931535b5a-0000.us-south.containers.appdomain.cloud"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,617 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Flight Availablity API",
+    "description": "API to find Flight Availablity",
+    "contact": {
+      "name": "IBS iCargo Support",
+      "url": "http://www.ibsplc.com",
+      "email": "iCargoSupport@ibsplc.com"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://prod-apis.icargo.ibsplc.com/availability"
+    }
+  ],
+  "paths": {
+    "/v1/flights/{departure-airport}/{arrival-airport}/{from-date}/find": {
+      "post": {
+        "tags": [
+          "Available Flights"
+        ],
+        "summary": "Find all available flights / flight combinations for booking",
+        "description": "Retrieve a list of all available and bookable flights based on input criteria",
+        "operationId": "availableflights",
+        "parameters": [
+          {
+            "name": "departure-airport",
+            "in": "path",
+            "description": "1. The departure airport for the shipment (origin). \n",
+            "example": "SYD",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "arrival-airport",
+            "in": "path",
+            "description": "1. The arrival airport for the shipment (destination). \n",
+            "example": "LAX",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from-date",
+            "in": "path",
+            "description": "1. The departure date from the 'departure-airport'\n2. The format needs to be in ISO-8601 date format 'YYYY-MM-DD'\n",
+            "example": "2017-01-30",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Details of Shipment to be booked for carriage",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlightAvailabilityFilter"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "SUCCESS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FlightCombination"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "'Business Error. Generated in these scenarios:\n  1. ICO_GEN_002 : Invalid formats - Ex : Airport, Date\n  2. ICO_AVL_005 : No flights found for the search criteria'\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "'Unauthorized. Generated in these scenarios:\n  1. unauthorized : Invalid/No token provided\n  2. invalid_token : Token has expired'\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "ICO_GEN_001 : Unexpected Server Error\n",
+            "content": {}
+          },
+          "default": {
+            "description": "Unexpected Server Error",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "ico_token": []
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FlightAvailabilityFilter": {
+        "type": "object",
+        "properties": {
+          "departure_time": {
+            "type": "string",
+            "description": "1. Departure time from the 'departure_airport'\n2. The format needs to be ISO-8601 [partial-time] format\n",
+            "example": "00:00:00"
+          },
+          "arrival_date": {
+            "type": "string",
+            "description": "1. The arrival date at the 'arrival-airport'. This willb be defaulted as +3 days from departure date by the system.\n2. The format needs to be in ISO-8601 date format 'YYYY-MM-DD'\n",
+            "example": "2017-01-30"
+          },
+          "arrival_time": {
+            "type": "string",
+            "description": "1. Arrival time at the 'arrival_airport'\n2. The format needs to be ISO-8601 [partial-time] format\n",
+            "example": "23:00:00"
+          },
+          "latest_acceptance_time": {
+            "type": "string",
+            "description": "Latest acceptance time at departure_airport Specified in ISO-8601 date-time format with timezone offset of the departure_airport.\n",
+            "format": "date-time",
+            "example": "2018-06-30T04:30:57+04:00"
+          },
+          "via_port": {
+            "type": "string",
+            "description": "Airport via the flight/flight combination routes.",
+            "example": "SIN"
+          },
+          "skip_ports": {
+            "type": "string",
+            "description": "Airports via the flight/flight combination shouldn't route. Comma seperated in case of multiple.",
+            "example": "PVG,HKG"
+          },
+          "commodity": {
+            "type": "string",
+            "description": "Commodity code as defined in iCargo",
+            "example": "AVI"
+          },
+          "special_handling_codes": {
+            "type": "array",
+            "description": "Special Handling Codes(SCC Codes)",
+            "example": [
+              "PER",
+              "ICE"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "complementory_handling_codes": {
+            "type": "array",
+            "description": "Additional handling codes with weight.",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalHandlingCode"
+            }
+          },
+          "product": {
+            "type": "string",
+            "description": "Product Name",
+            "example": "PRIORITY"
+          },
+          "agent_code": {
+            "type": "string",
+            "description": "Agent code as defined in iCargo",
+            "example": "6011458000"
+          },
+          "pieces": {
+            "type": "integer",
+            "description": "Number of pieces of the shipment",
+            "example": 1
+          },
+          "weight": {
+            "type": "number",
+            "description": "Weight of the shipment",
+            "format": "double",
+            "example": 100.1
+          },
+          "volume": {
+            "type": "number",
+            "description": "Volume of the shipment",
+            "format": "double",
+            "example": 1.2
+          },
+          "promo_code": {
+            "type": "string",
+            "description": "Promo Code",
+            "example": "SCR12345"
+          },
+          "dimensions": {
+            "type": "array",
+            "description": "The dimensions of shipment",
+            "items": {
+              "$ref": "#/components/schemas/Dimension"
+            }
+          },
+          "ulds": {
+            "type": "array",
+            "description": "The ULD details of the shipment",
+            "items": {
+              "$ref": "#/components/schemas/ULD"
+            }
+          },
+          "flight_type": {
+            "type": "string",
+            "description": "Indicates the type of Flight .\n Possible values:\n - Cargo-Only\n - Combination\n - Charter\n - Truck\n - All\n",
+            "example": "Cargo-Only"
+          },
+          "aircraft_classification": {
+            "type": "string",
+            "description": "Indicates the aircraft classification of flight. Comma seperated in case of multiple.\n Possible values:\n - Freighter\n - Wide Body\n - Narrow Body\n - Truck\n - All\n",
+            "example": "Freighter"
+          },
+          "unit_of_measures": {
+            "$ref": "#/components/schemas/Units"
+          }
+        }
+      },
+      "Dimension": {
+        "required": [
+          "height",
+          "length",
+          "pieces",
+          "width"
+        ],
+        "type": "object",
+        "properties": {
+          "length": {
+            "type": "number",
+            "description": "Length of a piece",
+            "format": "double",
+            "example": 100
+          },
+          "width": {
+            "type": "number",
+            "description": "Width of a piece",
+            "format": "double",
+            "example": 100
+          },
+          "height": {
+            "type": "number",
+            "description": "Height of a piece",
+            "format": "double",
+            "example": 100
+          },
+          "pieces": {
+            "type": "integer",
+            "description": "Number of pieces in the group with same length, width and height as stated above",
+            "example": 1
+          },
+          "weight": {
+            "type": "number",
+            "description": "Weight of each piece in the group",
+            "format": "double",
+            "example": 25
+          },
+          "tiltable": {
+            "type": "boolean",
+            "description": "Whether the piece is tiltable",
+            "example": false,
+            "default": false
+          }
+        }
+      },
+      "AdditionalHandlingCode": {
+        "required": [
+          "handling_code",
+          "weight"
+        ],
+        "type": "object",
+        "properties": {
+          "handling_code": {
+            "type": "string",
+            "description": "Additional Handling Code",
+            "example": "ICE"
+          },
+          "weight": {
+            "type": "number",
+            "description": "Weight of shipment for the handling code. For example, the ICE weight in a perishable shipment",
+            "format": "double",
+            "example": 100.01
+          }
+        }
+      },
+      "ULD": {
+        "required": [
+          "number_of_ulds",
+          "uld_type"
+        ],
+        "type": "object",
+        "properties": {
+          "uld_type": {
+            "type": "string",
+            "description": "Type of ULD to be carried",
+            "example": "AKE"
+          },
+          "number_of_ulds": {
+            "type": "integer",
+            "description": "Number of 'uld_type' to be carried",
+            "example": 1
+          },
+          "weight": {
+            "type": "number",
+            "description": "Weight of the ULD to be carried",
+            "format": "double",
+            "example": 550
+          },
+          "position": {
+            "type": "string",
+            "description": "ULD position information. Possible values :\n  - maindeck_container\n  - maindeck_pallet\n  - lowerdeck_container\n  - lowerdeck_pallet\n",
+            "example": "lowerdeck_container"
+          }
+        }
+      },
+      "FlightCombination": {
+        "type": "object",
+        "properties": {
+          "flights": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Flight"
+            }
+          },
+          "availability_details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailabilityDetail"
+            }
+          }
+        }
+      },
+      "AvailabilityDetail": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "Product name",
+            "example": "EXPRESS"
+          },
+          "latest_acceptance_time": {
+            "type": "string",
+            "description": "Latest acceptance time at departure_airport Specified in ISO-8601 date-time format with timezone offset of the departure_airport.\n",
+            "format": "date-time",
+            "example": "2018-06-30T04:30:57+04:00"
+          },
+          "evaluation_result": {
+            "$ref": "#/components/schemas/EvaluationResult"
+          },
+          "rate_details": {
+            "$ref": "#/components/schemas/Rate"
+          }
+        }
+      },
+      "Flight": {
+        "type": "object",
+        "properties": {
+          "flight_carrier": {
+            "type": "string",
+            "description": "Flight Carrier Code",
+            "example": "ZZ"
+          },
+          "flight_number": {
+            "type": "string",
+            "description": "Flight number",
+            "example": "1234"
+          },
+          "departure_airport": {
+            "type": "string",
+            "description": "The departure airport code for the flight",
+            "example": "SYD"
+          },
+          "departure_time": {
+            "type": "string",
+            "description": "The scheduled time of departure at departure_airport Specified in ISO-8601 date-time format with timezone offset of the departure_airport.\n",
+            "format": "date-time",
+            "example": "2018-06-30T07:30:57+04:00"
+          },
+          "estimated_departure_time": {
+            "type": "string",
+            "description": "The estimated time of departure at departure_airport Specified in ISO-8601 date-time format with timezone offset of the departure_airport.\n",
+            "format": "date-time",
+            "example": "2018-06-30T07:30:57+04:00"
+          },
+          "arrival_airport": {
+            "type": "string",
+            "description": "The arrival airport code for the flight",
+            "example": "LAX"
+          },
+          "arrival_time": {
+            "type": "string",
+            "description": "The scheduled time of arrival at arrival_airport Specified in ISO-8601 date-time format with timezone offset of the arrival_airport.\n",
+            "format": "date-time",
+            "example": "2018-06-30T13:30:57+05:30"
+          },
+          "estimated_arrival_time": {
+            "type": "string",
+            "description": "The estimated time of arrival at arrival_airport Specified in ISO-8601 date-time format with timezone offset of the arrival_airport.\n",
+            "format": "date-time",
+            "example": "2018-06-30T13:30:57+05:30"
+          },
+          "route": {
+            "type": "string",
+            "description": "The flight route",
+            "example": "SYD-SIN-LAX"
+          },
+          "flight_type": {
+            "type": "string",
+            "description": "Indicates the type of Flight .\n Possible values:\n - Cargo-Only\n - Combination\n - Charter\n - Truck\n - All\n",
+            "example": "Cargo-Only"
+          },
+          "aircraft_type": {
+            "type": "string",
+            "description": "The aircraft type of the flight",
+            "example": "B747"
+          },
+          "aircraft_classification": {
+            "type": "string",
+            "description": "Indicates the aircraft classification of flight. Comma seperated in case of multiple.\nPossible values :\n - Freighter\n - Wide Body\n - Narrow Body\n - Truck\n",
+            "example": "Freighter"
+          },
+          "capacity_details": {
+            "$ref": "#/components/schemas/CapacityDetails"
+          }
+        }
+      },
+      "Rate": {
+        "type": "object",
+        "properties": {
+          "rate": {
+            "type": "number",
+            "description": "Applicable rate for carrying the cargo",
+            "format": "double",
+            "example": 1.5
+          },
+          "charge": {
+            "type": "number",
+            "description": "Total Charge computed on the basis of applicable rate",
+            "format": "double",
+            "example": 100
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code corresponding to the rate and charges",
+            "example": "USD"
+          },
+          "other_charge": {
+            "type": "number",
+            "description": "Other Charge applicable for carrying the cargo",
+            "format": "double",
+            "example": 10
+          },
+          "total_charge": {
+            "type": "number",
+            "description": "Total Charge applicable for carrying the cargo",
+            "format": "double",
+            "example": 440
+          }
+        }
+      },
+      "EvaluationResult": {
+        "type": "object",
+        "properties": {
+          "hasAvailableCapacity": {
+            "type": "boolean",
+            "description": "Denotes whether capacity is available for carriage",
+            "example": true
+          },
+          "uld_position_detail": {
+            "type": "string",
+            "description": "ULD position details for booking, comma separated if there are multiple positions requested. This information will be provided only if capacity is available.",
+            "example": "maindeck_container-1, lowerdeck_pallet-2"
+          },
+          "hasRestrictions": {
+            "type": "boolean",
+            "description": "Denotes whether any restrictions are applicable",
+            "example": true
+          },
+          "restriction_detail": {
+            "type": "string",
+            "description": "Description of any applicable restrictions, comma separated if there are multiple results",
+            "example": "Aircraft restriction for AVI"
+          },
+          "hasEmbargo": {
+            "type": "boolean",
+            "description": "Denotes whether any embargoes are applicable, comma separated if there are multiple results",
+            "example": true
+          },
+          "embargo_detail": {
+            "type": "string",
+            "description": "Description of the applicable embargoes",
+            "example": "Embargo for AVI at DXB"
+          },
+          "isLoadable": {
+            "type": "boolean",
+            "description": "Denotes whether the shipment is loadable on aircraft",
+            "example": true
+          },
+          "hasAvailableClusterCapacity": {
+            "type": "boolean",
+            "description": "Denotes whether Cluster capacity is available for carriage",
+            "example": true
+          },
+          "hasMAPCheckPassed": {
+            "type": "boolean",
+            "description": "Denotes whether MAP Check passed",
+            "example": true
+          },
+          "hasBidPriceCheckPassed": {
+            "type": "boolean",
+            "description": "Denotes whether Bid Price Check passed",
+            "example": true
+          }
+        }
+      },
+      "CapacityDetails": {
+        "type": "object",
+        "properties": {
+          "total_weight": {
+            "type": "number",
+            "description": "Total weight",
+            "format": "double",
+            "example": 100.01
+          },
+          "total_volume": {
+            "type": "number",
+            "description": "Total volume",
+            "format": "double",
+            "example": 10.01
+          },
+          "total_handling_weight": {
+            "type": "number",
+            "description": "Total Handling weight",
+            "format": "double",
+            "example": 100.01
+          },
+          "total_handling_volume": {
+            "type": "number",
+            "description": "Total Handling volume",
+            "format": "double",
+            "example": 10.01
+          },
+          "total_remaining_weight": {
+            "type": "number",
+            "description": "Total remaining FS weight in segment",
+            "format": "double",
+            "example": 10.01
+          },
+          "total_remaining_volume": {
+            "type": "number",
+            "description": "Total remaining FS volume in segment",
+            "format": "double",
+            "example": 1.01
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error_code": {
+            "type": "string"
+          },
+          "error_description": {
+            "type": "string"
+          }
+        },
+        "description": "Error details"
+      },
+      "Units": {
+        "type": "object",
+        "properties": {
+          "weight": {
+            "type": "string",
+            "example": "kg or lbs"
+          },
+          "volume": {
+            "type": "string",
+            "example": "cbm or cbf"
+          },
+          "length": {
+            "type": "string",
+            "example": "cm or in"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ico_token": {
+        "type": "apiKey",
+        "name": "ICO-Authorization",
+        "in": "header"
+      }
+    }
+  }
+}

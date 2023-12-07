@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: System Info
+  description: Service to get information of the system. with devices
+
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: Admin
+    description: Admin user calls
+paths:
+  /info:
+    get:
+      tags:
+        - Admin
+      summary: Get system informations
+      description: >-
+        Retrieves information about the resources in the system (e.g. for
+        devices, the number of registered devices).
+      operationId: getInfos
+      parameters:
+        - name: types
+          in: query
+          description: The types of information to be retrieved
+          explode: false
+          schema:
+            minItems: 1
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+              enum:
+                - applications
+                - services
+                - devices
+                - applicationAssociations
+                - serviceAssociations
+                - config
+                - healthCheck
+      responses:
+        '200':
+          description: Information about the service and its resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties: {}
+      security:
+        - AdminSecurity:
+            - read:system
+
+components:
+  schemas:
+    Error:
+      required:
+        - message
+        - statusCode
+        - title
+      type: object
+      properties:
+        statusCode:
+          type: number
+          format: int32
+        title:
+          type: string
+        message:
+          type: string
+        info:
+          type: object
+          properties: {}
+    StatusUpdateInfo:
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - notificationReceived
+            - cancelledByUser
+            - failed
+            - completed
+            - deployed
+        statusReason:
+          type: string
+          example: Any reason that needs to be documented for status
+    StatusUpdate:
+      allOf:
+        - type: object
+          properties:
+            postedAt:
+              type: string
+              format: date-time
+  securitySchemes:
+    SystemSecurity:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://mimik.auth0.com/auth/token
+          scopes:
+            create:app: register an application
+            read:apps: Get all the registered applications
+            read:app: Get the application designated by the id
+            create:service: register a service
+            read:services: Get all the registered services
+            read:service: Get the service designated by the id
+            create:associatedapp: Create an association device with app
+            create:associatedservice: Create an association device with service
+            update:associatedapp: Update the status of an association
+            update:associatedservice: Update the status of an association
+            delete:associatedapp: Delete association between a device and an app
+            delete:associatedservice: Delete association between a device and an service
+            create:device: Create a device
+            delete:device: Delete a device
+            read:device: Get the device with the given deviceId
+            read:appservices: Get the list of services for a given application
+    AdminSecurity:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://mimik.auth0.com/auth/token
+          scopes:
+            read:system: Read the system information
+            read:apps: Get all the registered applications
+            read:app: Get the application designated by the id
+            create:app: Create an application
+            delete:app: Delete an application
+            read:services: Get all the registered services
+            read:service: Get the service designated by the id
+            create:service: Create a service
+            delete:service: Delete a service
+            read:associatedapp: Get all the devices associated with app
+            read:associatedservice: Get all the devices associated with service
+            create:associatedapp: Create an association device with app
+            create:associatedservice: Create an association device with service
+            delete:associatedapp: Delete association between a device and an app
+            delete:associatedservice: Delete association between a device and an service
+            create:device: Create a device
+            delete:device: Delete a device
+            read:devices: Get all the registered devices
+            read:device: Get the device with the given deviceId
+            read:appservices: Get the list of services for a given application

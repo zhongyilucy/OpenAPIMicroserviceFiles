@@ -1,0 +1,232 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "10.26.1",
+    "title": "FacilityLocationsList",
+    "description": "Common FacilityLocationsList API"
+  },
+  "paths": {
+    "/facility-locations/": {
+      "get": {
+        "operationId": "facilitylocations_list",
+        "description": "Search Facility Locations a.k.a site locations",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/AcceptHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/AuthorizationHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/ContentTypeHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/RefererHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/UserAgentHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/ForwardedForHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/UserNameHeader/10.0.1#/components/parameters/UserNameHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/WebSessionIdHeader/10.0.1#/components/parameters/WebSessionIdHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/CorrelationIdHeader/10.0.1#/components/parameters/CorrelationIdHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/IdentitiesHeader/10.0.3#/components/parameters/IdentitiesHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/orderingParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageSizeParam"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filters the FacilityLocations associated with the given FacilityLocation name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "number",
+            "in": "query",
+            "description": "Filters the FacilityLocations associated with the given FacilityLocation number. This number is the FacilityLocation - Business Entity Identifier.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "specialty_id",
+            "in": "query",
+            "description": "Filters the FacilityLocations associated with the given specialty_Id(s).",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "facility_id",
+            "in": "query",
+            "description": "Filters the FacilityLocations associated with the given Facility ID.  This ID is associated with facility under which the facilitylocations are tied.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "facility_name",
+            "in": "query",
+            "description": "Filters the FacilityLocations associated with the given Facility Name.  This name is associated with group/facility under which the facilitylocations are tied.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "npi",
+            "in": "query",
+            "description": "Filters the FacilityLocations associated with the given NPI.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tax_id",
+            "in": "query",
+            "description": "Filters the FacilityLocations associated with the given Tax ID.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "group_npi",
+            "in": "query",
+            "description": "Filters the FacilityLocations associated with the given Group NPI.  This NPI is associated with group/facility under which the facilitylocations are tied.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "group_tax_id",
+            "in": "query",
+            "description": "Filters the FacilityLocations associated with the given Group Tax ID. This Tax ID is associated with group/facility under which the facilitylocations are tied.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_hospital",
+            "in": "query",
+            "description": "Is FacilityLocation a hospital location.  This flag filters the facility locations which are hospital locations.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "affiliated_with_facility_location_id",
+            "in": "query",
+            "description": "Facility Location identifier,with which the facility location(s) are affiliated.    This field filters the hospital location(s) which are affiliated with the passed Facility Location ID.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "not_associated_with_provider_id",
+            "in": "query",
+            "description": "Provider Identifier,with which the facility location(s) are NOT associated.    Applying this filters FacilityLocations that are not associated with the passed Provider ID.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "last_attestation_date_lt",
+            "in": "query",
+            "description": "Filters Facility Locations where the last attestation date is before the date specified  (or the Facility Location does not have a last attestation date).  This allows for the return of  Facility Locations that are due for attestation.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Valid response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "count",
+                    "results"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "next": {
+                      "type": "integer"
+                    },
+                    "previous": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/FacilityLocationModel/10.25.1#/components/schemas/FacilityLocation"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

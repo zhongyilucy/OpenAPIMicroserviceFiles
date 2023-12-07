@@ -1,0 +1,248 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/JASONPARADISO/JP_OneMoreSongAgain/1.0.0"
+    }
+  ],
+  "info": {
+    "description":"This is an API that can search and manage setlists for concerts.",
+    "version": "1.0.0",
+    "title": "Setlist API",
+    "contact": {
+      "email": "jason.paradiso@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "setlists",
+      "description": "search/add/update/delete setlists"
+    }
+  ],
+  "paths": {
+    "/setlists": {
+      "get": {
+        "tags": [
+          "setlists"
+        ],
+        "summary": "search for specific setlists",
+        "description": "Use this to search for specific setlists",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "artistName",
+            "description": "The name of the artist",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "The Kount"
+            }
+          },
+          {
+            "in": "query",
+            "name": "venueName",
+            "description": "The name of the venue",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Danforth Music Hall"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "description": "The date of the event",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "DD-MM-YYYY"
+            }
+          },
+          {
+            "in": "query",
+            "name": "city",
+            "description": "The name of the city",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Toronto"
+            }
+          },
+          {
+            "in": "query",
+            "name": "province",
+            "description": "The province/territory/state",
+            "schema": {
+              "type": "string",
+              "example": "Ontario"
+            }
+          },
+          {
+            "in": "query",
+            "name": "country",
+            "description": "The country",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Canada"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/setlists"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "setlists"
+        ],
+        "summary": "adds a setlist",
+        "description": "Use this to add a setlist",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/setlists"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Setlist added"
+          },
+          "400": {
+            "description": "Invalid date or address format"
+          },
+          "409": {
+            "description": "Setlist for the artist, date and venue already  exists"
+          }
+        }
+      }
+    },
+    "/setlists/{setlistId}": {
+      "put": {
+        "tags": [
+          "setlists"
+        ],
+        "summary": "updates a setlist",
+        "description": "Use this to update an existing setlist",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "setlistId",
+            "description": "The ID assigned to the setlist",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "QWER-TYUI-ASDF-GHJK"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/venues"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Setlist updated"
+          },
+          "400": {
+            "description": "Invalid <tt>setlistId</tt>"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "setlists"
+        ],
+        "summary": "deletes a setlist",
+        "description": "Use this to delete an existing setlist",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "setlistId",
+            "description": "The ID assigned to the setlist",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "QWER-TYUI-ASDF-GHJK"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Setlist deleted"
+          },
+          "400": {
+            "description": "Invalid <tt>setlistId</tt>"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "setlists": {
+        "type": "object",
+        "required": [
+          "artist",
+          "venue",
+          "showDate"
+        ],
+        "properties": {
+          "artist": {
+            "$ref": "#/components/schemas/artists"
+          },
+          "venue": {
+            "$ref": "#/components/schemas/venues"
+          },
+          "setlistId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "GHJK-ASDF-TYUI-QWER"
+          },
+          "showDate": {
+            "type": "string",
+            "example": "DD-MM-YYYY"
+          },
+          "songs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Detour",
+              "Virtually Yours",
+              "Nightbus"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

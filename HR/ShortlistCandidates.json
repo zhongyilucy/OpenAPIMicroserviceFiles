@@ -1,0 +1,105 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "ShortlistCandidates",
+    "x-ibm-name": "shortlistcandidates",
+    "description":"This API posts the final Shortlist of Candidates"
+  },
+  "components": {
+    "schemas": {
+      "request": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "description": " "
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "instances": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "type": {}
+              }
+            }
+          }
+        },
+        "additionalProperties": false,
+        "description": " "
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
+  "paths": {
+    "/request/ShortlistCandidates": {
+      "post": {
+        "tags": [
+          "request"
+        ],
+        "description": "Shortlist Candidates",
+        "summary": "Shortlist Candidates",
+        "operationId": "request.shortlistcandidates",
+        "requestBody": {
+          "description": " ",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request"
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Request was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Request was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://default-integration-runtime-https-acxmi5plslh.p-vir-d1.appconnect.ibmappdomain.cloud/ShortlistCandidates"
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ]
+}

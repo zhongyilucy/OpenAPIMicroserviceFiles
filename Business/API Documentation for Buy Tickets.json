@@ -1,0 +1,141 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "Base URL for Buy Tickets",
+      "url": "http://mrt-k.online:8086/"
+    }
+  ],
+  "info": {
+    "title": "API Documentation for Buy Tickets",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/make-payment": {
+      "post": {
+        "summary": "Making Payment",
+        "description": "Inserts a payment with the provided details and returns their new balance.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Cookie",
+            "description": "The cookie containing the session token.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "mrt-k-session=jwt"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Payment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Payment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed Payment",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "null"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Payment": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "John Doe#1685007404"
+          },
+          "username": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "line": {
+            "type": "string",
+            "example": "Gehenna"
+          },
+          "origin": {
+            "type": "string",
+            "example": "Trinity"
+          },
+          "destination": {
+            "type": "string",
+            "example": "Arius"
+          },
+          "trainType": {
+            "type": "string",
+            "example": "Local"
+          },
+          "price": {
+            "type": "number",
+            "example": 80
+          }
+        },
+        "required": [
+          "code",
+          "username",
+          "line",
+          "origin",
+          "destination",
+          "trainType",
+          "price"
+        ]
+      },
+      "SingleValuePayload": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "example": "John Doe#1685007404"
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "UserDetails": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "balance": {
+            "type": "number",
+            "example": 200
+          }
+        },
+        "required": [
+          "username",
+          "balance"
+        ]
+      }
+    }
+  }
+}

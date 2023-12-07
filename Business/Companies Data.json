@@ -1,0 +1,176 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "https://api.multihub.io/"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "Companies Data",
+    "description":"Retrieves information for companies."
+  },
+  "tags": [
+    {
+      "name": "Company"
+    }
+  ],
+  "paths": {
+    "/company": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Company"
+        ],
+        "summary": "Retrieve data for a company",
+        "operationId": "company",
+        "description": "Retrieve data for a single company, including it's properties",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "properties",
+            "description": "pass in true to retrieve properties data",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "company data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/company"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Missing API key"
+          }
+        }
+      }
+    },
+    "/companies": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Company"
+        ],
+        "summary": "Retrieve data for multiple companies",
+        "operationId": "companies",
+        "description": "Retrieve data for companies, including properties data",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "properties",
+            "description": "pass in true to retrieve properties data",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "companies data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/company"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Missing API key"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "company": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 5643135459786752
+          },
+          "name": {
+            "type": "string",
+            "example": "Acuto Test Company (Weidner)"
+          },
+          "domain": {
+            "type": "string",
+            "example": "acuto"
+          },
+          "type": {
+            "type": "string",
+            "example": "Investor/Developer"
+          },
+          "billing_legal_name": {
+            "type": "string",
+            "example": "Acuto Automation Ltd."
+          },
+          "billing_primary_contact_full_name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "billing_email": {
+            "type": "string",
+            "example": "example@email.com"
+          },
+          "primary_color": {
+            "type": "string",
+            "example": "#ca2f2f"
+          },
+          "primary_font": {
+            "type": "string",
+            "example": ""
+          },
+          "logo_url": {
+            "type": "string",
+            "example": "sample5.jpg"
+          },
+          "icon_url": {
+            "type": "string",
+            "example": "icon.png"
+          },
+          "tagline": {
+            "type": "string",
+            "example": ""
+          },
+          "about": {
+            "type": "string",
+            "example": ""
+          },
+          "overview": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      }
+    }
+  }
+}

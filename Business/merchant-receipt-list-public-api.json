@@ -1,0 +1,360 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "merchant-receipt-list-public-api",
+    "description": "Gets receipt List from different merchants"
+  },
+  "tags": [
+    {
+      "name": "receipts"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://urldefense.proofpoint.com/v2/url?u=https-3A__api.slyp.com.au_v1&d=DwIGaQ&c=CePd48LRXglYJn3oGERKCSpmboa3dEVqExT-U29y8gU&r=xkUNHJ7tR0kAHddY-RuLwldM3sEdqQj60oIv86skwY2olQXmuLZUmfd1RrpIyvdq&m=uaOYxaSUtJnLH1tuvDI4bMeQT8WBbtNP1gCNBMUsH2Vr-yGUvyA6WWQ2CBSqYIKK&s=FiFA9iUiPaJzNmHyiRZwCI5nKxRAUOnXzQYR8GCPiZw&e=",
+      "description": "Production server (uses live data)"
+    },
+    {
+      "url": "https://urldefense.proofpoint.com/v2/url?u=https-3A__api.sandbox-2Dslyp.com.au_v1&d=DwIGaQ&c=CePd48LRXglYJn3oGERKCSpmboa3dEVqExT-U29y8gU&r=xkUNHJ7tR0kAHddY-RuLwldM3sEdqQj60oIv86skwY2olQXmuLZUmfd1RrpIyvdq&m=uaOYxaSUtJnLH1tuvDI4bMeQT8WBbtNP1gCNBMUsH2Vr-yGUvyA6WWQ2CBSqYIKK&s=U1wTIeGORfEB4r1jI_W9xGAlBXjUYat1dyQimzQRCrY&e=",
+      "description": "Test Integration server (uses test data)"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/merchants/receipts": {
+      "get": {
+        "tags": [
+          "receipts"
+        ],
+        "operationId": "GetReceipts",
+        "description": "Get a list of Slyp receipts for authenticated merchant.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "loyalty_id",
+            "description": "A comma seperated list of loyalty_ids associated to the receipts, one or many.",
+            "example": "1234567890098,99999999999",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of records to return in a single query. Default 50",
+            "schema": {
+              "type": "number"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MerchantReceiptListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. The request couldn't be parsed or validated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. The API key or JWT provided was invalid or not authorised for this resource or action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests. Too many requests hit the API too quickly. We recommend an exponential back-off of your requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Errors. Something went wrong within the Slyp source code."
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "GET",
+          "type": "AWS_PROXY",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MerchantReceiptListHandler.Arn}:LIVE/invocations"
+          }
+        }
+      }
+    },
+    "/merchants/{mid}/receipts": {
+      "get": {
+        "tags": [
+          "receipts"
+        ],
+        "operationId": "GetReceiptsForSpecificMerchant",
+        "description": "Get a list of Slyp receipts for a specific merchant id. The encoded merchant of the authenticated JWT must have access to this specific merchant.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "mid",
+            "description": "The id of the merchant",
+            "example": "M-294792hf92791en09148924424",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "loyalty_id",
+            "description": "A comma seperated list of loyalty_ids associated to the receipts, one or many.",
+            "example": "1234567890098,99999999999",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of records to return in a single query. Default 50",
+            "schema": {
+              "type": "number"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MerchantReceiptListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. The request couldn't be parsed or validated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. The API key or JWT provided was invalid or not authorised for this resource or action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests. Too many requests hit the API too quickly. We recommend an exponential back-off of your requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Errors. Something went wrong within the Slyp source code."
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "GET",
+          "type": "AWS_PROXY",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MerchantReceiptListHandler.Arn}:LIVE/invocations"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      },
+      "securityDefinitions": {
+        "type": "apiKey",
+        "name": "auth",
+        "in": "header",
+        "x-amazon-apigateway-authtype": "custom",
+        "x-amazon-apigateway-authorizer": {
+          "type": "request",
+          "identitySource": "method.request.header.Authorization",
+          "authorizerUri": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthorizerFunctionArn}:LIVE/invocations",
+          "authorizerResultTtlInSeconds": 0
+        }
+      }
+    },
+    "schemas": {
+      "MerchantReceiptListResponse": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MerchantReceiptListEntry"
+            }
+          }
+        },
+        "required": [
+          "pagination",
+          "items"
+        ]
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "total_count": {
+            "type": "number",
+            "description": "The total number of receipts found given the search criteria.",
+            "example": 345
+          },
+          "prev": {
+            "type": "string",
+            "description": "The url to get prev page.",
+            "nullable": true
+          },
+          "next": {
+            "type": "string",
+            "description": "The url to get the next page.",
+            "nullable": true
+          }
+        },
+        "required": [
+          "total_count",
+          "prev",
+          "next"
+        ]
+      },
+      "MerchantReceiptListEntry": {
+        "type": "object",
+        "properties": {
+          "receipt": {
+            "$ref": "#/components/schemas/ReceiptListEntry"
+          },
+          "store": {
+            "$ref": "#/components/schemas/StoreListEntry"
+          }
+        },
+        "required": [
+          "receipt",
+          "store"
+        ]
+      },
+      "ReceiptListEntry": {
+        "type": "object",
+        "properties": {
+          "xref": {
+            "type": "string",
+            "description": "Slyp's external reference ID for the given receipt. This field cannot be set or edited. Generated by Slyp and can be used for lookups, updates, and deletes.",
+            "example": "R-X-q93785913f027492dn017e913ubc397139"
+          },
+          "external_id": {
+            "type": "string",
+            "example": "032901-ef32-42f2-e24353434353",
+            "description": "The external id for the given receipt."
+          },
+          "web_url": {
+            "type": "string",
+            "description": "A web receipt access URL for a given receipt.",
+            "example": "https://urldefense.proofpoint.com/v2/url?u=https-3A__receipts.slyp.com.au_WRA-2D2937549134hdf81634d163d975g2984&d=DwIGaQ&c=CePd48LRXglYJn3oGERKCSpmboa3dEVqExT-U29y8gU&r=xkUNHJ7tR0kAHddY-RuLwldM3sEdqQj60oIv86skwY2olQXmuLZUmfd1RrpIyvdq&m=uaOYxaSUtJnLH1tuvDI4bMeQT8WBbtNP1gCNBMUsH2Vr-yGUvyA6WWQ2CBSqYIKK&s=oqWy-OXJ0ZFt1w_CdqtV_82fhhHzuAB_idhaSH7_03Q&e="
+          },
+          "issued_at_timestamp": {
+            "type": "string",
+            "format": "date",
+            "example": "2022-05-14T05:46:24.994Z",
+            "description": "Timestamp in UTC of when the given receipt was issued according to the timezone of the store issuing the receipt."
+          },
+          "total_price": {
+            "type": "number",
+            "description": "The total price for this purchase, including all taxes and discounts.",
+            "example": 12.34
+          }
+        },
+        "required": [
+          "xref",
+          "external_id",
+          "web_url",
+          "issued_at_timestamp",
+          "total_price"
+        ]
+      },
+      "StoreListEntry": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the store that sent the given receipt.",
+            "readOnly": true,
+            "example": "Slyp's Store"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "String error message"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date",
+            "example": "2023-05-14T05:46:24.994",
+            "description": "Timestamp of the error"
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional error details string including further information or raw error responses"
+          }
+        },
+        "required": [
+          "message",
+          "timestamp",
+          "details"
+        ]
+      }
+    }
+  }
+}

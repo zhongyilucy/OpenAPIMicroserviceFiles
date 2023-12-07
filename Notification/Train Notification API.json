@@ -1,0 +1,74 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Train Notification API",
+    "description": "API to send push notifications to train travellers."
+  },
+  "paths": {
+    "/notifications": {
+      "post": {
+        "summary": "Send push notification to all travellers in a train.",
+        "operationId": "sendNotification",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PushNotification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PushNotification": {
+        "type": "object",
+        "properties": {
+          "trainNumber": {
+            "type": "integer",
+            "description": "Unique identifier of the train"
+          },
+          "message": {
+            "type": "string",
+            "description": "Message content for the push notification"
+          }
+        },
+        "required": [
+          "trainNumber",
+          "message"
+        ]
+      },
+      "NotificationResponse": {
+        "type": "object",
+        "properties": {
+          "received": {
+            "type": "integer",
+            "description": "Number of travellers who received the push notification"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,508 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Shipements API",
+    "description": "This API gets the list of shipments",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/logistics/Shipments": {
+      "get": {
+        "tags": [
+          "Shipments"
+        ],
+        "summary": "Retrieve all the shipments for the provided relationid",
+        "operationId": "GetShipments",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "relationid",
+            "description": "Your own relation identifier that is sent in the header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ShipmentViewmodelResponseListModel"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Shipments"
+        ],
+        "operationId": "CreateBooking",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateBookingInputmodel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CreateBookingViewmodel"
+            }
+          }
+        }
+      }
+    },
+    "/api/logistics/Shipments/{referenceNr}": {
+      "get": {
+        "tags": [
+          "Shipments"
+        ],
+        "summary": "Retrieve all the shipments for the provided relationid filtered by shipment identifier\r\nCan be filtered by requestmode (import or export) and shipmentId",
+        "operationId": "GetShipmentByNr",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "relationid",
+            "description": "Your own relation identifier that is sent in the header",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "referenceNr",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "mode",
+            "description": "Request type for import (10) or export (20)",
+            "type": "integer",
+            "enum": [
+              0,
+              10,
+              20
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ShipmentViewmodelResponseModel"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AgentForShipmentViewmodel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the agent",
+            "type": "string",
+            "example": "Test agent"
+          },
+          "email": {
+            "description": "The e-mailaddress of the agent",
+            "type": "string",
+            "example": "test@test.test"
+          },
+          "phoneNumber": {
+            "description": "The phonenumber of the agent",
+            "type": "string",
+            "example": "+311234567890"
+          }
+        }
+      },
+      "CountryViewmodel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the country",
+            "example": "Netherlands"
+          },
+          "shortCode": {
+            "type": "string",
+            "description": "The ISO countrycode",
+            "example": "NL"
+          }
+        }
+      },
+      "PortViewmodel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the port",
+            "example": "DUBAI"
+          },
+          "country": {
+            "$ref": "#/components/schemas/CountryViewmodel"
+          },
+          "locode": {
+            "type": "string",
+            "description": "The unique locationcode of the port, containing the countrycode and the portcode",
+            "example": "AEDXB"
+          }
+        }
+      },
+      "VesselViewmodel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the vessel",
+            "example": "DUBAI EXPRESS"
+          },
+          "voyageNumber": {
+            "type": "string",
+            "description": "The number of the vessel",
+            "example": "124E"
+          }
+        }
+      },
+      "CreateBookingInputmodel": {
+        "type": "object",
+        "properties": {
+          "requestMode": {
+            "description": "The requestmode of the booking, can be import (10) or export (20)\r\nRequestmode All (0) is not allowed for this type of booking",
+            "enum": [
+              0,
+              10,
+              20
+            ],
+            "type": "integer",
+            "example": 10
+          },
+          "shipper": {
+            "description": "The name of the shipper for an import booking",
+            "type": "string",
+            "example": "Shippers name"
+          },
+          "shipperEmail": {
+            "ype": "string"
+          },
+          "shipperTelephone": {
+            "type": "string"
+          },
+          "shipperReference": {
+            "type": "string"
+          },
+          "cargoReadyDate": {
+            "format": "date-time",
+            "description": "The date the cargo is ready for an import booking",
+            "type": "string",
+            "example": "2022-10-01"
+          },
+          "relation": {
+            "$ref": "#/definitions/RelationForCreateBookingInputmodel"
+          },
+          "sailing": {
+            "$ref": "#/definitions/SailingForCreateBookingInputmodel"
+          },
+          "goodsLocation": {
+            "$ref": "#/definitions/LocationForCreateBookingInputmodel"
+          },
+          "finalDestination": {
+            "$ref": "#/definitions/LocationForCreateBookingInputmodel"
+          },
+          "commodities": {
+            "description": "Information about the goods",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/CommodityForBookingInputmodel"
+            }
+          },
+          "transactions": {
+            "description": "Optional calculated transactions/rates",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/TransactionForBookingInputmodel"
+            }
+          }
+        }
+      },
+      "LocationForCreateBookingInputmodel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique PortId, can be retrieved with common/ports",
+            "format": "int32",
+            "example": 0
+          },
+          "address": {
+            "type": "string",
+            "description": "Optional address for pickup or doordelivery",
+            "example": ""
+          }
+        }
+      },
+      "RelationForCreateBookingInputmodel": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "integer",
+            "description": "The CompanyID retrieved by the Logistics/CheckAccount call",
+            "format": "int32",
+            "example": 10000
+          },
+          "contactId": {
+            "type": "integer",
+            "description": "The ContactId retrieved by the Logistics/CheckAccount call",
+            "format": "int32",
+            "example": 20000
+          },
+          "shippersReference": {
+            "type": "string",
+            "description": "Your reference number for the booking",
+            "example": "TEST-10000"
+          }
+        }
+      },
+      "SailingForCreateBookingInputmodel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique SailingID the booking is for",
+            "format": "int32",
+            "example": 10
+          },
+          "portOfDischargeId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ShipmentItemForTrackTraceViewmodel": {
+        "type": "object",
+        "properties": {
+          "flag": {
+            "type": "string",
+            "description": "The BL number of the booking",
+            "example": ""
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the port of loading",
+            "example": "ROTTERDAM"
+          },
+          "locode": {
+            "type": "string",
+            "description": "The locode of the port of loading",
+            "example": "NLRTM"
+          },
+          "subtitle": {
+            "type": "string"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/ContactForTrackTraceViewmodel"
+          },
+          "shipmentSummaryItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LabelDataViewmodel"
+            }
+          },
+          "statusItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LabelDataViewmodel"
+            }
+          }
+        }
+      },
+      "ShipmentType": {
+        "type": "integer",
+        "format": "int32",
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "ShipmentTypeViewmodel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ShipmentType"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "ShipmentViewmodel": {
+        "type": "object",
+        "properties": {
+          "dateOfBooking": {
+            "type": "string",
+            "description": "The date and time the booking is created",
+            "format": "date-time"
+          },
+          "billOfLading": {
+            "type": "string",
+            "description": "The number of the bill of lading",
+            "example": "32037693"
+          },
+          "number": {
+            "type": "string",
+            "description": "The number of the booking",
+            "example": "32037693"
+          },
+          "ets": {
+            "type": "string",
+            "description": "The estimated date and time of sailing",
+            "format": "date-time"
+          },
+          "eta": {
+            "type": "string",
+            "description": "the estimated date and time of arrival",
+            "format": "date-time"
+          },
+          "referenceNr": {
+            "type": "string",
+            "description": "The provided reference number of the shipment",
+            "example": "1234567890"
+          },
+          "isNomination": {
+            "type": "boolean",
+            "description": "Is true when the shipment is a nomination",
+            "example": false
+          },
+          "terms": {
+            "type": "string",
+            "description": "Contains the terms FOB or ExWorks or empty",
+            "example": "FOB"
+          },
+          "cargoReadyDate": {
+            "type": "string",
+            "description": "Contains the date and time the cargo is ready",
+            "format": "date-time"
+          },
+          "voyageNumber": {
+            "type": "string",
+            "description": "Contains the voyagenumber of the shipment",
+            "example": "208S"
+          },
+          "exchangeRate": {
+            "type": "number",
+            "description": "Contains the exchangerate between the currencies of the shipment",
+            "format": "double",
+            "example": 1.12
+          },
+          "totalVolumeInCbm": {
+            "type": "number",
+            "description": "Contains the total volume in cubic meters of the shipment",
+            "format": "double",
+            "example": 6
+          },
+          "totalWeightInKg": {
+            "type": "number",
+            "description": "The total weight of the shipment in KG",
+            "format": "double",
+            "example": 5000
+          },
+          "totalNumberOfPieces": {
+            "type": "integer",
+            "description": "The total number of items in the shipment",
+            "format": "int32",
+            "example": 5
+          },
+          "nominationNumber": {
+            "type": "string",
+            "description": "Contains the bookingnummer or nominationnumber",
+            "example": "32018146"
+          },
+          "status": {
+            "type": "string",
+            "description": "Contains ACTIVE or CANCELED",
+            "example": "ACTIVE"
+          },
+          "portOfReceipt": {
+            "$ref": "#/components/schemas/PortViewmodel"
+          },
+          "portOfLoading": {
+            "$ref": "#/components/schemas/PortViewmodel"
+          },
+          "transshipmentPort": {
+            "$ref": "#/components/schemas/PortViewmodel"
+          },
+          "portOfDischarge": {
+            "$ref": "#/components/schemas/PortViewmodel"
+          },
+          "placeOfDelivery": {
+            "$ref": "#/components/schemas/PortViewmodel"
+          },
+          "vessel": {
+            "$ref": "#/components/schemas/VesselViewmodel"
+          },
+          "shipmentType": {
+            "$ref": "#/components/schemas/ShipmentTypeViewmodel"
+          },
+          "transshipmentInfo": {
+            "$ref": "#/components/schemas/ShipmentViewmodel"
+          },
+          "exportShipmentExtraInfo": {
+            "$ref": "#/components/schemas/ExportShipmentExtraInfoForShipmentViewmodel"
+          },
+          "importShipmentExtraInfo": {
+            "$ref": "#/components/schemas/ImportShipmentExtraInfoForShipmentViewmodel"
+          },
+          "containers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContainerViewmodel"
+            }
+          }
+        }
+      },
+      "ShipmentViewmodelResponseListModel": {
+        "type": "object",
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/MessageHeader"
+          },
+          "payload": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShipmentViewmodel"
+            }
+          }
+        }
+      },
+      "ShipmentViewmodelResponseModel": {
+        "type": "object",
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/MessageHeader"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ShipmentViewmodel"
+          }
+        }
+      }
+    }
+  }
+}

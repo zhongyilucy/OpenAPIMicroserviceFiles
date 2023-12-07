@@ -1,0 +1,85 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Audio Catalog",
+    "description": "A catalog of audio items"
+  },
+  "paths": {
+    "/audio": {
+      "get": {
+        "summary": "Get a list of audio items",
+        "description": "Returns a list of all available audio items",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new audio item",
+        "description": "Creates a new audio item in the catalog",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AudioItem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AudioItem": {
+        "type": "object",
+        "properties": {
+          "artistName": {
+            "type": "string"
+          },
+          "trackTitle": {
+            "type": "string"
+          },
+          "albumTitle": {
+            "type": "string"
+          },
+          "trackNumber": {
+            "type": "integer"
+          },
+          "year": {
+            "type": "integer"
+          },
+          "numReviews": {
+            "type": "integer"
+          },
+          "numCopiesSold": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "artistName",
+          "trackTitle",
+          "albumTitle",
+          "trackNumber",
+          "year",
+          "numReviews",
+          "numCopiesSold"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/GVARUNVENKAT_1/ABC/1.0.0"
+    }
+  ]
+}

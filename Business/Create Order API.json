@@ -1,0 +1,174 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "http://104.248.80.204/api",
+      "description": "Production server (uses live data)"
+    }
+  ],
+  "info": {
+    "description": "This is a simple API that creates orders",
+    "version": "1.0.0",
+    "title": "Create Order API",
+    "contact": {
+      "email": "yusufakyol2597@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "orders",
+      "description": "Secured Admin-only calls"
+    }
+  ],
+  "paths": {
+    "/orders/create": {
+      "post": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "adds a new order",
+        "operationId": "addOrder",
+        "description": "Adds an order to the system",
+        "responses": {
+          "201": {
+            "description": "order created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItem"
+              }
+            }
+          },
+          "description": "Inventory item to add"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OrderItem": {
+        "type": "object",
+        "required": [
+          "owner",
+          "phone_number",
+          "payment_type",
+          "notes",
+          "delivery_fee",
+          "subtotal_fee",
+          "payment_cost",
+          "order_time"
+        ],
+        "properties": {
+          "owner": {
+            "type": "string",
+            "example": "Yusuf Akyol"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": 90533333333
+          },
+          "payment_type": {
+            "type": "string",
+            "example": "Card"
+          },
+          "notes": {
+            "type": "string",
+            "example": "Note.."
+          },
+          "delivery_fee": {
+            "type": "number",
+            "example": 2
+          },
+          "subtotal_fee": {
+            "type": "number",
+            "example": 20
+          },
+          "payment_cost": {
+            "type": "number",
+            "example": 2.5
+          },
+          "order_time": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2016-08-29T09:12:33.001Z"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Burger"
+                },
+                "amount": {
+                  "type": "integer",
+                  "example": 2
+                },
+                "price": {
+                  "type": "number",
+                  "example": 20
+                },
+                "sidedishes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "Knoflooksaus"
+                      },
+                      "amount": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": 2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Location": {
+        "required": [
+          "district",
+          "postal_code",
+          "street"
+        ],
+        "properties": {
+          "district": {
+            "type": "string",
+            "example": 7312
+          },
+          "postal_code": {
+            "type": "string",
+            "example": "LP"
+          },
+          "street": {
+            "type": "string",
+            "example": "Street 1"
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

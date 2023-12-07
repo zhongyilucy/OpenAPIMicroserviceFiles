@@ -1,0 +1,83 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Send Email API",
+    "description": "This API sends emails to users",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.11"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "https://petstore3.swagger.io/api/v3"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Email - Email",
+      "description": "Access to Petstore orders"
+    }
+  ],
+  "paths": {
+    "/email/": {
+        "post": {
+          "deprecated": false,
+          "description": "Send an email",
+          "responses": {
+            "200": {
+              "description": "response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "properties": {
+                      "foo": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "default": {
+              "description": "unexpected error"
+            }
+          },
+          "summary": "",
+          "tags": [
+            "Email - Email"
+          ],
+          "requestBody": {
+            "description": "",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "foo": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Language Identification (Prediction)",
+    "description": "Automatic language detection for any texts. Supports over 150 languages.",
+    "contact": {
+      "name": "Forum",
+      "url": "https://rapidapi.com/BigLobster/api/language-identification-prediction/discussions"
+    },
+    "version": "1.0.0",
+    "x-apisguru-categories": [
+      "text"
+    ],
+    "x-logo": {
+      "url": "https://api.apis.guru/v2/cache/logo/https_twitter.com_Rapid_API_profile_image.jpeg"
+    },
+    "x-origin": [
+      {
+        "format": "swagger",
+        "url": "https://raw.githubusercontent.com/BigLobsterito/apis/master/language-identification-swagger.yaml",
+        "version": "2.0"
+      }
+    ],
+    "x-providerName": "rapidapi.com",
+    "x-serviceName": "language-identification"
+  },
+  "externalDocs": {
+    "url": "https://rapidapi.com/BigLobster/api/language-identification-prediction/details"
+  },
+  "servers": [
+    {
+      "url": "https://language-identification-prediction.p.rapidapi.com/v1/"
+    }
+  ],
+  "paths": {
+    "/recognize-language/": {
+      "post": {
+        "summary": "Recognize Language",
+        "parameters": [
+          {
+            "name": "X-RapidAPI-Host",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "language-identification-prediction.p.rapidapi.com"
+            }
+          },
+          {
+            "name": "X-RapidAPI-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "text"
+                ],
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "text"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "text"
+                ],
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "text"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

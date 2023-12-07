@@ -1,0 +1,973 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "contact": {
+      "email": "quality@inform-software.com"
+    },
+    "description": "This is a description of API to manage employees for GroundStar",
+    "title": "GroundStar WebServices - Employees API",
+    "version": "2.8.2"
+  },
+  "servers": [
+    {
+      "url": "{Schema}://{Server}:{Port}/rest/{Context}/v2",
+      "variables": {
+        "Schema": {
+          "default": "http",
+          "enum": [
+            "http",
+            "https"
+          ]
+        },
+        "Server": {
+          "default": "127.0.0.1",
+          "description": "Server name or ip address, on which the webservices listening."
+        },
+        "Port": {
+          "default": "8180",
+          "description": "Port on which the webservices listening."
+        },
+        "Context": {
+          "default": "staffshift",
+          "description": "Context, which is configured for the webservices."
+        }
+      },
+      "description": "The server address where the webservices are running."
+    }
+  ],
+  "paths": {
+    "/employees": {
+      "get": {
+        "parameters": [
+          {
+            "description": "Default department of the employee must match the ID provided in the query.",
+            "in": "query",
+            "name": "DepartmentId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 20
+            }
+          },
+          {
+            "description": "Search for employees with the given ExternalAuthenticationId",
+            "in": "query",
+            "name": "ExternalAuthenticationId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 50
+            }
+          },
+          {
+            "description": "Default work area of the employee must match the ID provided in the query.",
+            "in": "query",
+            "name": "WorkAreaId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 20
+            }
+          },
+          {
+            "description": "Search for employees with the given StaffId",
+            "in": "query",
+            "name": "StaffId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 50
+            }
+          },
+          {
+            "description": "relevant backend server, which should be requested for data.  If no configuration is available, the default server will be called.",
+            "in": "header",
+            "name": "StationId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/EmployeeListResponse",
+            "description": "successful operation"
+          },
+          "204": {
+            "$ref": "#/components/responses/EmptyResponse"
+          },
+          "206": {
+            "$ref": "#/components/responses/EmployeeListResponse",
+            "description": "successful operation, but the output was limited to maximum number of result models. Further models could be requested by url, provided in Link header with rel=next"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "503": {
+            "$ref": "#/components/responses/ErrorResponse",
+            "description": "The backend system is temporarily not reachable."
+          }
+        },
+        "tags": [
+          "employees"
+        ],
+        "summary": "Get all known employees"
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "relevant backend server, which should be requested for data.  If no configuration is available, the default server will be called.",
+            "in": "header",
+            "name": "StationId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 20
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/EmployeeListResponse",
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Shows an internal, or logical error message. E.g. a shift has to be checked in, before a task state can be processed.",
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "415": {
+            "description": "In case of an invalid or missing header Content-Type."
+          },
+          "500": {
+            "description": "invalid operation. An unexpected error has occurred. Error details are provided",
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "503": {
+            "description": "The backend system is temporarily not reachable.",
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "tags": [
+          "employees"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/EmployeeList"
+        },
+        "summary": "Add new employee(s)."
+      }
+    },
+    "/employees/{Id}": {
+      "get": {
+        "parameters": [
+          {
+            "description": "Unique employee id of the employee to get",
+            "in": "path",
+            "name": "Id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 50
+            }
+          },
+          {
+            "description": "relevant backend server, which should be requested for data.  If no configuration is available, the default server will be called.",
+            "in": "header",
+            "name": "StationId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/EmployeeResponse"
+          },
+          "204": {
+            "$ref": "#/components/responses/EmptyResponse"
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse",
+            "description": "invalid operation. An unexpected error has occurred. Error details are provided"
+          },
+          "503": {
+            "$ref": "#/components/responses/ErrorResponse",
+            "description": "The backend system is temporarily not reachable."
+          }
+        },
+        "tags": [
+          "employees"
+        ],
+        "summary": "Get employee details"
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "Unique employee id retrieved from an Employee data type.",
+            "in": "path",
+            "name": "Id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 50
+            }
+          },
+          {
+            "description": "relevant backend server, which should be requested for data.  If no configuration is available, the default server will be called.",
+            "in": "header",
+            "name": "StationId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/EmployeeResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "415": {
+            "description": "In case of an invalid or missing header Content-Type."
+          },
+          "500": {
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "503": {
+            "$ref": "#/components/responses/ErrorResponse",
+            "description": "The backend system is temporarily not reachable."
+          }
+        },
+        "tags": [
+          "employees"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Employee"
+              }
+            }
+          },
+          "description": "Employee which should be inserted.",
+          "required": true
+        },
+        "summary": "Update employee data"
+      },
+      "put": {
+        "parameters": [
+          {
+            "description": "relevant backend server, which should be requested for data.  If no configuration is available, the default server will be called.",
+            "in": "header",
+            "name": "StationId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Shows an internal, or logical error message. E.g. a shift has to be checked in, before a task state can be processed.",
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "415": {
+            "description": "In case of an invalid or missing header Content-Type."
+          },
+          "500": {
+            "description": "Invalid operation. An unexpected error has occurred. Error details are provided.",
+            "$ref": "#/components/responses/ErrorResponse"
+          },
+          "503": {
+            "description": "The backend system is temporarily not reachable.",
+            "$ref": "#/components/responses/ErrorResponse"
+          }
+        },
+        "tags": [
+          "shifts"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SwipeEvent"
+        },
+        "summary": "Put a swipe event for a specific shift."
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Attendance": {
+        "type": "object",
+        "required": [
+          "FirstName",
+          "ShiftDate",
+          "StaffId",
+          "StationId",
+          "Surname",
+          "Timestamps"
+        ],
+        "properties": {
+          "CustomerExtensions": {
+            "description": "Section for project specific extensions. If used, the contents must be defined within the project and the processing must be implemented separately. If returned in a standard API, there will be no contents",
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "CardId": {
+            "description": "Card number for swipe cards",
+            "type": "string"
+          },
+          "FirstName": {
+            "description": "First name of the employee",
+            "type": "string"
+          },
+          "ShiftDate": {
+            "description": "Date of (planned) shift",
+            "format": "date",
+            "example": [
+              "2019-05-16+02:00",
+              "2019-05-16Z"
+            ],
+            "type": "string"
+          },
+          "StaffId": {
+            "description": "Unique Employee ID",
+            "type": "string"
+          },
+          "StationId": {
+            "description": "Specific station where an employee is scheduled to",
+            "type": "string"
+          },
+          "Surname": {
+            "description": "Family name of the employee",
+            "type": "string"
+          },
+          "Timestamps": {
+            "items": {
+              "$ref": "#/components/schemas/Timestamp"
+            },
+            "type": "array"
+          }
+        }
+      },
+      "Employee": {
+        "type": "object",
+        "required": [
+          "FirstName",
+          "StaffId",
+          "Surname"
+        ],
+        "properties": {
+          "CustomerExtensions": {
+            "description": "Section for project specific extensions. If used, the contents must be defined within the project and the processing must be implemented separately. If returned in a standard API, there will be no contents",
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "CardId": {
+            "description": "ID of swipe card",
+            "type": "string",
+            "maxLength": 50
+          },
+          "DefaultDepartmentId": {
+            "description": "Default department for employee",
+            "type": "string",
+            "maxLength": 20
+          },
+          "DefaultStationId": {
+            "description": "Default station for employee",
+            "type": "string",
+            "maxLength": 20
+          },
+          "DefaultWorkAreaId": {
+            "description": "Default Work area for employee",
+            "type": "string",
+            "maxLength": 20
+          },
+          "ExternalAuthenticationId": {
+            "description": "authentication id which could be used, for 3rd party authentication.",
+            "type": "string",
+            "maxLength": 50
+          },
+          "FirstName": {
+            "description": "First name(s) of employee",
+            "type": "string",
+            "maxLength": 40
+          },
+          "Function": {
+            "description": "Optional (Default) function of the Employee. Must correspond between Roster and GS RealTime!",
+            "type": "string",
+            "maxLength": 20
+          },
+          "Id": {
+            "description": "Unique employee identifier GS RealTime",
+            "type": "string",
+            "maxLength": 50
+          },
+          "PhoneNumber": {
+            "description": "Phone number",
+            "type": "string",
+            "maxLength": 50
+          },
+          "Qualifications": {
+            "description": "A list of employee qualifications for one shift. The strings must correspond between roster system and GS RealTime",
+            "type": "array",
+            "items": {
+              "description": "Qualification",
+              "type": "string",
+              "maxLength": 20
+            }
+          },
+          "Remark": {
+            "description": "Any human readable text. May be empty",
+            "type": "string",
+            "maxLength": 50
+          },
+          "ShortName": {
+            "description": "Employees shortname/nickname.",
+            "type": "string",
+            "maxLength": 50
+          },
+          "StaffId": {
+            "description": "Staff ID",
+            "type": "string",
+            "maxLength": 50
+          },
+          "StationId": {
+            "description": "Relevant Station in case of multiple stations are in use.",
+            "type": "string",
+            "maxLength": 20
+          },
+          "Surname": {
+            "description": "The given name of an employee.",
+            "type": "string",
+            "maxLength": 50
+          }
+        }
+      },
+      "Shift": {
+        "type": "object",
+        "description": "Either EmployeeGroup or DepartmentId is required!",
+        "required": [
+          "FirstName",
+          "Intervals",
+          "Qualifications",
+          "ShiftDate",
+          "StaffId",
+          "Surname"
+        ],
+        "properties": {
+          "CustomerExtensions": {
+            "description": "Section for project specific extensions. If used, the contents must be defined within the project and the processing must be implemented separately. If returned in a standard API, there will be no contents",
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "CardId": {
+            "description": "Unique card number of employee",
+            "type": "string",
+            "maxLength": 50
+          },
+          "DepartmentId": {
+            "description": "Roster group of employee. Must correspond between roster system and GS RealTime. Can be overwritten in each shift interval.",
+            "type": "string",
+            "maxLength": 20
+          },
+          "EmployeeGroup": {
+            "description": "DEPRECATED: use DepartmentId instead!\nRoster group of employee. Must correspond between roster system and GS RealTime",
+            "type": "string",
+            "deprecated": true
+          },
+          "FirstName": {
+            "description": "First name of the employee",
+            "type": "string",
+            "maxLength": 40
+          },
+          "Function": {
+            "description": "General employee function for this shift. Must correspond between Roster and GS RealTime. Can be overwritten in each shift interval.\n REQUIRED: In future Releases",
+            "type": "string",
+            "maxLength": 20
+          },
+          "Intervals": {
+            "description": "List of all shift intervals for one shift",
+            "items": {
+              "$ref": "#/components/schemas/ShiftInterval"
+            },
+            "type": "array"
+          },
+          "Qualifications": {
+            "description": "A list of employee’s qualifications for one shift. The strings must correspond between roster system and GS RealTime.\nmax: 20 chars",
+            "items": {
+              "type": "string",
+              "maxLength": 20
+            },
+            "type": "array"
+          },
+          "ShiftCode": {
+            "description": "Textual description for shifts. Can be overwritten in each shift interval.",
+            "type": "string",
+            "maxLength": 200
+          },
+          "ShiftDate": {
+            "description": "Shift date. There can be only one shift per day.",
+            "format": "date",
+            "type": "string"
+          },
+          "StaffId": {
+            "description": "Employee’s staff ID (unique as of roster system)",
+            "type": "string",
+            "maxLength": 50
+          },
+          "StationId": {
+            "description": "Specific station the employee is scheduled to for this shift. If no station is set, the default station is applied. Can be overwritten in each shift interval.",
+            "type": "string",
+            "maxLength": 20
+          },
+          "SubWorkAreaId": {
+            "description": "SubWorkArea of the shift provided by the roster system. Can be overwritten in each shift interval. Must correspond between roster system and GS RealTime.",
+            "type": "string",
+            "maxLength": 20
+          },
+          "Surname": {
+            "description": "Family name of the employee",
+            "type": "string",
+            "maxLength": 50
+          },
+          "Team": {
+            "description": "Team identifier for the shift. Can be overwritten in each shift interval.",
+            "type": "string",
+            "maxLength": 20
+          },
+          "WorkAreaId": {
+            "description": "Work Area of the shift provided by roster system. Requires a flexible mapping from e.g. employee group and/or function to department. Can be overwritten in each shift interval. If no WorkAreaId is given, neither in shift nor in shift interval, the default WorkAreaId for the employee is taken. Does not work, if employee is not already configured in the system.",
+            "type": "string",
+            "maxLength": 20
+          }
+        }
+      },
+      "ShiftInterval": {
+        "type": "object",
+        "description": "List of all shift intervals for one shift",
+        "required": [
+          "StartTime",
+          "EndTime",
+          "Classification"
+        ],
+        "properties": {
+          "CustomerExtensions": {
+            "description": "Section for project specific extensions. If used, the contents must be defined within the project and the processing must be implemented separately. If returned in a standard API, there will be no contents",
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "Classification": {
+            "description": "Classification of interval.",
+            "enum": [
+              "Operational",
+              "Non-Operational",
+              "Absence"
+            ],
+            "type": "string"
+          },
+          "DepartmentId": {
+            "description": "Relevant department of staff for the shift interval",
+            "type": "string",
+            "maxLength": 20
+          },
+          "Description": {
+            "description": "Additional textual information to classification",
+            "type": "string",
+            "maxLength": 50
+          },
+          "EndTime": {
+            "description": "Planned end time of interval",
+            "example": [
+              "2019-05-16T11:23:00+02:00",
+              "2019-05-16T11:23:00Z"
+            ],
+            "format": "date-time",
+            "type": "string"
+          },
+          "Function": {
+            "description": "Employee function for this interval. At least the first interval or the global function attribute must be set.",
+            "type": "string",
+            "maxLength": 20
+          },
+          "ShiftCode": {
+            "description": "Textual description for shifts. Possibility to override the general shift code for a single interval",
+            "type": "string",
+            "maxLength": 200
+          },
+          "StartTime": {
+            "description": "Planned start time of interval",
+            "example": [
+              "2019-05-16T11:23:00+02:00",
+              "2019-05-16T11:23:00Z"
+            ],
+            "format": "date-time",
+            "type": "string"
+          },
+          "StationId": {
+            "description": "Station of employee for the shift interval",
+            "type": "string",
+            "maxLength": 20
+          },
+          "SubWorkAreaId": {
+            "description": "SubWorkArea of the shift interval provided by the roster system",
+            "type": "string",
+            "maxLength": 20
+          },
+          "Team": {
+            "description": "Team identifier for the shift interval",
+            "type": "string",
+            "maxLength": 20
+          },
+          "TimeType": {
+            "description": "DEPRECATED: not supported anymore and will be removed in future releases.\nType of interval:normal_time, planned_overtime, … (The time type is only transferred in uplink telegrams, if a change in GS RealTime caused the input of a time type. If it is transferred from Roster to GS RealTime, the value is currently ignored.)",
+            "type": "string",
+            "deprecated": true,
+            "example": [
+              "NORMAL",
+              "NORMAL_NO_BREAK",
+              "OT",
+              "OT_NO_BREAK",
+              "TRADE",
+              "TRADE_NO_BREAK"
+            ]
+          },
+          "WorkAreaId": {
+            "description": "Work Area for this shift interval",
+            "type": "string",
+            "maxLength": 20
+          }
+        }
+      },
+      "SwipeEvent": {
+        "type": "object",
+        "required": [
+          "SwipeMode",
+          "Id"
+        ],
+        "properties": {
+          "CustomerExtensions": {
+            "description": "Section for project specific extensions. If used, the contents must be defined within the project and the processing must be implemented separately. If returned in a standard API, there will be no contents",
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "CardId": {
+            "description": "Card ID / Card Number of the employee. Unique per station. Only the Card No attribute is checked",
+            "type": "string",
+            "maxLength": 50
+          },
+          "Id": {
+            "description": "Unique identification key of the employee per station. Depending on the possibilities, it can be the Host ID or Short Name/ID attribute. Both are checked in the order Host ID, Short Name/ID. The first matching counts",
+            "type": "string",
+            "maxLength": 50
+          },
+          "ReasonCode": {
+            "description": "'It is possible to send a reason code with the event. For example, if the employee is checking in late or if the employee needs the check out earlier for some relevant reason to be registered on the system. The sent reason codes needs to correspond with the ones hold in the GS RealTime DB table TB_REASONCODE.ID.'",
+            "type": "string",
+            "maxLength": 20
+          },
+          "StationId": {
+            "description": "Station ID (IATA code) of the station, where the employee works. In a single-station setup, the interface falls back to the system's default station when it is empty or left out",
+            "type": "string",
+            "maxLength": 20
+          },
+          "SwipeMode": {
+            "description": "Depending on the swipe mode GS RealTime activates or finishes the shift of the given employee",
+            "enum": [
+              "In",
+              "Out",
+              "InOut"
+            ],
+            "type": "string"
+          },
+          "Timestamp": {
+            "description": "Actual start or end time of the employee shift. When receiving this event, GS RealTime will set the shift to „Active „or „Finished„ with the given time as actual start or end shift. This information is optional. If this information is not sent via interface, GS RealTime will start or finish the shift at the system current time.\n This is actually not recommended as in case of failure or late processing of messages, the start or end time will be not correspond to the swipe time.",
+            "example": [
+              "2019-05-16T11:23:00+02:00",
+              "2019-05-16T11:23:00Z"
+            ],
+            "format": "date-time",
+            "type": "string"
+          }
+        }
+      },
+      "Timestamp": {
+        "type": "object",
+        "required": [
+          "Event"
+        ],
+        "properties": {
+          "ActualTime": {
+            "description": "Time of event. Sent for already started or finished events",
+            "example": [
+              "2019-05-16T11:23:00+02:00",
+              "2019-05-16T11:23:00Z"
+            ],
+            "format": "date-time",
+            "type": "string"
+          },
+          "Description": {
+            "description": "Additional textual information. Only sent, if the belonging time segment has a description",
+            "type": "string"
+          },
+          "EstimatedTime": {
+            "description": "Estimated time. Sent only for shift related events (In, ChangeShift, Out). Represents the timestamp set by the dispatcher",
+            "example": [
+              "2019-05-16T11:23:00+02:00",
+              "2019-05-16T11:23:00Z"
+            ],
+            "format": "date-time",
+            "type": "string"
+          },
+          "Event": {
+            "description": "identifies the event for the time stamp",
+            "enum": [
+              "break-end",
+              "break-start",
+              "in",
+              "non-operational-end",
+              "non-operational-start",
+              "out"
+            ],
+            "type": "string"
+          },
+          "ReasonCode": {
+            "description": "Additional information (as pre-defined code). BREAK, SICK, OT, Absence, NT, …\nIs sent, if reasonCode is set in GS RealTime. Must be synchronized between Roster and GS RealTime",
+            "type": "string",
+            "maxLength": 20
+          },
+          "ScheduledTime": {
+            "description": "Scheduled time. Sent only for shift related events (In, ChangeShift, Out). Represents the time set by the Roster System",
+            "example": [
+              "2019-05-16T11:23:00+02:00",
+              "2019-05-16T11:23:00Z"
+            ],
+            "format": "date-time",
+            "type": "string"
+          },
+          "TerminalId": {
+            "description": "ID of swipe terminal. Sent only, if TerminalId of corresponding swipe is available",
+            "type": "string",
+            "maxLength": 20
+          }
+        }
+      }
+    },
+    "responses": {
+      "EmptyResponse": {
+        "description": "successful operation, but no result data available.",
+        "headers": {
+          "breadcrumbId": {
+            "description": "Unique RequestId which could be used for debugging.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Shows an internal, or logical error message. E.g. a precondition failed",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "description": "Short error text",
+              "example": "System is temporary not available. (Maintenance? / Rollover?)"
+            }
+          }
+        },
+        "headers": {
+          "breadcrumbId": {
+            "description": "Unique RequestId which could be used for debugging.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "x-gs-error-number": {
+            "description": "Will contain an internal error id which could be used for troubleshooting.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "x-gs-error-remark": {
+            "description": "Short error description.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "x-gs-error-severity": {
+            "description": "Error severity in case an error occurred. Possible values are: None, Info, Warning, Error, Temporary",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "None",
+                "Info",
+                "Warning",
+                "Error",
+                "Temporary"
+              ]
+            }
+          }
+        }
+      },
+      "AttendanceListResponse": {
+        "description": "Shift specific timestamps",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Attendance"
+              }
+            }
+          }
+        },
+        "headers": {
+          "breadcrumbId": {
+            "description": "Unique RequestId which could be used for debugging.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "x-gs-available-objects": {
+            "description": "Number of max. available objects",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "EmployeeListResponse": {
+        "description": "Employee specific attributes",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Employee"
+              }
+            }
+          }
+        },
+        "headers": {
+          "breadcrumbId": {
+            "description": "Unique RequestId which could be used for debugging.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "Link": {
+            "description": "Header which is needed for navigation or pagination. \nA reference to the linked resource is identified by its id, if the response contains a **LinkId** attribute, e.g. FlightLinkId,\nFor pagination, the header contains entries with rel=\"next\" or \"prev\" value",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "x-gs-available-objects": {
+            "description": "Number of max. available objects",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "EmployeeResponse": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Employee"
+            }
+          }
+        },
+        "description": "successful operation"
+      }
+    },
+    "requestBodies": {
+      "EmployeeList": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Employee"
+              }
+            }
+          }
+        },
+        "description": "Employee which should be inserted.",
+        "required": true
+      },
+      "RosterMessage": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Shift"
+              }
+            }
+          }
+        },
+        "description": "Shift telegram which should be inserted or updated.",
+        "required": true
+      },
+      "SwipeEvent": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SwipeEvent"
+            }
+          }
+        },
+        "required": true
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "tags": [
+    {
+      "description": "Everything about your roster data",
+      "name": "shifts"
+    },
+    {
+      "description": "Everything about your employees",
+      "name": "employees"
+    }
+  ],
+  "security": [
+    {},
+    {
+      "BearerAuth": []
+    }
+  ]
+}

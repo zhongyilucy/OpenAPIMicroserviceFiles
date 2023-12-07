@@ -1,0 +1,136 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Romania postal codes API",
+    "version": "1.2.2",
+    "title": "RO-postalcodes",
+    "contact": {
+      "email": "vlad.iancu@decathlon.com"
+    }
+  },
+  "servers": [
+    {
+      "description": "Base Path",
+      "url": "https://ro-postalcode.decathlon.net/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "postalCode",
+      "description": "Postal code operations"
+    }
+  ],
+  "paths": {
+    "/postalcode": {
+      "get": {
+        "tags": [
+          "postalCode"
+        ],
+        "summary": "search postalcodes",
+        "operationId": "getPostalCode",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "county",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minimum": 1
+            },
+            "description": "County name"
+          },
+          {
+            "in": "query",
+            "name": "city",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minimum": 1
+            },
+            "description": "City name"
+          },
+          {
+            "in": "query",
+            "name": "street",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minimum": 1
+            },
+            "description": "Street search string (can be splitted by space. e.g. Iuliu%20Maniu)"
+          },
+          {
+            "in": "query",
+            "name": "number",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minimum": 1
+            },
+            "description": "Address number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all postal codes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PostalCode"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      
+      "PostalCode": {
+        "type": "object",
+        "properties": {
+          "postalcode": {
+            "type": "integer",
+            "example": 200000
+          },
+          "from": {
+            "type": "string",
+            "example": "1A"
+          },
+          "from_no": {
+            "type": "integer",
+            "example": 1
+          },
+          "to": {
+            "type": "string",
+            "example": "5A"
+          },
+          "to_no": {
+            "type": "integer",
+            "example": 5
+          },
+          "prefix": {
+            "type": "string",
+            "example": ""
+          },
+          "sufix": {
+            "type": "string",
+            "example": "A"
+          },
+          "paritate": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      }
+    }
+  }
+}

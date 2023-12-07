@@ -1,0 +1,172 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "Get_JobRequisition_ID",
+    "description":"This API gets the requisition of jobs in the system.",
+    "x-ibm-name": "get-jobrequisition-id"
+  },
+  "components": {
+    "schemas": {
+      "GetRequisition": {
+        "type": "object",
+        "properties": {
+          "RequisitionNumber": {
+            "type": "string"
+          },
+          "RecruitingType": {
+            "type": "string"
+          },
+          "Title": {
+            "type": "string"
+          },
+          "HiringManagerId": {
+            "type": "string"
+          },
+          "RecruiterId": {
+            "type": "string"
+          },
+          "StateId": {
+            "type": "number"
+          },
+          "PrimaryLocationId": {
+            "type": "number"
+          },
+          "PhaseId": {
+            "type": "number"
+          },
+          "UnlimitedOpenings": {
+            "type": "string"
+          },
+          "NumberOfOpenings": {
+            "type": "string"
+          },
+          "JobFunction": {
+            "type": "string"
+          },
+          "RequisitionType": {
+            "type": "string"
+          },
+          "PhaseName": {
+            "type": "string"
+          },
+          "StateName": {
+            "type": "string"
+          },
+          "InternalShortDescription": {
+            "type": "string"
+          },
+          "InternalBriefDescription": {
+            "type": "string"
+          },
+          "ExternalShortDescription": {
+            "type": "string"
+          },
+          "ExternalBriefDescription": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "description": " "
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
+  "paths": {
+    "/GetRequisition/{RequisitionNumber}": {
+      "get": {
+        "tags": [
+          "GetRequisition"
+        ],
+        "summary": "Retrieve GetRequisition by ID",
+        "operationId": "GetRequisition.findById",
+        "parameters": [
+          {
+            "name": "RequisitionNumber",
+            "in": "path",
+            "description": "GetRequisition id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetRequisition"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-ibm-configuration": {
+    "gateway": "datapower-api-gateway",
+    "type": "rest",
+    "phase": "realized",
+    "enforced": true,
+    "testable": true,
+    "cors": {
+      "enabled": true
+    },
+    "assembly": {
+      "execute": [
+        {
+          "invoke": {
+            "title": "Invoke flow",
+            "version": "2.0.0",
+            "verb": "keep",
+            "target-url": "$(app-connect-designer-url)$(request.path)",
+            "follow-redirects": false,
+            "timeout": 60,
+            "parameter-control": {
+              "type": "blocklist"
+            },
+            "header-control": {
+              "type": "blocklist"
+            },
+            "inject-proxy-headers": true,
+            "username": "$(app-connect-designer-username)",
+            "password": "$(app-connect-designer-password)"
+          }
+        }
+      ]
+    },
+    "properties": {
+      "app-connect-designer-url": {
+        "description": "The URL of the App Connect Designer API endpoint.",
+        "encoded": false,
+        "value": "https://default-integration-runtime-https-acxmi5plslh.p-vir-d1.appconnect.ibmappdomain.cloud"
+      },
+      "app-connect-designer-username": {
+        "description": "The username required for basic authentication to the App Connect Designer API endpoint.",
+        "value": "aceuser"
+      },
+      "app-connect-designer-password": {
+        "description": "The password required for basic authentication to the App Connect Designer API endpoint.",
+        "value": "D9BK73H61dxwu0JZCEtLmAWsGi2op5ev"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://default-integration-runtime-https-acxmi5plslh.p-vir-d1.appconnect.ibmappdomain.cloud/Get_JobRequisition_ID"
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ]
+}

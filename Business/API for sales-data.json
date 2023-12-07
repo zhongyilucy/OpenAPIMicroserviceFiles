@@ -1,0 +1,290 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API for sales-data",
+    "version": "1.0.0-oas3",
+    "description": "Sales data",
+    "contact": {
+      "name": "IT vakt",
+      "email": "it-vakt@rafisklaget.no",
+      "url": "https://www.rafisklaget.no"
+    }
+  },
+  "paths": {
+    "/weekly-sales": {
+      "get": {
+        "summary": "Get aggregated weekly sales",
+        "description": "Norwegian Directorate of Fisheries' code list: https://www.fiskeridir.no/Yrkesfiske/Rapportering-ved-landing/Kodeliste\n",
+        "security": [
+          {
+            "NR_OAuth2_security": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aggregated weekly sales",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "description": {
+                      "type": "string"
+                    },
+                    "salesOrganizationId": {
+                      "type": "string",
+                      "description": "See code list"
+                    },
+                    "salesWeek": {
+                      "type": "string",
+                      "description": "https://en.wikipedia.org/wiki/Week#The_ISO_week_date_system \n"
+                    },
+                    "registrationTime": {
+                      "type": "string",
+                      "description": "Time when server generated the response. ISO 8601 format"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "ISO 4217"
+                    },
+                    "includeByproducts": {
+                      "type": "boolean",
+                      "description": "As passed in query"
+                    },
+                    "includeForeignVessels": {
+                      "type": "boolean",
+                      "description": "As passed in query"
+                    },
+                    "groupByVesselLength": {
+                      "type": "boolean",
+                      "description": "As passed in query"
+                    },
+                    "groupByCoast12nm": {
+                      "type": "boolean",
+                      "description": "As passed in query"
+                    },
+                    "groupByLandingZone": {
+                      "type": "boolean",
+                      "description": "As passed in query"
+                    },
+                    "salesdata": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "vesselLengthGroup": {
+                            "type": "string",
+                            "description": "| vesselLengthGroup | Description   |\n|-----------|---------------|\n| 0         | Unspecified   |\n| [1,11)    | Under 11 m    |\n| [11,15)   | 11 - 14,99 m  |\n| [15,21)   | 15 - 20,99 m  |\n| [21,28)   | 21 -27,99 m   |\n| [28,1000) | 28 m and over |               \n"
+                          },
+                          "vesselNationNOR": {
+                            "type": "boolean",
+                            "description": "True if vessel is Norwegian"
+                          },
+                          "gearCategory": {
+                            "type": "string",
+                            "description": "| gearCategory | Description NOR | Description ENG |\n|-------|-----------------|-----------------|\n| NT    | Not             | Seine           |\n| GA    | Garn            | Nets            |\n| JU    | Juksa           | Jigs            |\n| LI    | Line            | Longline        |\n| AL    | Autoline        | Autoline        |\n| RU    | Ruser           | Traps           |\n| TE    | Teiner          | Pots            |\n| TR    | Trål            | Trawl           |\n| SV    | Snurrevad       | Danish seine    |\n| HV    | Hvalkanon       | Cannon          |\n| AN    | Annet           | Other           |\n\n\n| gear | Description NOR       | Description ENG | gearCategory |\n|------|-----------------------|-----------------|--------------|\n|   10 | Udefinert not         | Purse seine     | NT           |\n|   11 | Snurpenot/ringnot     | Purse seine     | NT           |\n|   12 | Landnot               | Shore seine     | NT           |\n|   20 | Udefinert garn        | Net             | GA           |\n|   21 | Drivgarn              | Net             | GA           |\n|   22 | Settegarn             | Net             | GA           |\n|   30 | Udefinert krokredskap | Hook            | JU           |\n|   31 | Line                  | Longline        | LI           |\n|   32 | Andre liner           | Longline        | LI           |\n|   33 | Juksa/pilk/snøre      | Jig             | JU           |\n|   34 | Dorg/harp/snik        | Jig             | JU           |\n|   35 | Autoline              | Autoline        | AL           |\n|   41 | Ruser                 | Traps           | RU           |\n|   42 | Teiner                | Pots            | TE           |\n|   44 | Havteiner             | Pots            | TE           |\n|   50 | Udefinert trål        | Trawl           | TR           |\n|   51 | Bunntrål              | Bottom trawl    | TR           |\n|   53 | Flytetrål             | Trawl           | TR           |\n|   54 | Flytetrål par         | Trawl           | TR           |\n|   55 | Reketrål              | Shrimp trawl    | TR           |\n|   56 | Bomtrål               | Trawl           | TR           |\n|   58 | Dobbeltrål            | Trawl           | TR           |\n|   61 | Snurrevad             | Danish seine    | SV           |\n|   71 | Hvalkanon             | Cannon          | HV           |\n|   73 | Rifle                 | Rifle           | AN           |\n|   80 | Annet                 | Other           | AN           |\n|   81 | Skjellskrape etc.     | Other           | AN           |\n|   83 | Taretrål              | Other           | AN           |\n|   84 | Tanghøster            | Other           | AN           |\n|   85 | Håndplukk             | Handpick        | AN           |\n|   90 | Oppdrett              | Other           | AN           |\n"
+                          },
+                          "coast12nm": {
+                            "type": "boolean",
+                            "description": "True if catch inside 12 nm"
+                          },
+                          "landingZone": {
+                            "type": "string",
+                            "description": "| landingZone | Description    |\n|-------|----------------|\n|   1   | Øst-Finnmark   |\n|   2   | Vest-Finnmark  |\n|   3   | Troms          |\n|   4   | Vesterålen     |\n|   5   | Lofoten/Salten |\n|   6   | Helgeland      |\n|   7   | Nord Trøndelag |\n|   8   | Sør Trøndelag  |\n|   9   | Nordmøre       |\n|   0   | Utenom laget   |                     \n"
+                          },
+                          "species": {
+                            "type": "string",
+                            "description": "See code list"
+                          },
+                          "size": {
+                            "type": "string",
+                            "description": "See code list"
+                          },
+                          "sizeGroup": {
+                            "type": "string",
+                            "description": "| species                        | sizeGroup | Description NOR | Description ENG |\n|--------------------------------|------|-----------------|-----------------|\n|                                | 0    | Uspesifisert    | Unspecified     |\n| 1032                           | 1    | -1,2 kg         | -1,2 kg         |\n| 1032                           | 2    | 1,2-2,3 kg      | 1,2-2,3 kg      |\n| 1032                           | 3    | 2,3+ kg         | 2,3+ kg         |\n| 2311                           | 1    | -4,0 kg         | -4,0 kg         |\n| 2311                           | 2    | 4-20 kg         | 4-20 kg         |\n| 2311                           | 3    | 20-40 kg        | 20-40 kg        |\n| 2311                           | 3    | 40-60 kg        | 40-60 kg        |\n| 2311                           | 4    | 60+ kg          | 60+ kg          |\n| 2311                           | 5    | 100+ kg         | 100+ kg         |\n| 2313                           | 1    | -1,0 kg         | -1,0 kg         |\n| 2313                           | 2    | 1,0-2,0 kg      | 1,0-2,0 kg      |\n| 2313                           | 3    | 2,0+ kg         | 2,0+ kg         |\n| 2524                           | 1    | 291-999 stk     | 291-999 pcs     |\n| 2524                           | 2    | 271-290 stk     | 271-290 pcs     |\n| 2524                           | 3    | 251-270 stk     | 251-270 pcs     |\n| 2524                           | 4    | 231-250 stk     | 231-250 pcs     |\n| 2524                           | 5    | 201-230 stk     | 201-230 pcs     |\n| 2524                           | 6    | 181-200 stk     | 181-200 pcs     |\n| 2524                           | 7    | 161-180 stk     | 161-180 pcs     |\n| 2524                           | 8    | 121-160 stk     | 121-160 pcs     |\n| 2524                           | 9    | 050-120 stk     | 050-120 pcs     |\n| 2534                           | 1    | -0,8 kg         | -0,8 kg         |\n| 2534                           | 5    | 3,2+ kg         | 3,2+ kg         |\n| 102201, 102202, 102204, 102205 | 1    | -1,0 kg         | -1,0 kg         |\n| 102201, 102202, 102204, 102205 | 2    | 1,0-2,5 kg      | 1,0-2,5 kg      |\n| 102201, 102202, 102204, 102205 | 3    | 2,5-6,0 kg      | 2,5-6,0 kg      |\n| 102201, 102202, 102204, 102205 | 4    | 6,0+ kg         | 6,0+ kg         |\n| 102701                         | 1    | -0,8 kg         | -0,8 kg         |\n| 102701                         | 2    | 0,8+ kg         | 0,8+ kg         |\n| 253410, 253420                 | 1    | -0,8 kg         | -0,8 kg         |\n| 253410, 253420                 | 2    | 0,8-1,6 kg      | 0,8-1,6 kg      |\n| 253410, 253420                 | 3    | 1,6-2,2 kg      | 1,6-2,2 kg      |\n| 253410, 253420                 | 4    | 2,2-3,2 kg      | 2,2-3,2 kg      |\n| 253410, 253420                 | 5    | 3,2+ kg         | 3,2+ kg         |             \n"
+                          },
+                          "condition": {
+                            "type": "string",
+                            "description": "See code list"
+                          },
+                          "preservation": {
+                            "type": "string",
+                            "description": "See code list"
+                          },
+                          "quality": {
+                            "type": "string",
+                            "description": "See code list"
+                          },
+                          "byproduct": {
+                            "type": "boolean",
+                            "description": "True if byproduct"
+                          },
+                          "sumNetQuantityKg": {
+                            "type": "number"
+                          },
+                          "sumCalculatedLiveWeightKg": {
+                            "type": "number",
+                            "description": "https://www.fiskeridir.no/Yrkesfiske/Tema/Omregningsfaktorer"
+                          },
+                          "sumAmount": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "description": "Aggregated weekly sales",
+                      "salesOrganizationId": "7",
+                      "salesWeek": "2021W28",
+                      "registrationTime": "2023-02-20T12:04:10Z",
+                      "currency": "NOK",
+                      "includeByproducts": true,
+                      "includeForeignVessels": true,
+                      "groupByVesselLength": true,
+                      "groupByCoast12nm": true,
+                      "groupByLandingZone": true,
+                      "salesdata": [
+                        {
+                          "vesselLengthGroup": "[28,1000)",
+                          "vesselNationNOR": true,
+                          "gearCategory": "TR",
+                          "coast12nm": false,
+                          "landingZone": "4",
+                          "species": "2203",
+                          "size": "3000000",
+                          "condition": "311",
+                          "preservation": "34",
+                          "quality": "20",
+                          "byproduct": false,
+                          "sumNetQuantityKg": 91549,
+                          "sumCalculatedLiveWeightKg": 178520.55,
+                          "sumAmount": 900718.03
+                        },
+                        {
+                          "vesselLengthGroup": "[28,1000)",
+                          "vesselNationNOR": true,
+                          "gearCategory": "TR",
+                          "coast12nm": false,
+                          "landingZone": "4",
+                          "species": "102202",
+                          "size": "3000000",
+                          "sizeGroup": "0",
+                          "condition": "511",
+                          "preservation": "5",
+                          "quality": "20",
+                          "byproduct": false,
+                          "sumNetQuantityKg": 2145,
+                          "sumCalculatedLiveWeightKg": 6091.8,
+                          "sumAmount": 172041.69
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "isoWeek",
+            "in": "query",
+            "description": "https://en.wikipedia.org/wiki/Week#The_ISO_week_date_system\n",
+            "example": "2022W18",
+            "schema": {
+              "type": "string",
+              "default": "current week"
+            }
+          },
+          {
+            "name": "groupByCoast12nm",
+            "in": "query",
+            "description": "Group by catch inside/outside 12 nm from the coast",
+            "schema": {
+              "type": "string",
+              "default": false
+            }
+          },
+          {
+            "name": "groupByLandingZone",
+            "in": "query",
+            "description": "Group by landingzone",
+            "schema": {
+              "type": "string",
+              "default": false
+            }
+          },
+          {
+            "name": "groupByVesselLength",
+            "in": "query",
+            "description": "Group by vessel lengthgroup",
+            "schema": {
+              "type": "string",
+              "default": false
+            }
+          },
+          {
+            "name": "includeByproducts",
+            "in": "query",
+            "description": "Include byproducts",
+            "schema": {
+              "type": "string",
+              "default": false
+            }
+          },
+          {
+            "name": "includeForeignVessels",
+            "in": "query",
+            "description": "Include foreign vessels",
+            "schema": {
+              "type": "string",
+              "default": false
+            }
+          }
+        ],
+        "tags": [
+          "Weekly sales"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://dummy.rafisklaget.no/statistics/sales-data"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "NR_OAuth2_security": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://dummy.rafisklaget.no/statistics/oauth/token",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  }
+}

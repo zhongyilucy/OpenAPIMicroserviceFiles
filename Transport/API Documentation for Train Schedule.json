@@ -1,0 +1,112 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "Base URL for Train Schedule",
+      "url": "http://mrt-k.online:8084/"
+    }
+  ],
+  "info": {
+    "title": "API Documentation for Train Schedule",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/get-train-trips": {
+      "post": {
+        "summary": "Getting Train Trips",
+        "description": "Retrieves a list of train trips based on the provided line and train type.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LineAndTrainType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Retrieval of Train Trips",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TrainTrip"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LineAndTrainType": {
+        "type": "object",
+        "properties": {
+          "line": {
+            "type": "string",
+            "example": "Gehenna"
+          },
+          "trainType": {
+            "type": "string",
+            "example": "Local"
+          }
+        },
+        "required": [
+          "line",
+          "trainType"
+        ]
+      },
+      "TrainTrip": {
+        "type": "object",
+        "properties": {
+          "line": {
+            "type": "string",
+            "example": "Gehenna"
+          },
+          "station": {
+            "type": "string",
+            "example": "Trinity"
+          },
+          "trainType": {
+            "type": "string",
+            "example": "Local"
+          },
+          "distance": {
+            "type": "integer",
+            "example": 16
+          },
+          "instants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Timestamp"
+            }
+          }
+        },
+        "required": [
+          "line",
+          "station",
+          "trainType",
+          "distance"
+        ]
+      },
+      "Timestamp": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "1970-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    }
+  }
+}

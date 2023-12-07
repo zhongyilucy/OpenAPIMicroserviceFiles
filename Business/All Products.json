@@ -1,0 +1,66 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://app.olymon.io/api/1.1/wf/all_products"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://app.olymon.io/api/1.1/wf/all_products"
+    }
+  ],
+  "info": {
+    "description": "This is a simple API to test fetching all products",
+    "version": "1.0.0",
+    "title": "All Products",
+    "contact": {
+      "email": "manish@trynocode.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "admins",
+      "description": "Secured Admin-only calls"
+    },
+    {
+      "name": "developers",
+      "description": "Operations available to regular developers"
+    }
+  ],
+  "paths": {
+    "/All_Products": {
+      "get": {
+        "tags": [
+          "developers"
+        ],
+        "summary": "all products",
+        "operationId": "allproducts",
+        "description": "By passing in the appropriate options, you can search for\navailable inventory in the system\n",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "code",
+            "description": "pass your unique code to return your prodcuts",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned all products successfully"
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    }
+  }
+}

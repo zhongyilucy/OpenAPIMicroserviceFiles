@@ -1,0 +1,377 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "10.84.1",
+    "title": "ProvidersList",
+    "description": "Common ProvidersList API"
+  },
+  "paths": {
+    "/providers/": {
+      "get": {
+        "operationId": "providers_list",
+        "description": "search Providers ",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/AcceptHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/AuthorizationHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/ContentTypeHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/RefererHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/UserAgentHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/ForwardedForHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/UserNameHeader/10.0.1#/components/parameters/UserNameHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/WebSessionIdHeader/10.0.1#/components/parameters/WebSessionIdHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/CorrelationIdHeader/10.0.1#/components/parameters/CorrelationIdHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/IdentitiesHeader/10.0.3#/components/parameters/IdentitiesHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/orderingParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageSizeParam"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Provider name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "description": "Provider gender",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_accepting_new_patients",
+            "in": "query",
+            "description": "is provider accepting new patients at any of their locations",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "plan_id",
+            "in": "query",
+            "description": "Plan ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "plan_name",
+            "in": "query",
+            "description": "Plan name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_pcp",
+            "in": "query",
+            "description": "Boolean: is provider a pcp",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "Provider language",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "npi",
+            "in": "query",
+            "description": "provider npi",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tax_id",
+            "in": "query",
+            "description": "provider tax id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ssn",
+            "in": "query",
+            "description": "Filters for entries with the given Provider SSN.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "primary_specialty",
+            "in": "query",
+            "description": "Provider primary specialty",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "latitude",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "distance",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email_address",
+            "in": "query",
+            "description": "Provider email address",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "Provider city",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state_code",
+            "in": "query",
+            "description": "Provider state Code (example - NJ, NY, VA,)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "is_participating_in_pcmh",
+            "in": "query",
+            "description": "Is Provider participating in PCMH indicator. This flag indicates if the provider is participating in patient-centered medical home (PCMH) model.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "is_credentialed",
+            "in": "query",
+            "description": "Is Provider credentialed with the payer.  This flag filters the providers who are credentialed with  the payers.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "search_string",
+            "in": "query",
+            "description": "Search string which is passed to search on any of the data elements on the provider entity.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "group_tax_id",
+            "in": "query",
+            "description": "Filter by group tax_id, for example, show all providers that are associated with a healthcaresytem having that tax_id.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider_first_name",
+            "in": "query",
+            "description": "Filters the providers by the given first name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider_last_name",
+            "in": "query",
+            "description": "Filters the providers by the given last name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider_number",
+            "in": "query",
+            "description": "Filters the providers by the given provider number.",
+            "required": false,
+            "schema": {
+              "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/BaseProviderModel/10.9.1#/components/schemas/BaseProvider/properties/number"
+            }
+          },
+          {
+            "name": "member_id",
+            "in": "query",
+            "description": "Filters the providers for given member_id. Providers should be returned that would be pre-approved by Payers if they were specified on an authorization or referral given that member. If policy_id is included, then Providers should be returned if they were listed on a claim for this member and policy_id including any dependents.",
+            "required": false,
+            "schema": {
+              "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/MemberModel/10.49.1#/components/schemas/Member/properties/member_number"
+            }
+          },
+          {
+            "name": "policy_id",
+            "in": "query",
+            "description": "This filter works in conjunction with the member_id filter. Providers should be returned if they were listed on a claim for this policy_id and member_id including any dependents.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "service_category_id",
+            "in": "query",
+            "description": "Filters the providers for given service_category_id. Providers should be returned that would be pre-approved by Payers for the specific service category on an authorization or referral. ref - /ServiceCategoryModel/10.1.1#/components/schemas/ServiceCategory/properties/id",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "facility_location_id",
+            "in": "query",
+            "description": "Filter the list of providers to return those that are associated with this FacilityLocation",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "not_associated_with_facility_location_id",
+            "in": "query",
+            "description": "Filter the list of providers to not return those associated with this FacilityLocation.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Valid response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "count",
+                    "results"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "next": {
+                      "type": "integer"
+                    },
+                    "previous": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ProviderModel/10.55.1#/components/schemas/Provider"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "providers"
+        ]
+      }
+    }
+  }
+}

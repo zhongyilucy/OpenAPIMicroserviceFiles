@@ -1,0 +1,532 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "DHL Applicant Hiring Status Information API",
+    "description": "API for Application tracking system (ATS) to post job applicant hiring status information",
+    "version": "0.0.5",
+    "contact": {
+      "name": "Mah Guang Boon",
+      "email": "guangboon.mah@dhl.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api-dev.dhl.com/dpdhl-itgf-hr/ats"
+    },
+    {
+      "url": "https://api-sandbox.dhl.com/dpdhl-itgf-hr/ats"
+    },
+    {
+      "url": "https://api.dhl.com/dpdhl-itgf-hr/ats"
+    }
+  ],
+  "security": [
+    {
+      "oAuth2ClientCredentials": []
+    }
+  ],
+  "components": {
+    "schemas": {
+      "applicant": {
+        "type": "object",
+        "required": [
+          "candidateID",
+          "firstName",
+          "lastName",
+          "email",
+          "dateCreated",
+          "dateUpdated"
+        ],
+        "properties": {
+          "candidateID": {
+            "type": "string",
+            "description": "Candidate_ID",
+            "example": "1449277"
+          },
+          "type": {
+            "$ref": "#/components/schemas/employee_type"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Candidate_FirstName",
+            "example": "Jane"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Candidate_LastName",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "description": "Candidate_EmailID_1_email",
+            "example": "jane@doe.com"
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Candidate_DateCreated",
+            "example": "2022-01-01T12:00:00Z"
+          },
+          "dateUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Candidate_UpdatedDate",
+            "example": "2022-01-01T12:00:00Z"
+          },
+          "phone": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/phones"
+            }
+          },
+          "workExperiences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/workExperiences"
+            }
+          },
+          "jobApplication": {
+            "$ref": "#/components/schemas/jobApplication"
+          },
+          "documents": {
+            "$ref": "#/components/schemas/documents"
+          },
+          "preference": {
+            "$ref": "#/components/schemas/preference"
+          },
+          "consents": {
+            "$ref": "#/components/schemas/consents"
+          },
+          "sourceMetaData": {
+            "$ref": "#/components/schemas/sourceMetadata"
+          }
+        }
+      },
+      "employee_type": {
+        "type": "object",
+        "required": [
+          "isInternal"
+        ],
+        "properties": {
+          "isInternal": {
+            "type": "boolean",
+            "example": true
+          },
+          "employeeGID": {
+            "type": "string",
+            "example": "625411",
+            "description": "applicable only if isInternal is true"
+          }
+        }
+      },
+      "workExperiences": {
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string",
+            "example": "Springfield Nuclear plant"
+          },
+          "title": {
+            "type": "string",
+            "example": "CEO"
+          }
+        }
+      },
+      "phones": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "example": "8797129312"
+          }
+        }
+      },
+      "jobApplication": {
+        "type": "object",
+        "required": [
+          "jobID",
+          "dateCreated",
+          "dateUpdated",
+          "status"
+        ],
+        "properties": {
+          "applicationID": {
+            "type": "string",
+            "description": "Candidate_Application_ApplicationID",
+            "example": "A1"
+          },
+          "jobID": {
+            "type": "string",
+            "description": "Candidate_Application_JobID",
+            "example": "3097432"
+          },
+          "status": {
+            "type": "string",
+            "description": "Candidate_Application_ApplicationStatus",
+            "example": "considered"
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Candidate_Application_ApplicationDateCreated",
+            "example": "2022-01-01T12:00:00Z"
+          },
+          "dateUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Candidate_Application_ApplicationDateUpdated",
+            "example": "2022-01-01T12:00:00Z"
+          }
+        }
+      },
+      "documents": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "type": {
+              "type": "string",
+              "example": "resume"
+            },
+            "filename": {
+              "type": "string",
+              "example": "myresume.docx"
+            },
+            "base64": {
+              "type": "string",
+              "example": "E85vdloqepf+9s2jKA5yBppRxeCYImk+Gp80AaFWN7FMNMV/YBZ64AY2d9lPPOX9PmXWg9iy968="
+            }
+          }
+        }
+      },
+      "preference": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "city": {
+              "type": "string",
+              "example": "Chennai"
+            },
+            "state": {
+              "type": "string",
+              "example": "Tamil Nadu"
+            },
+            "country": {
+              "type": "string",
+              "example": "India"
+            },
+            "language": {
+              "type": "string",
+              "example": "English"
+            }
+          }
+        }
+      },
+      "consents": {
+        "required": [
+          "dataPrivacyAccepted",
+          "considerForOtherPositions"
+        ],
+        "properties": {
+          "dataPrivacyAccepted": {
+            "type": "boolean",
+            "example": true
+          },
+          "considerForOtherPositions": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "sourceMetadata": {
+        "properties": {
+          "systemName": {
+            "type": "string",
+            "description": "name of application tracking system",
+            "example": "AvatureGlobal"
+          },
+          "source": {
+            "type": "string",
+            "description": "The source from which the candidate found the link to the job",
+            "example": "LinkedIn"
+          },
+          "category": {
+            "type": "string",
+            "description": "category of the source",
+            "example": "Social Media"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "oAuth2ClientCredentials": {
+        "type": "oauth2",
+        "description": "oAuth2 token authentication",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://api-dev.dhl.com/auth/v1/token?response_type=access_token&grant_type=client_credentials",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/hiring-status": {
+      "post": {
+        "operationId": "HiringStatus_POST",
+        "description": "For posting applicant hiring status information",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/applicant"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "200"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "OK"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "example": "The request was successful."
+                    },
+                    "api-correlation-id": {
+                      "type": "string",
+                      "example": "acde070d-8c4c-4f0d-9d8a-162843c10333"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "400"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Validation Error"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "example": "The request body contains validation errors."
+                    },
+                    "api-correlation-id": {
+                      "type": "string",
+                      "example": "acde070d-8c4c-4f0d-9d8a-162843c10333"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "example": "/body/dateCreated"
+                          },
+                          "message": {
+                            "type": "string",
+                            "example": "must match format 'YYYY-MM-DDTHH:mm:ss.sssZ'"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "401"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "example": "The client is not authorized to access this resource."
+                    },
+                    "api-correlation-id": {
+                      "type": "string",
+                      "example": "acde070d-8c4c-4f0d-9d8a-162843c10333"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "403"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Forbidden"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "example": "The client is not authorized to access this resource."
+                    },
+                    "api-correlation-id": {
+                      "type": "string",
+                      "example": "acde070d-8c4c-4f0d-9d8a-162843c10333"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "404"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Resource Not Found"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "example": "The requested resource could not be found."
+                    },
+                    "api-correlation-id": {
+                      "type": "string",
+                      "example": "acde070d-8c4c-4f0d-9d8a-162843c10333"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "409"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Conflict"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "example": "The request could not be completed due to a conflict with the current state of the resource."
+                    },
+                    "api-correlation-id": {
+                      "type": "string",
+                      "example": "acde070d-8c4c-4f0d-9d8a-162843c10333"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "429"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Too Many Requests"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "example": "The user has sent too many requests in a given amount of time."
+                    },
+                    "api-correlation-id": {
+                      "type": "string",
+                      "example": "acde070d-8c4c-4f0d-9d8a-162843c10333"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "500"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Internal Server Error"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "example": "An unexpected error occurred while processing the request."
+                    },
+                    "api-correlation-id": {
+                      "type": "string",
+                      "example": "acde070d-8c4c-4f0d-9d8a-162843c10333"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

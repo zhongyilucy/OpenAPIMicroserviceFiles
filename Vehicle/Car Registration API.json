@@ -1,0 +1,66 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Car Registration API",
+    "description": "Car Registration API, An API that retrieves car details.",
+    "contact": {
+      "email": "info@infiniteloop.ie"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://regcheck.local/infiniteloopltd/CarRegistration/1.0.0"
+    }
+  ],
+  "paths": {
+    "/Check": {
+      "get": {
+        "summary": "Gets details of a UK Vehicle",
+        "description": "Gets details of a UK Vehicle\n",
+        "operationId": "Check",
+        "parameters": [
+          {
+            "name": "searchString",
+            "in": "query",
+            "description": "A registration number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "vehicle information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Car"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "bad input parameter",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Car": {
+        "type": "object"
+      }
+    }
+  }
+}

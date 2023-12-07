@@ -1,0 +1,494 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Membership app",
+    "description": "The OpenAPI specification for creating a membership application that has a plan and subscription",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.paystack.co",
+      "description": "Base API endpoint"
+    }
+  ],
+  "paths": {
+    "/plan": {
+      "post": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Create Plan",
+        "operationId": "plan_create",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/paths/~1plan/post/requestBody/content/application~1json/schema"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "amount",
+                  "interval"
+                ],
+                "properties": {
+                  "name": {
+                    "description": "Name of plan",
+                    "type": "string",
+                    "example": "My monthly membership"
+                  },
+                  "amount": {
+                    "description": "Amount should be in kobo if currency is NGN, pesewas, if currency is GHS, and cents, if currency is ZAR",
+                    "type": "integer",
+                    "example": 20000
+                  },
+                  "interval": {
+                    "description": "Interval in words. Valid intervals are daily, weekly, monthly,biannually, annually",
+                    "type": "string",
+                    "example": "monthly"
+                  },
+                  "description": {
+                    "description": "A description for this plan",
+                    "type": "string",
+                    "example": "Monthly membership payment plan"
+                  },
+                  "send_invoices": {
+                    "description": "Set to false if you don't want invoices to be sent to your customers",
+                    "type": "boolean"
+                  },
+                  "send_sms": {
+                    "description": "Set to false if you don't want text messages to be sent to your customers",
+                    "type": "boolean"
+                  },
+                  "currency": {
+                    "description": "Currency in which amount is set. Allowed values are NGN, GHS, ZAR or USD",
+                    "type": "string",
+                    "example": "NGN"
+                  },
+                  "invoice_limit": {
+                    "description": "Number of invoices to raise during subscription to this plan. \nCan be overridden by specifying an invoice_limit while subscribing.",
+                    "type": "integer",
+                    "example": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create Plan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/Ok/content/application~1json/schema"
+                },
+                "examples": {
+                  "Create Plan": {
+                    "value": {
+                      "status": true,
+                      "message": "Plan created",
+                      "data": {
+                        "name": "My monthly membership",
+                        "interval": "monthly",
+                        "amount": 20000,
+                        "description": "Monthly membership payment plan",
+                        "integration": 463433,
+                        "domain": "test",
+                        "currency": "NGN",
+                        "plan_code": "PLN_y4y1wkydoptw6zv",
+                        "invoice_limit": 0,
+                        "send_invoices": true,
+                        "send_sms": true,
+                        "hosted_page": false,
+                        "migrate": false,
+                        "is_archived": false,
+                        "id": 393872,
+                        "createdAt": "2022-09-22T02:15:06.702Z",
+                        "updatedAt": "2022-09-22T02:15:06.702Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized operation",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "No-Authorization-Header": {
+                    "value": {
+                      "status": false,
+                      "message": "No Authorization Header was found"
+                    }
+                  },
+                  "Bad-Authorization-Header": {
+                    "value": {
+                      "status": false,
+                      "message": "Format is Authorization Bearer [secret key]"
+                    }
+                  },
+                  "Invalid-Key": {
+                    "value": {
+                      "status": false,
+                      "message": "Invalid key"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/subscription": {
+      "post": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Create Subscription",
+        "operationId": "subscription_create",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/paths/~1subscription/post/requestBody/content/application~1json/schema"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "customer",
+                  "plan"
+                ],
+                "properties": {
+                  "customer": {
+                    "description": "Customer's email address or customer code",
+                    "type": "string",
+                    "example": "person@example.com"
+                  },
+                  "plan": {
+                    "description": "Plan code that the customer should subscribe to",
+                    "type": "string",
+                    "example": "PLN_y4y1wkydoptw6zv"
+                  },
+                  "authorization": {
+                    "description": "If customer has multiple authorizations, you can set the desired authorization you wish to use for this subscription here. \nIf this is not supplied, the customer's most recent authorization would be used",
+                    "type": "string",
+                    "example": "AUTH_Codaad23"
+                  },
+                  "start_date": {
+                    "description": "Set the date for the first debit. (ISO 8601 format) e.g. 2017-05-16T00:30:13+01:00",
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create Subscription",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/Ok/content/application~1json/schema"
+                },
+                "examples": {
+                  "Create Subscription": {
+                    "value": {
+                      "status": true,
+                      "message": "Subscription successfully created",
+                      "data": {
+                        "customer": 89363925,
+                        "plan": 393873,
+                        "integration": 463433,
+                        "domain": "test",
+                        "start": 1663817490,
+                        "status": "active",
+                        "quantity": 1,
+                        "amount": 20000,
+                        "authorization": 374536802,
+                        "invoice_limit": 0,
+                        "split_code": null,
+                        "subscription_code": "SUB_k0alurkz6l2d3nz",
+                        "email_token": "txyhn3zjzcr9xlo",
+                        "id": 456933,
+                        "cancelledAt": null,
+                        "createdAt": "2022-09-22T03:31:30.886Z",
+                        "updatedAt": "2022-09-22T03:31:30.886Z",
+                        "cron_expression": "31 3 22 * *",
+                        "next_payment_date": "2022-10-22T03:31:00.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/paths/~1plan/post/responses/401"
+          },
+          "default": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Customer": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "email"
+            ],
+            "properties": {
+              "email": {
+                "description": "Customer's email address",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "description": "Customer's first name",
+                "type": "string",
+                "example": "Some"
+              },
+              "last_name": {
+                "description": "Customer's last name",
+                "type": "string",
+                "example": "Body"
+              },
+              "phone": {
+                "description": "Customer's phone number",
+                "type": "string",
+                "example": "+2348123456789"
+              },
+              "metadata": {
+                "description": "Stringified JSON object of custom data",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "authorization_code"
+            ],
+            "properties": {
+              "authorization_code": {
+                "description": "Customer's authorization code to be deactivated",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "customer"
+            ],
+            "properties": {
+              "customer": {
+                "description": "Customer's code, or email address",
+                "type": "string"
+              },
+              "risk_action": {
+                "description": "One of the possible risk actions [ default, allow, deny ]. allow to whitelist. \ndeny to blacklist. Customers start with a default risk action.\n",
+                "type": "string",
+                "enum": [
+                  "default",
+                  "allow",
+                  "deny"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "country",
+              "bvn",
+              "bank_code",
+              "account_number"
+            ],
+            "properties": {
+              "type": {
+                "description": "Predefined types of identification.",
+                "type": "string",
+                "enum": [
+                  "bvn",
+                  "bank_account"
+                ]
+              },
+              "country": {
+                "description": "Two-letter country code of identification issuer",
+                "type": "string",
+                "example": "NG"
+              },
+              "bvn": {
+                "description": "Customer's Bank Verification Number",
+                "type": "integer",
+                "example": 123456789
+              },
+              "bank_code": {
+                "description": "You can get the list of bank codes by calling the List Banks endpoint (https://api.paystack.co/bank).",
+                "type": "string",
+                "example": "007"
+              },
+              "account_number": {
+                "description": "Customer's bank account number.",
+                "type": "string",
+                "example": "0111111111"
+              },
+              "first_name": {
+                "description": "Customer's first name",
+                "type": "string",
+                "example": "Uchenna"
+              },
+              "last_name": {
+                "description": "Customer's last name",
+                "type": "string",
+                "example": "Okoro"
+              }
+            }
+          }
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Response": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Ok": {
+        "description": "Successful operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Created": {
+        "description": "Resource created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Response"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Entity not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "status": false,
+              "message": "Entity not found"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "status": false,
+              "message": "Invalid key"
+            }
+          }
+        }
+      },
+      "GeneralError": {
+        "description": "General Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

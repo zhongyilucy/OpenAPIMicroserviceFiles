@@ -1,0 +1,95 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "Base URL for Register and Login",
+      "url": "http://mrt-k.online/"
+    }
+  ],
+  "info": {
+    "title": "API Documentation for User Authentication",
+    "description": "This is a server that authenticates the information of users.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/authenticate": {
+      "get": {
+        "summary": "Authentication",
+        "description": "Authenticates a user and retrieves their details.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Cookie",
+            "description": "The cookie containing the session token.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "mrt-k-session=jwt"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Authentication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed Authentication",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "null"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "password": {
+            "type": "string",
+            "example": "TheQuickBrownFoxJumpsOverTheLazyDog"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "UserDetails": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "balance": {
+            "type": "number",
+            "example": 200
+          }
+        },
+        "required": [
+          "username",
+          "balance"
+        ]
+      }
+    }
+  }
+}

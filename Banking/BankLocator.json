@@ -1,0 +1,160 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BankAssist BankLocator API Specification",
+    "description": "This API helps to find the location of banks branches",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:8080/smt"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/GetAtmorBankInfo": {
+      "post": {
+        "tags": [
+          "Banks"
+        ],
+        "summary": "GetAtmorBankInfo",
+        "description": "Fetch the nearest atm or bank information",
+        "operationId": "GetAtmorBankInfo",
+        "parameters": [
+          {
+            "name": "koreUserId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "botId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/branchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/branchResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Authorisation failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/err"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/err"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "err": {
+        "type": "object",
+        "properties": {
+          "err": {
+            "$ref": "#/components/schemas/err_err"
+          }
+        }
+      },
+      "err_err": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "branchRequest": {
+        "required": [
+          "address",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "it can be a Branch or ATM",
+            "example": "ATM"
+          },
+          "address": {
+            "type": "string",
+            "example": "506004"
+          },
+          "services": {
+            "type": "array",
+            "example": [
+              "Accepts Deposits",
+              "ATM Locate Inside"
+            ],
+            "items": {
+              "type": "string",
+              "description": "ATM services are -  Accepts Deposits, ATM Locate Inside, Drive Thru, Walk Up, Handicap Accessible, Accepts Card Payments,Cardless ATM and Branch services are - Open Sunday, Open Saturday, Home Loan Specialist, Financial Solutions Advisor, Notary on Site, Accepts Appointments, Commercial Deposits Accepted, Night Deposits Accepted, Safe Deposit Box, Drive Up Teller"
+            }
+          }
+        }
+      },
+      "branchResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/branchResponse_sub"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

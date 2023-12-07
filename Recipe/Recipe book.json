@@ -1,0 +1,252 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Recipe book",
+    "description": "API of online Recipe book"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/89654104202_1/homeWork/1.0.0"
+    }
+  ],
+  "paths": {
+    "/recipes": {
+      "get": {
+        "description": "Returns a list of recipes",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limits the number of items on a page",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "maxLength": 3
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Specifies the page number of the recipes to be displayed",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "maxLength": 3
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/response_200"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "414": {
+            "description": "Request-URI Too Long",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{recipe_id}": {
+      "get": {
+        "description": "Obtain information about an auction from auction_id",
+        "parameters": [
+          {
+            "name": "recipe_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created a new recipe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "recipe_id": {
+                      "type": "integer"
+                    },
+                    "recipe_name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The specified recipe ID is invalid (not a number)."
+          },
+          "414": {
+            "description": "Request-URI Too Long"
+          }
+        }
+      }
+    },
+    "/recipes/create": {
+      "post": {
+        "description": "Post new recipe",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/recipe_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created a new recipe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "recipe_id",
+                    "recipe_name"
+                  ],
+                  "properties": {
+                    "recipe_id": {
+                      "type": "integer"
+                    },
+                    "recipe_name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request body Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "recipe_body": {
+        "maxLength": 500,
+        "required": [
+          "recipe_name",
+          "ingridients",
+          "steps"
+        ],
+        "type": "object",
+        "properties": {
+          "recipe_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20
+          },
+          "ingridients": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "type": "string"
+            }
+          },
+          "steps": {
+            "type": "string"
+          },
+          "options_for_serving": {
+            "type": "string"
+          }
+        }
+      },
+      "response_200": {
+        "required": [
+          "recipe_id"
+        ],
+        "type": "object",
+        "properties": {
+          "recipe_id": {
+            "type": "integer"
+          },
+          "recipe_name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

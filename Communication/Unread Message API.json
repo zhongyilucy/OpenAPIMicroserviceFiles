@@ -1,0 +1,240 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "local mocking server",
+      "url": "http://localhost"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/gertjuhh/Inbox/1.0.0"
+    }
+  ],
+  "info": {
+    "title": "Unread Message API",
+    "description": "Api to send to retrieve unread messages for an user",
+    "version": "1.1.0"
+  },
+  "security": [
+    {
+      "jwtAuth": []
+    }
+  ],
+  "paths": {
+    "/api/unread-message-count": {
+      "get": {
+        "operationId": "getUnreadMessageCount",
+        "responses": {
+          "200": {
+            "description": "Unread message count",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "count"
+                  ],
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "format": "int32",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "jwtAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "parameters": {
+      "UserUnique": {
+        "in": "query",
+        "name": "userUnique",
+        "description": "Post a message to a specific user/conversation, only available for employees",
+        "schema": {
+          "type": "string"
+        },
+        "required": false
+      }
+    },
+    "schemas": {
+      "PlainTextMessage": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 4096
+          }
+        },
+        "description": "Simple text message without markup"
+      },
+      "LinkMessage": {
+        "type": "object",
+        "required": [
+          "href",
+          "type"
+        ],
+        "properties": {
+          "href": {
+            "type": "string",
+            "maxLength": 2048,
+            "format": "uri"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "PaymentRequest"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true,
+            "nullable": true
+          },
+          "preview": {
+            "type": "object",
+            "readOnly": true,
+            "nullable": true,
+            "properties": {
+              "icon": {
+                "type": "string",
+                "format": "uri",
+                "description": "CDN link"
+              },
+              "header": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "description": "Link message with static text and optional preview data"
+      },
+      "Message": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "sender",
+          "recipient",
+          "sent",
+          "read",
+          "content"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "PlainText",
+              "Link"
+            ]
+          },
+          "sentBy": {
+            "type": "object",
+            "required": [
+              "currentUser"
+            ],
+            "properties": {
+              "firstName": {
+                "type": "string",
+                "nullable": true
+              },
+              "lastName": {
+                "type": "string",
+                "nullable": true
+              },
+              "initial": {
+                "type": "string",
+                "nullable": true
+              },
+              "avatar": {
+                "type": "string",
+                "format": "uri",
+                "nullable": true,
+                "description": "CDN link"
+              },
+              "currentUser": {
+                "type": "boolean",
+                "description": "Indicates if the message is sent by the current user"
+              }
+            },
+            "readOnly": true
+          },
+          "sentOn": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "example": "2016-08-29T09:12:33.001Z"
+          },
+          "read": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "readOnly": true,
+            "example": "2016-08-29T09:12:33.001Z"
+          },
+          "content": {
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LinkMessage"
+              },
+              {
+                "$ref": "#/components/schemas/PlainTextMessage"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "PlainText": "#/components/schemas/PlainTextMessage",
+                "Link": "#/components/schemas/LinkMessage"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "Messages": {
+        "description": "A list of messages in the users inbox",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Message"
+              }
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid"
+      }
+    }
+  }
+}

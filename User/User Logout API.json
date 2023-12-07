@@ -1,0 +1,75 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "This API is used to allow registered users to logout the system.",
+    "version": "1.4.0",
+    "title": "User Logout API",
+    "license": {
+      "name": "Git Repo",
+      "url": "https://github.com/cseteaching-unsw-edu-au/se2021-23t1-einvoicing-api-f12a-gobgobgoo-creation-api"
+    }
+  },
+  "servers": [
+    {
+      "description": "Invoice Creation API",
+      "url": "http://deploy-s2-4-env.eba-fxeq7rku.ap-southeast-2.elasticbeanstalk.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Invoice",
+      "description": "Everything about your Invoice",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Admins",
+      "description": "Everything about admin"
+    }
+  ],
+  "paths": {
+    "/logout": {
+      "post": {
+        "tags": [
+          "Admins"
+        ],
+        "summary": "Logout from the system",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout"
+          },
+          "404": {
+            "description": "Invalid Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

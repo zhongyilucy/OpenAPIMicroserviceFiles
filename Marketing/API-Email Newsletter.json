@@ -1,0 +1,275 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API-Email Newsletter",
+    "description": "Managing newsletter subscriptions by email addresses",
+    "version": "1.2.2"
+  },
+  "servers": [
+    {
+      "url": "https:/business.hema.digital",
+      "description": "Hema business layer (prod)"
+    },
+    {
+      "url": "https:/business-int.hema.digital",
+      "description": "Hema business layer (int)"
+    }
+  ],
+  "tags": [
+    {
+      "name": "By Email",
+      "description": "subscriptions by email"
+    }
+  ],
+  "paths": {
+    "/newsletter/v1/newsletters": {
+      "get": {
+        "tags": [
+          "By Email"
+        ],
+        "description": "Gets newsletter subscriptions for provided e-mail address",
+        "operationId": "getNewsletterSubscriptionsByEmail",
+        "parameters": [
+          {
+            "name": "emailAddress",
+            "in": "query",
+            "description": "The email address to get subscriptions for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cultureName",
+            "in": "query",
+            "description": "The name of the culture used in the newsletters",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CultureNameType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsletterSubscriptions"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "oauth": [
+              "profile.newsletters.read"
+            ]
+          }
+        ]
+      }
+    },
+    "/newsletter/v1/newsletters/{type}/email/optin": {
+      "post": {
+        "tags": [
+          "By Email"
+        ],
+        "description": "Set Loyalty newslettersubscription on for provided e-mail address",
+        "operationId": "SetEmailNewsletterSubscriptionOn",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "description": "Newsletter subscription type",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SubscriptionTypeType"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterEmailSubscribeRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "204": {
+            "description": "Success",
+            "content": {}
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "oauth": [
+              "profile.newsletters.write"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/newsletter/v1/newsletters/{type}/email/optout": {
+      "post": {
+        "tags": [
+          "By Email"
+        ],
+        "description": "Set Loyalty newslettersubscription on for provided e-mail address",
+        "operationId": "setOffSubscriptionEmail",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "description": "Newsletter subscription type",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SubscriptionTypeType"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterEmailUnsubscribeRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "204": {
+            "description": "Success",
+            "content": {}
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "oauth": [
+              "profile.newsletters.write"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "NewsletterSubscriptions": {
+        "type": "object",
+        "properties": {
+          "IsLoyaltyMember": {
+            "type": "boolean"
+          },
+          "IsPilotMember": {
+            "type": "boolean"
+          },
+          "NewsletterTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "NewsletterEmailSubscribeRequest": {
+        "type": "object",
+        "properties": {
+          "emailAddress": {
+            "type": "string"
+          },
+          "cultureName": {
+            "$ref": "#/components/schemas/CultureNameType"
+          },
+          "subscribeSource": {
+            "$ref": "#/components/schemas/SubscribeSourceType"
+          }
+        }
+      },
+      "NewsletterEmailUnsubscribeRequest": {
+        "type": "object",
+        "properties": {
+          "cultureName": {
+            "$ref": "#/components/schemas/CultureNameType"
+          },
+          "emailAddress": {
+            "type": "string"
+          }
+        }
+      },
+      "CultureNameType": {
+        "type": "string",
+        "enum": [
+          "nl-NL",
+          "de-DE",
+          "fr-BE",
+          "nl-BE",
+          "fr-FR",
+          "en-GB"
+        ]
+      },
+      "SubscribeSourceType": {
+        "type": "string",
+        "enum": [
+          "TICKETS_ORDERPROCES",
+          "TICKETS_SUBSCRIPTION",
+          "PHOTO_FE_CAMPAGNE",
+          "PHOTO_FE_REGISTRATION",
+          "PHOTO_ORDERPROCES",
+          "PHOTO_RAPIDPRINTSERVICE",
+          "PHOTO_SUBSCRIPTION",
+          "PHOTO_SOFTWAREDOWNLOAD",
+          "PHOTO_REGISTRATION",
+          "PHOTO_ACTIONMODAL",
+          "WEB_APP",
+          "WEB_SUBSCRIPTION",
+          "WEB_ORDERPROCES",
+          "WEB_FOOTER",
+          "WEB_POPUP",
+          "WEB_PREFERENCEPAGE",
+          "ZORG_SUBSCRIPTION",
+          "ZORG_CAMPAIGN",
+          "ZORG_PAKKETWIJZER",
+          "ZORG_PREMIEMELDER"
+        ]
+      },
+      "SubscriptionTypeType": {
+        "type": "string",
+        "enum": [
+          "Webshop",
+          "APS",
+          "Loyalty",
+          "Tickets",
+          "Insurance-health",
+          "Insurance-non-life",
+          "Photo-Commercial",
+          "Photo-SMS"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "oauth": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://auth.hema.digital/token",
+            "scopes": {
+              "profile.newsletters.write": "Allows to change newsletter subscriptions",
+              "profile.newsletters.read": "Allows to check newsletter subscriptions",
+              "myprofile.all": "Allows to read and write MyProfile"
+            }
+          }
+        }
+      }
+    }
+  }
+}

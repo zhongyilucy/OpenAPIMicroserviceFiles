@@ -1,0 +1,1126 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Balance API",
+    "description": "This is an API that allows users check their balance in the system.",
+    "version": "1.20"
+  },
+  "tags": [
+    {
+      "name": "topupBalance"
+    }
+  ],
+  "paths": {
+    "/bucket": {
+      "get": {
+        "tags": [
+          "bucket"
+        ],
+        "summary": "List or find Bucket objects",
+        "description": "This operation list or find Bucket entities",
+        "operationId": "listBucket",
+        "parameters": [
+          {
+            "name": "effectiveDate",
+            "in": "query",
+            "description": "To retrieve a specific bucket history record details based on a given effective date value. Default to current date. Format: yyyy-mm-ddThh:nn:ss.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "To retrieve buckets based on the specific customer node Id. Note: customerId and serviceId/serviceName can not be specified simultaneously. SV_MAPPING: CUSTOMER_NODE_TRE_V.CUSTOMER_NODE_ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "serviceId",
+            "in": "query",
+            "description": "To retrieve buckets based on the specific service Id. Note: customerId and serviceId/serviceName can not be specified simultaneously. SV_MAPPING: SERVICE_TRE_V.SERVICE_ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "serviceName",
+            "in": "query",
+            "description": "To retrieve buckets based on the specific service name. Note: customerId and serviceId/serviceName can not be specified simultaneously. SV_MAPPING: SERVICE_TRE_V.SERVICE_NAME",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entitlementCategory",
+            "in": "query",
+            "description": "To retrieve buckets based on the entitlement category. Value will be retrieved from ENTITLEMENT_CATEGORY RT. SV_MAPPING: ENTITLEMENT_TRE_V.ENTITLEMENT_CATEGORY_CODE.",
+            "schema": {
+              "type": "string",
+              "x-refdata-source": "RT-ENTITLEMENT_CATEGORY"
+            },
+            "x-refdata-source": "RT-ENTITLEMENT_CATEGORY"
+          },
+          {
+            "name": "entitlementOfferCategory",
+            "in": "query",
+            "description": "To retrieve buckets based on the entitlement offer category. Value will be retrieved from perestapi.imp.CATEGORY RT. SV_MAPPING: DERIVED_ATTRIBUTE_ARRAY.RESULT1_VALUE",
+            "schema": {
+              "type": "string",
+              "x-refdata-source": "RT-perestapi.imp.CATEGORY"
+            },
+            "x-refdata-source": "RT-perestapi.imp.CATEGORY"
+          },
+          {
+            "name": "isTransferEnt",
+            "in": "query",
+            "description": "A boolean flag to retrieve Allowance Transfer buckets. True if the buckets are from  Allowance Transfer. The default is set to False.",
+            "schema": {
+              "type": "string",
+              "x-refdata-source": "RT-BOOLEAN"
+            },
+            "x-refdata-source": "RT-BOOLEAN"
+          },
+          {
+            "name": "sortKey",
+            "in": "query",
+            "description": "To sort the response based on sortKey. Values will be retrieved from perestapi.imp.BUCKET.SORT_KEY RT. No sorting by default",
+            "schema": {
+              "type": "string",
+              "x-refdata-source": "RT-perestapi.imp.BUCKET.SORT_KEY"
+            },
+            "x-refdata-source": "RT-perestapi.imp.BUCKET.SORT_KEY"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "description": "To sort the response based on sort order. Possible value ascending, descending. Default to descending if sortKey is provided",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Requested index for start of resources to be provided in response. Default to 0.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Requested number of resources to be provided in response. Default to configuration item SV_MAPPING: API_CONFIGURATION1.DEFAULT_MAX_ROWS",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "scn",
+            "in": "query",
+            "description": "Oracle system change number used for data read consistency. Default to empty string if configuration item SV_MAPPING: API_CONFIGURATION1.USE_FLASHBACK is not ON",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to be provided in response. The field names should be from the first level of property names as defined in Bucket schema.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Total-Count": {
+                "description": "Total number of items matching criteria",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "X-Result-Count": {
+                "description": "Actual number of items returned in the response body",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            },
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bucket_List"
+                },
+                "examples": {
+                  "Sample Response 1": {
+                    "value": {
+                      "totalRecords": 70,
+                      "pagination": {
+                        "limit": 3,
+                        "totalRecords": 70,
+                        "offset": 0,
+                        "remainingRecords": 67,
+                        "scn": ""
+                      },
+                      "offset": 0,
+                      "buckets": [
+                        {
+                          "confirmationDate": "2023-03-09T23:52:00",
+                          "product": [
+                            {
+                              "name": "2 DAY PRIME BUNDLE JAM101",
+                              "href": "https://$HOST:30140/perest/api/v1/product/2002179",
+                              "id": 2002179
+                            }
+                          ],
+                          "validFor": {
+                            "endDateTime": "2023-03-10T05:22:00",
+                            "startDateTime": "2023-03-10T04:52:00"
+                          },
+                          "@type": "EntFreeUnits.ServNA",
+                          "remainingValue": {
+                            "amount": "100.00",
+                            "units": "Gigabytes"
+                          },
+                          "relatedParty": [
+                            {
+                              "name": "Pratik101 ",
+                              "href": "https://$HOST:30140/perest/api/v1/customer/30000600",
+                              "id": 30000600,
+                              "referredType": "customer"
+                            }
+                          ],
+                          "logicalResource": [
+                            {
+                              "value": "18762266408",
+                              "@type": "MSISDN"
+                            }
+                          ],
+                          "consumedValue": {
+                            "amount": "0.00",
+                            "units": "Gigabytes"
+                          },
+                          "partyAccount": {
+                            "href": "https://$HOST:30140/perest/api/v1/billingAccount/30000620",
+                            "id": 30000620,
+                            "@type": "BillingAccount",
+                            "accountType": "Debtor (JMD)",
+                            "accountTypeDisplayName": "Debtor"
+                          },
+                          "name": "005000024087_20230309235201_SV1_2953",
+                          "href": "https://$HOST:30140/perest/api/v1/bucket/JAMAICA:5000024154",
+                          "id": "JAMAICA:5000024154",
+                          "requestedDate": "2023-03-09T23:52:00",
+                          "initialValue": {
+                            "amount": "100.00",
+                            "units": "Gigabytes"
+                          },
+                          "isShared": "False",
+                          "entitlementCategory": "HBO Max",
+                          "entitlementOfferCategory": "Jamaica Prime",
+                          "status": "expired",
+                          "usageType": "allowance"
+                        },
+                        {
+                          "confirmationDate": "2023-03-09T23:52:00",
+                          "product": [
+                            {
+                              "name": "2 DAY PRIME BUNDLE JAM101",
+                              "href": "https://$HOST:30140/perest/api/v1/product/2002179",
+                              "id": 2002179
+                            }
+                          ],
+                          "validFor": {
+                            "endDateTime": "2023-03-10T05:52:00",
+                            "startDateTime": "2023-03-10T04:52:00"
+                          },
+                          "@type": "EntFreeUnits.ServNA",
+                          "remainingValue": {
+                            "amount": "8.00",
+                            "units": "Gigabytes"
+                          },
+                          "relatedParty": [
+                            {
+                              "name": "Pratik101 ",
+                              "href": "https://$HOST:30140/perest/api/v1/customer/30000600",
+                              "id": 30000600,
+                              "referredType": "customer"
+                            }
+                          ],
+                          "logicalResource": [
+                            {
+                              "value": "18762266408",
+                              "@type": "MSISDN"
+                            }
+                          ],
+                          "consumedValue": {
+                            "amount": "0.00",
+                            "units": "Gigabytes"
+                          },
+                          "partyAccount": {
+                            "href": "https://$HOST:30140/perest/api/v1/billingAccount/30000620",
+                            "id": 30000620,
+                            "@type": "BillingAccount",
+                            "accountType": "Debtor (JMD)",
+                            "accountTypeDisplayName": "Debtor"
+                          },
+                          "name": "005000024088_20230309235202_SV1_2953",
+                          "href": "https://$HOST:30140/perest/api/v1/bucket/JAMAICA:5000024155",
+                          "id": "JAMAICA:5000024155",
+                          "requestedDate": "2023-03-09T23:52:00",
+                          "initialValue": {
+                            "amount": "8.00",
+                            "units": "Gigabytes"
+                          },
+                          "isShared": "False",
+                          "entitlementCategory": "HBO Max",
+                          "entitlementOfferCategory": "Jamaica Prime",
+                          "status": "expired",
+                          "usageType": "allowance"
+                        },
+                        {
+                          "confirmationDate": "2023-03-09T23:52:00",
+                          "product": [
+                            {
+                              "name": "2 DAY PRIME BUNDLE JAM101",
+                              "href": "https://$HOST:30140/perest/api/v1/product/2002179",
+                              "id": 2002179
+                            }
+                          ],
+                          "validFor": {
+                            "endDateTime": "2023-03-10T05:52:00",
+                            "startDateTime": "2023-03-10T04:52:00"
+                          },
+                          "@type": "EntFreeUnits.ServNA",
+                          "remainingValue": {
+                            "amount": "150.00",
+                            "units": "Minutes"
+                          },
+                          "relatedParty": [
+                            {
+                              "name": "Pratik101 ",
+                              "href": "https://$HOST:30140/perest/api/v1/customer/30000600",
+                              "id": 30000600,
+                              "referredType": "customer"
+                            }
+                          ],
+                          "logicalResource": [
+                            {
+                              "value": "18762266408",
+                              "@type": "MSISDN"
+                            }
+                          ],
+                          "consumedValue": {
+                            "amount": "0.00",
+                            "units": "Minutes"
+                          },
+                          "partyAccount": {
+                            "href": "https://$HOST:30140/perest/api/v1/billingAccount/30000620",
+                            "id": 30000620,
+                            "@type": "BillingAccount",
+                            "accountType": "Debtor (JMD)",
+                            "accountTypeDisplayName": "Debtor"
+                          },
+                          "name": "005000024089_20230309235202_SV1_2953",
+                          "href": "https://$HOST:30140/perest/api/v1/bucket/JAMAICA:5000024156",
+                          "id": "JAMAICA:5000024156",
+                          "requestedDate": "2023-03-09T23:52:00",
+                          "initialValue": {
+                            "amount": "150.00",
+                            "units": "Minutes"
+                          },
+                          "isShared": "False",
+                          "entitlementCategory": "HBO Max",
+                          "entitlementOfferCategory": "Jamaica Prime",
+                          "status": "expired",
+                          "usageType": "allowance"
+                        }
+                      ],
+                      "remainingRecords": 67,
+                      "limit": 3,
+                      "scn": ""
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will be included information about error code and short description of error. The error in the response will be indicative of the first occurrence of problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Digicel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| Message Code | Message Name | Message Details |\n|--------------|--------------|-----------------|\n| E84103 | PERESTAPI_FIELD_NOT_EXIST | To validate the field value exists in the system |\n| E84129 | PERESTAPI_GENERROR | To validate various Conditions in processing representing generic error. |\n| E84113 | PERESTAPI_ELEMENT_MISMATCH | To Validate the fields passed in the request to system Data. |\n| E84106 | PERESTAPI_ELEMENT_MISSING | Element mentioned in the error message is missing from request. |\n| E84107 | PERESTAPI_INVALID_VALUE | Entity provided is invalid |\n| E84105 | PERESTAPI_INVALID_VALUE_FOR_CONVERSION | Value provided is not valid to do the data type conversion. |\n| E84108 | PERESTAPI_ENTITY_NOT_FOUND_OR_NO_ACCESS &nbsp; | Validate provided entity exists in system or not. |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bucket/{id}": {
+      "get": {
+        "tags": [
+          "bucket"
+        ],
+        "summary": "Retrieves a Bucket by ID",
+        "description": "This operation retrieves a Bucket entity. Attribute selection is enabled for all first level attributes.",
+        "operationId": "retrieveBucket",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier of the bucket in format \"MARKET:id\". Eg: JAMAICA:5000028029. SV_MAPPING:ENTITLEMENT_ALLOCATION_TRE_V.ENTITLEMENT_ALLOCATION_ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "effectiveDate",
+            "in": "query",
+            "description": "To retrieve a specific bucket details based on a given effective date value. Default to current date. Format: yyyy-mm-ddThh:nn:ss.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to provide in response",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bucket"
+                },
+                "example": {
+                  "confirmationDate": "2023-03-11T13:36:25",
+                  "product": [
+                    {
+                      "name": "2 DAY PRIME BUNDLE JAM101",
+                      "href": "https://$HOST:30140/perest/api/v1/product/2002179",
+                      "id": 2002179
+                    }
+                  ],
+                  "validFor": {
+                    "endDateTime": "2024-03-09T23:59:59",
+                    "startDateTime": "2023-03-11T13:36:25"
+                  },
+                  "@type": "EntFreeUnits.ServNA",
+                  "remainingValue": {
+                    "amount": "0.00",
+                    "units": "Gigabytes"
+                  },
+                  "relatedParty": [
+                    {
+                      "name": "DEV_NG_CUST_7",
+                      "href": "https://$HOST:30140/perest/api/v1/customer/138077",
+                      "id": 138077,
+                      "referredType": "customer"
+                    }
+                  ],
+                  "logicalResource": [
+                    {
+                      "value": "18764455670",
+                      "@type": "MSISDN"
+                    }
+                  ],
+                  "consumedValue": {
+                    "amount": "8.00",
+                    "units": "Gigabytes"
+                  },
+                  "partyAccount": {
+                    "href": "https://$HOST:30140/perest/api/v1/billingAccount/152654",
+                    "id": 152654,
+                    "@type": "BillingAccount",
+                    "accountType": "Debtor (JMD)",
+                    "accountTypeDisplayName": "Debtor"
+                  },
+                  "name": "000010098361_20230311133626_SV1_2947",
+                  "href": "https://$HOST:30140/perest/api/v1/bucket/JAMAICA:10138345",
+                  "id": "JAMAICA:10138345",
+                  "requestedDate": "2023-03-11T13:36:25",
+                  "initialValue": {
+                    "amount": "8.00",
+                    "units": "Gigabytes"
+                  },
+                  "isShared": "False",
+                  "entitlementCategory": "HBO Max",
+                  "entitlementOfferCategory": "Jamaica Prime",
+                  "status": "active",
+                  "usageType": "allowance"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will be included information about error code and short description of error. The error in the response will be indicative of the first occurrence of problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Digicel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| Message Code | Message Name | Message Details |\n|--------------|--------------|-----------------|\n| E84103 | PERESTAPI_FIELD_NOT_EXIST|To validate the field value exists in the system |\n| E84129 | PERESTAPI_GENERROR | To validate various Conditions in processing representing generic error. |\n| E84113 | PERESTAPI_ELEMENT_MISMATCH |To Validate the fields passed in the request to system Data. |\n| E84106 | PERESTAPI_ELEMENT_MISSING | Element mentioned in the error message is missing from request. |\n| E84107 | PERESTAPI_INVALID_VALUE | Entity provided is invalid |\n| E84105 | PERESTAPI_INVALID_VALUE_FOR_CONVERSION | Value provided is not valid to do the data type conversion. |\n| E84108 | PERESTAPI_ENTITY_NOT_FOUND_OR_NO_ACCESS &nbsp; | Validate provided entity exists in system or not. |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Characteristic": {
+        "required": [
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "EntitlementCategory | RecurringPeriodUnit | RecurringTransferDay | RecurringTransferValidityPeriod | RecurringTransferValidityPeriodUnits"
+          },
+          "valueType": {
+            "type": "string",
+            "description": "EntitlementCategory -> string | RecurringPeriodUnit -> string | RecurringTransferDay -> string | RecurringTransferValidityPeriod -> string | RecurringTransferValidityPeriodUnits -> string. EntitlementCategory is required for Allowance Transfer"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of this attribute is depending on the corresponding name attribute which will determine the exact internal field to map",
+            "x-refdata-source": "RT-ENTITLEMENT_CATEGORY||||"
+          }
+        },
+        "description": "Describes a given characteristic of an object or entity through a name/value pair"
+      },
+      "PartyAccountRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the party account. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the account - <http://<HOSTNAME>:<PORT>/<Account URL>/<SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_ID>"
+          },
+          "@type": {
+            "type": "string",
+            "description": "Type of account e.g.: BillingAccount"
+          },
+          "accountType": {
+            "type": "string",
+            "description": "Complete sender/reciever account type name. Example: \"Prepaid (JMD)\". SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_TYPE_DISPLAY_NAME",
+            "x-refdata-source": "CM-Acct_Num_Type"
+          },
+          "accountTypeDisplayName": {
+            "type": "string",
+            "description": "Truncated account type name. Example: \"Prepaid\"."
+          }
+        },
+        "description": "Billing account reference. A account may be a party account or a financial account."
+      },
+      "LogicalResourceRef": {
+        "required": [
+          "@type",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string",
+            "description": "The type of the logical resource. Possible Values: MSISDN"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of logical resource. SV_MAPPING:PurchasedService.ServiceName_X"
+          }
+        },
+        "description": "The logical resource (service) references of the bucket"
+      },
+      "Quantity": {
+        "required": [
+          "amount"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Numeric value in a given unit",
+            "format": "float"
+          },
+          "units": {
+            "type": "string",
+            "description": "Unit"
+          }
+        },
+        "description": "An amount in a given unit"
+      },
+      "BucketRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the bucket. SV_MAPPING:ENTITLEMENT_ALLOCATION_TRE_V.ENTITLEMENT_ALLOCATION_ID"
+          }
+        },
+        "description": "Link to the resource that holds bucket information"
+      },
+      "UsageType": {
+        "type": "string",
+        "description": "Defines the type of the underlying Balance. Values are allowance/monetary. SV_MAPPING -perestapi.BUCKET_USAGE_TYPE",
+        "enum": [
+          "monetary",
+          "allowance"
+        ]
+      },
+      "RelatedParty": {
+        "required": [
+          "@referredType",
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of a related entity. SV_MAPPING: ACCOUNT_TRE_V.CUSTOMER_NODE_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the related entity - <http://<HOSTNAME>:<PORT>/<CUSTOMER URL>/<SV_MAPPING: CUSTOMER_NODE_TRE_V.CUSTOMER_NODE_ID>"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the related entity. SV_MAPPING: CUSTOMER_NODE_TRE_V.NODE_NAME"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance when needed for disambiguation. The value is default to customer. SV_MAPPING: perestapi.REFERRED_TYPE RT"
+          }
+        },
+        "description": "Related Entity reference. A related party defines party or party role linked to a specific entity. It is referring to customer node"
+      },
+      "ProductRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Product offer Id. SV_MAPPING: PRODUCT_OFFER_TRE_V.PRODUCT_OFFER_ID via ENTITLEMENT_TRE_V.PRODUCT_INSTANCE_ID -> PRODUCT_INSTANCE_TRE_V.PRODUCT_OFFER_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the related entity - <http://<HOSTNAME>:<PORT>/<Product Offer URL>/<PRODUCT_OFFER_TRE_V.PRODUCT_OFFER_ID>"
+          },
+          "name": {
+            "type": "string",
+            "description": "Product offer display name. SV_MAPPING PRODUCT_OFFER_TRE_V.PRODUCT_OFFER_DISPLAY_NAME via ENTITLEMENT_TRE_V.PRODUCT_INSTANCE_ID -> PRODUCT_OFFER_TRE_V.PRODUCT_OFFER_ID -> PRODUCT_OFFER_TRE_V.PRODUCT_OFFER_DISPLAY_NAME"
+          }
+        },
+        "description": "Product offering"
+      },
+      "TimePeriod": {
+        "required": [
+          "startDateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "startDateTime": {
+            "type": "string",
+            "description": "Start Date format: yyyy-mm-ddThh:nn:ss.",
+            "format": "date-time"
+          },
+          "endDateTime": {
+            "type": "string",
+            "description": "The effective end date Format: yyyy-mm-ddThh:nn:ss.",
+            "format": "date-time"
+          }
+        },
+        "description": "A base / value business entity used to represent a period of time between two time points."
+      },
+      "Bucket_List": {
+        "required": [
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationRef"
+          },
+          "buckets": {
+            "type": "array",
+            "description": "Describes the list of bucket details",
+            "items": {
+              "$ref": "#/components/schemas/Bucket"
+            }
+          }
+        },
+        "description": "Bucket List"
+      },
+      "PaginationRef": {
+        "required": [
+          "limit",
+          "offset",
+          "remainingRecords",
+          "scn",
+          "totalRecords"
+        ],
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "description": "Requested index for start of items to be provided in response",
+            "format": "int64"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Requested number of items to be provided in response",
+            "format": "int64"
+          },
+          "remainingRecords": {
+            "type": "integer",
+            "description": "Remaining number of items to be fetched",
+            "format": "int64"
+          },
+          "totalRecords": {
+            "type": "integer",
+            "description": "Total number of items matching criteria",
+            "format": "int64"
+          },
+          "scn": {
+            "type": "string",
+            "description": "Oracle system change number for read consistency"
+          }
+        },
+        "description": "Query results and paging details."
+      },
+      "Error": {
+        "required": [
+          "code",
+          "reason"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Application relevant detail, defined in the API or a common list."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Explanation of the reason for the error which can be shown to a client user."
+          },
+          "message": {
+            "type": "string",
+            "description": "More details and corrective actions related to the error which can be shown to a client user."
+          },
+          "status": {
+            "type": "string",
+            "description": "HTTP Error code extension"
+          },
+          "referenceError": {
+            "type": "string",
+            "description": "URI of documentation describing the error.",
+            "format": "uri"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub - classing, this defines the super - class."
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON - Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub - classing, this defines the sub - class entity name."
+          }
+        },
+        "description": "Used when an API throws an Error, typically with a HTTP error response - code(3xx, 4xx, 5xx)"
+      },
+      "Money": {
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "Currency (ISO4217 norm uses 3 letters to define the currency) eg-JMD"
+          },
+          "value": {
+            "type": "number",
+            "description": "floating point number that represents the amount.",
+            "format": "float"
+          }
+        },
+        "description": "A base / value business entity used to represent money. If the customer requested a topup of 100 and then added the taxes of 20% to it so the customer paid 120 in that case the topup amount in API request would be 120.\nIf the customer requested a topup of 100 and did not include the taxes then the topup amount would be 100 and hence the customer would get 81.17$ in his account"
+      },
+      "Resource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The Type of the logical resource. Possible Values : MSISDN"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the logical resource.  ServiceName"
+          }
+        },
+        "description": "A reference to the logicl resource to which balance to be transferred"
+      },
+      "pAccount": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the party account. SV_MAPPING ACCOUNT_TRE_V.ACCOUNT_ID.Either partyAccount/logicalResource/both has to be provided except for BalanceTransfer"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the sender Account - <http://<TREREST_HOSTNAME>:<TREREST_PORT>/<Account TreREST URL>/<SV_MAPPING:Cust_Acct.PrimaryAcctNum_X>"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of Account, Possible values : Prepaid (Market) if partyAccount item exist"
+          },
+          "accountType": {
+            "type": "string",
+            "description": "Sender account Type Name, Possible values Prepaid/Postpaid. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_TYPE_DISPLAY_NAME.  "
+          },
+          "accountCurrency": {
+            "type": "string",
+            "description": "Account Currency of the Billing Account"
+          },
+          "expiryDate": {
+            "type": "string",
+            "description": "Expiry date after the topup eg:2023-03-31T00:00:00"
+          },
+          "accountBalance": {
+            "type": "string",
+            "description": "Account Balance after the top Up. "
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the party account"
+          }
+        },
+        "description": "A reference to the logicl resource from which balance is sent"
+      },
+      "channel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "unique identifier for the channel"
+          },
+          "name": {
+            "type": "string",
+            "description": "name of the channel"
+          }
+        },
+        "description": "indicator for the channel used to request the topupBalance operation"
+      },
+      "requestor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "If provided it is the Singleview contact unique identifier for the requestor"
+          },
+          "name": {
+            "type": "string",
+            "description": "name of the requestor. Digicel internaltional requestor name in case if its 3rd Party topup, used in notificaiton"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the requestor if its Digicel Contact - <http://<HOSTNAME>:<PORT>/Contact URL> - if the requestor is a valid Digicel contact. "
+          },
+          "role": {
+            "type": "string",
+            "description": "role of the requestor. TBD of all possible roles (agent/friend/employer) etc"
+          }
+        },
+        "description": "object that holds the information about the requestor"
+      },
+      "BankAccountDebitType": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "string",
+            "description": "Account number, SV_MAPPING:Cust_Acct.BankAcctNum_X"
+          },
+          "BIC": {
+            "type": "string",
+            "description": "BIC, SV_MAPPING:Cust_Acct.Bank_R",
+            "x-refdata-source": "RT-BANK"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Owner, SV_MAPPING:Cust_Acct.BankAcctName_X"
+          },
+          "paymentLimit": {
+            "type": "string",
+            "description": "Payment limit, SV_MAPPING:Cust_Acct.BankAcctReference_X"
+          },
+          "status": {
+            "type": "string",
+            "description": "BANK_ACCOUNT_STATUS_CODE, SV_MAPPING:Cust_Acct.BankAcctStatus_R",
+            "x-refdata-source": "RT-BANK_ACCOUNT_STATUS"
+          }
+        },
+        "description": "Details of a bank account"
+      },
+      "Requestorref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the customer"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the customer - <http://<HOSTNAME>:<PORT>/<PrepayBalanceManagement URL>/<customer node ID>."
+          }
+        }
+      },
+      "Bucket": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the bucket - SV_MAPPING: ENTITLEMENT_ALLOCATION_TRE_V.ENTITLEMENT_ALLOCATION_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the bucket. <http://<HOSTNAME>:<PORT>/<Balance URL>/<SV_MAPPING: ENTITLEMENT_ALLOCATION_TRE_V.ENTITLEMENT_ALLOCATION_ID>"
+          },
+          "confirmationDate": {
+            "type": "string",
+            "description": "The date and time at which this bucket commenced. Format: yyyy-mm-ddThh:nn:ss. SV_MAPPING: ENTITLEMENT_ALLOCATION_TRE_V.START_DATE",
+            "format": "date-time"
+          },
+          "isShared": {
+            "type": "string",
+            "description": "True if the bucket is shared between several devices or users. Depending on entitlement context i.e.:  isShared = True if context is customer or customer node, isShared = False if context is service.",
+            "x-refdata-source": "RT-BOOLEAN"
+          },
+          "entitlementCategory": {
+            "type": "string",
+            "description": "Entitlement category of the bucket. Value will be retrieved from ENTITLEMENT_CATEGORY RT. SV_MAPPING: ENTITLEMENT_TRE_V.ENTITLEMENT_CATEGORY_CODE"
+          },
+          "entitlementOfferCategory": {
+            "type": "string",
+            "description": "Entitlement offer category of the bucket. Value will be retrieved from perestapi.imp.CATEGORY RT. SV_MAPPING: DERIVED_ATTRIBUTE_ARRAY.RESULT1_VALUE"
+          },
+          "name": {
+            "type": "string",
+            "description": "Friendly name to identify the bucket. SV_MAPPING: ENTITLEMENT_TRE_V.ENTITLEMENT_NAME"
+          },
+          "requestedDate": {
+            "type": "string",
+            "description": "The date and time at which the bucket is requested. Format: yyyy-mm-ddThh:nn:ss. SV_MAPPING: ENTITLEMENT_TRE_V.START_DATE",
+            "format": "date-time"
+          },
+          "logicalResource": {
+            "type": "array",
+            "description": "A list of logical resource (service) references of the bucket. It could refer to secondary service of service specifc offer, default to primary service.",
+            "items": {
+              "$ref": "#/components/schemas/LogicalResourceRef"
+            }
+          },
+          "partyAccount": {
+            "$ref": "#/components/schemas/PartyAccountRef"
+          },
+          "product": {
+            "type": "array",
+            "description": "A list of product offer references.",
+            "items": {
+              "$ref": "#/components/schemas/ProductRef"
+            }
+          },
+          "relatedParty": {
+            "type": "array",
+            "description": "Used to provide information about any other entity with relation to the bucket balance. It could refer to current customer node and/or root customer node.",
+            "items": {
+              "$ref": "#/components/schemas/RelatedParty"
+            }
+          },
+          "initialValue": {
+            "description": "shows the inital value of the entitlement.",
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "consumedValue": {
+            "description": "shows the consumed value of the entitlement",
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "remainingValue": {
+            "description": "shows the remaining value of the entitlement.",
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status for the bucket e.g.: either active or expired. SV_MAPPING: The value is derived from ENTITLEMENT_ALLOCATION_TRE_V.START_DATE and ENTITLEMENT_ALLOCATION_TRE_V.EXPIRY_DATE. It is mapped to abbreviation value of perestapi.BUCKET_STATUS RT.",
+            "x-refdata-source": "RT-perestapi.BUCKET_STATUS"
+          },
+          "usageType": {
+            "$ref": "#/components/schemas/UsageType"
+          },
+          "validFor": {
+            "description": "The period for which the balance in the bucket is valid.",
+            "$ref": "#/components/schemas/TimePeriod"
+          },
+          "@type": {
+            "type": "string",
+            "description": "Type of the bucket. SV_MAPPING: ENTITLEMENT_TRE_V.ENTITLEMENT_TYPE_NAME"
+          }
+        },
+        "description": "A bucket (called UsageVolumeProduct in the SID Model) represents and tracks a quantity of usage (remaining or consumed). It could be either a quantity or an amount in a currency. It can represent a fixed number of SMS, MMS, call minutes, quantity of data and so on"
+      }
+    }
+  }
+}

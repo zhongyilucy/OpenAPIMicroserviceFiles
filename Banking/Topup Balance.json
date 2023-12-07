@@ -1,0 +1,1335 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Topup Balance",
+    "description": "This is an API that allows users to topup their balance to their account in the system",
+    "version": "1.20"
+  },
+  "tags": [
+    {
+      "name": "topupBalance"
+    }
+  ],
+  "paths": {
+    "/topupBalance": {
+      "post": {
+        "tags": [
+          "topupBalance"
+        ],
+        "summary": "topup a prepaid msisdn. TopUp can be done through Credit Card/Cash/Voucher ",
+        "description": "This operation topup's a prepaid MSISDN ",
+        "operationId": "topupBalance",
+        "requestBody": {
+          "description": "Top up the balance of a given msisdn/account",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/topupRef"
+              },
+              "examples": {
+                "Auto_topup": {
+                  "value": {
+                    "id": "111789300",
+                    "reason": "transferring 5 SAR from cust Rho Square pre to post.PRE_TO_POST transfer",
+                    "date": "2022-10-27T10:19:00",
+                    "amount": {
+                      "amount": "21.11",
+                      "units": "JMD"
+                    },
+                    "isAutoTopup": true,
+                    "numberOfPeriods": 7,
+                    "recurringPeriod": "Days",
+                    "logicalResource": {
+                      "@type": "MSISDN",
+                      "value": "8766225190"
+                    },
+                    "payment": {
+                      "id": "45637577",
+                      "name": "RG_1"
+                    },
+                    "channel": {
+                      "name": "eshop"
+                    },
+                    "requestor": {
+                      "id": "116740",
+                      "name": "Test1",
+                      "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/billingAccount/116223"
+                    },
+                    "paymentMethod": {
+                      "@type": "Prepaid Payment",
+                      "name": "Test_DG1",
+                      "details": {
+                        "bank": "QLD",
+                        "cardNumber": "4658",
+                        "creditCardToken": "74564",
+                        "method": "Credit Card",
+                        "expirationDate": "2022-11-18T07:19:00.000Z",
+                        "nameOnCard": "DISH-2384",
+                        "ccAuthorization": "787564"
+                      }
+                    }
+                  }
+                },
+                "creditcard_topup": {
+                  "value": {
+                    "id": "234249883998772",
+                    "reason": "Test Topup",
+                    "date": "2023-03-27T21:23:00.000Z",
+                    "location": "Jamaica",
+                    "amount": {
+                      "amount": "1010.00",
+                      "units": "KYD"
+                    },
+                    "usageType": "monetary",
+                    "logicalResource": {
+                      "@type": "MSISDN",
+                      "value": "13455000209"
+                    },
+                    "payment": {
+                      "id": "432872654",
+                      "name": "Test 123 "
+                    },
+                    "channel": {
+                      "id": 1,
+                      "name": "SelfCareApp"
+                    },
+                    "requestor": {
+                      "id": "102113",
+                      "name": "Test 4366 _con 0906"
+                    },
+                    "paymentMethod": {
+                      "@type": "Prepaid Payment",
+                      "name": "Main Card",
+                      "details": {
+                        "method": "Credit Card",
+                        "cardNumber": "xgvbng",
+                        "creditCardToken": "188140$2rcTTvns",
+                        "expirationDate": "01/25",
+                        "nameOnCard": "Michael Scott",
+                        "ccAuthorization": "651974"
+                      }
+                    }
+                  }
+                },
+                "Voucher_topup": {
+                  "value": {
+                    "id": "identifier from maplewave",
+                    "reason": "Hub transfer",
+                    "date": "2023-03-03T04:20:00",
+                    "location": "Sydney HQ",
+                    "voucher": "5747384880718003",
+                    "logicalResource": {
+                      "@type": "MSISDN",
+                      "value": "13450000100"
+                    },
+                    "payment": {
+                      "id": "unique_payment_identifier_1",
+                      "name": "Test 123 "
+                    },
+                    "channel": {
+                      "id": 9,
+                      "name": "eshop"
+                    },
+                    "requestor": {
+                      "name": "Test4366_con0906zazazaza"
+                    }
+                  }
+                },
+                "Cash_topup": {
+                  "value": {
+                    "id": "111789337",
+                    "reason": "TopUp 10 JMD to MSISDN",
+                    "date": "2022-10-20T10: 19: 00",
+                    "amount": {
+                      "amount": "10",
+                      "units": "JMD"
+                    },
+                    "isAutoTopup": false,
+                    "logicalResource": {
+                      "@type": "MSISDN",
+                      "value": "8767900089"
+                    },
+                    "payment": {
+                      "id": "45637577",
+                      "name": "RG_1"
+                    },
+                    "channel": {
+                      "name": "Store"
+                    },
+                    "requestor": {
+                      "id": "116223",
+                      "name": "Test",
+                      "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/billingAccount/116223"
+                    },
+                    "paymentMethod": {
+                      "@type": "Prepaid Payment",
+                      "name": "Test2",
+                      "details": {
+                        "method": "Cash"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/topupRespRef"
+                },
+                "examples": {
+                  "Sample Response 1": {
+                    "value": "{\n    \"confirmationDate\": \"2022-10-20T10:19:00\",\n    \"amount\": {\n        \"amount\": \"131.1\",\n        \"units\": \"JMD\"\n    },\n    \"partyAccount\": {\n        \"expiryDate\": \"2022-12-07T10:21:00\",\n        \"accountType\": \"Prepaid (JMD)\",\n        \"name\": \"0100119148\",\n        \"accountCurrency\": \"JMD\",\n        \"href\": \"https://$HOST:30140/perest/api/v1/billingAccount/119148\",\n        \"id\": 119148,\n        \"accountBalance\": 1006.4,\n        \"type\": \"Prepaid (JMD)\"\n    },\n    \"channel\": {\n        \"name\": \"eshop\",\n        \"id\": 9\n    },\n    \"href\": \"https://$HOST:30140/perest/api/v1/payment/P_topup_0000168181\",\n    \"id\": \"P_topup_0000168181\",\n    \"logicalResource\": {\n        \"type\": \"MSISDN\",\n        \"value\": \"8767900089\"\n    },\n    \"requestor\": {\n        \"name\": \"Test\",\n        \"href\": \"https://$HOST:30140/perest/api/v1/individual/116223\",\n        \"id\": \"116223\"\n    },\n    \"status\": \"Applied\"\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will be included information about error code and short description of error. The error in the response will be indicative of the first occurrence of problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Digicel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| Message Code | Message Name | Message Details |\n|--------------|--------------|-----------------|\n| E84103 | PERESTAPI_FIELD_NOT_EXIST|To validate the field value exists in the system |\n| E84129 | PERESTAPI_GENERROR | To validate various Conditions in processing representing generic error. |\n| E84113 | PERESTAPI_ELEMENT_MISMATCH |To Validate the fields passed in the request to system Data. |\n| E84104 | PERESTAPI_NULL_VALUE_PASSED| Null value is provided where a value is expected. |\n| E84106 | PERESTAPI_ELEMENT_MISSING | Element mentioned in the error message is missing from request. |\n| E84133 | PERESTAPI_AMOUNT_INVALID | Value of attribute passed is less than or equal to zero. |\n| E84107 | PERESTAPI_INVALID_VALUE | Entity provided is invalid |\n| E84105 | PERESTAPI_INVALID_VALUE_FOR_CONVERSION | Value provided is not valid to do the data type conversion. |\n| E84108 | PERESTAPI_ENTITY_NOT_FOUND_OR_NO_ACCESS &nbsp; | Validate provided entity exists in system or not. |\n| E84116 | PERESTAPI_INVALID_COMBO | To validate the Service Number and Account is valid combination. |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "topup"
+      },
+      "get": {
+        "tags": [
+          "topupBalance"
+        ],
+        "summary": "List auto-topup for a given customer/account",
+        "description": "The API TMF654 TopupBalance LIST is required to support the auto-topup functionality.  This is not a complete implementation of the API, but rather a very limited version that returns only auto-topup details for a given customer.  In SV there is a dedicated customer list with auto-topup details, and the API will return the contents of that list back to the calling application.",
+        "parameters": [
+          {
+            "name": "isAutoTopup",
+            "in": "query",
+            "description": "Indicates if the topup requested is an autotopup (to be processed periodically). Has to be set to \"True\", for listing autotopup details",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "custId",
+            "in": "query",
+            "description": "Unique identifier of a customer. Specify a customer, and receive back all auto-topups that are configured for that specific customer. This list will match the active rows from the auto-topup customer list for that customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "partyAccount",
+            "in": "query",
+            "description": "Unique identifier of the party account. Specify a partyAccount, and receive back all auto-topups that are setup for the MSISDN identified by the account ID. Data returned could be from multiple customers if multiple customers have an auto-topup configured for the same MSISDN.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoTopUpList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will be included information about error code and short description of error. The error in the response will be indicative of the first occurrence of problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Digicel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| Message Code | Message Name | Message Details |\n|--------------|--------------|-----------------|\n| E84103 | PERESTAPI_FIELD_NOT_EXIST|To validate the field value exists in the system |\n| E84129 | PERESTAPI_GENERROR | To validate various Conditions in processing representing generic error. |\n| E84113 | PERESTAPI_ELEMENT_MISMATCH |To Validate the fields passed in the request to system Data. |\n| E84104 | PERESTAPI_NULL_VALUE_PASSED| Null value is provided where a value is expected. |\n| E84106 | PERESTAPI_ELEMENT_MISSING | Element mentioned in the error message is missing from request. |\n| E84133 | PERESTAPI_AMOUNT_INVALID | Value of attribute passed is less than or equal to zero. |\n| E84107 | PERESTAPI_INVALID_VALUE | Entity provided is invalid |\n| E84105 | PERESTAPI_INVALID_VALUE_FOR_CONVERSION | Value provided is not valid to do the data type conversion. |\n| E84108 | PERESTAPI_ENTITY_NOT_FOUND_OR_NO_ACCESS &nbsp; | Validate provided entity exists in system or not. |\n| E84116 | PERESTAPI_INVALID_COMBO | To validate the Service Number and Account is valid combination. |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/topupBalance/{id}": {
+      "patch": {
+        "tags": [
+          "topupBalance"
+        ],
+        "summary": "Update auto-topup details for a given auto-topup ID",
+        "description": "The API TMF654 TopupBalance PATCH is required to support the auto-topup functionality.  This is not a complete implementation of the API, but rather a very limited version that only supports updating auto-topup details for a given customer.  In SV there is a dedicated customer list with auto-topup details, and the API will update the values in this list.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "auto-topup ID that is returned from the TMF654 TopupBalance LIST API to identify which auto-topup record is being updated",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "request body to update the isAutoTopup/numberOfPeriods for given TopUp ID, adhering to openAPI instead of TMF due to Digicel requirements.",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/topupPatchRef"
+              },
+              "examples": {
+                "update_num_periods": {
+                  "value": {
+                    "id": "123456789",
+                    "isAutoTopup": true,
+                    "numberOfPeriods": 6
+                  }
+                },
+                "cancel_auto_topup": {
+                  "value": {
+                    "id": "123456789",
+                    "isAutoTopup": false
+                  }
+                },
+                "payment_method_update": {
+                  "value": {
+                    "id": "123456789",
+                    "paymentMethod": {
+                      "@type": "Prepaid Payment",
+                      "name": "New Card Name"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will be included information about error code and short description of error. The error in the response will be indicative of the first occurrence of problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Digicel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| Message Code | Message Name | Message Details |\n|--------------|--------------|-----------------|\n| E84103 | PERESTAPI_FIELD_NOT_EXIST|To validate the field value exists in the system |\n| E84129 | PERESTAPI_GENERROR | To validate various Conditions in processing representing generic error. |\n| E84113 | PERESTAPI_ELEMENT_MISMATCH |To Validate the fields passed in the request to system Data. |\n| E84104 | PERESTAPI_NULL_VALUE_PASSED| Null value is provided where a value is expected. |\n| E84106 | PERESTAPI_ELEMENT_MISSING | Element mentioned in the error message is missing from request. |\n| E84133 | PERESTAPI_AMOUNT_INVALID | Value of attribute passed is less than or equal to zero. |\n| E84107 | PERESTAPI_INVALID_VALUE | Entity provided is invalid |\n| E84105 | PERESTAPI_INVALID_VALUE_FOR_CONVERSION | Value provided is not valid to do the data type conversion. |\n| E84108 | PERESTAPI_ENTITY_NOT_FOUND_OR_NO_ACCESS &nbsp; | Validate provided entity exists in system or not. |\n| E84116 | PERESTAPI_INVALID_COMBO | To validate the Service Number and Account is valid combination. |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Characteristic": {
+        "required": [
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "EntitlementCategory | RecurringPeriodUnit | RecurringTransferDay | RecurringTransferValidityPeriod | RecurringTransferValidityPeriodUnits"
+          },
+          "valueType": {
+            "type": "string",
+            "description": "EntitlementCategory -> string | RecurringPeriodUnit -> string | RecurringTransferDay -> string | RecurringTransferValidityPeriod -> string | RecurringTransferValidityPeriodUnits -> string. EntitlementCategory is required for Allowance Transfer"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of this attribute is depending on the corresponding name attribute which will determine the exact internal field to map",
+            "x-refdata-source": "RT-ENTITLEMENT_CATEGORY||||"
+          }
+        },
+        "description": "Describes a given characteristic of an object or entity through a name/value pair"
+      },
+      "PartyAccountRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the party account. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the account - <http://<HOSTNAME>:<PORT>/<Account URL>/<SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_ID>"
+          },
+          "@type": {
+            "type": "string",
+            "description": "Type of account e.g.: BillingAccount"
+          },
+          "accountType": {
+            "type": "string",
+            "description": "Complete sender/reciever account type name. Example: \"Prepaid (JMD)\". SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_TYPE_DISPLAY_NAME",
+            "x-refdata-source": "CM-Acct_Num_Type"
+          },
+          "accountTypeDisplayName": {
+            "type": "string",
+            "description": "Truncated account type name. Example: \"Prepaid\"."
+          }
+        },
+        "description": "Billing account reference. A account may be a party account or a financial account."
+      },
+      "CaseRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "case id, SV_MAPPING:Case.ObjectKey"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the case - <http://<HOSTNAME>:<PORT>/<Case URL>/<Case.ObjectKey>"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the case. SV_MAPPING:Case.Name"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the case. SV_MAPPING:Case.Status"
+          }
+        },
+        "description": "Balance Transfer Case Details"
+      },
+      "LogicalResourceRef": {
+        "required": [
+          "@type",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string",
+            "description": "The type of the logical resource. Possible Values: MSISDN"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of logical resource. SV_MAPPING:PurchasedService.ServiceName_X"
+          }
+        },
+        "description": "The logical resource (service) references of the bucket"
+      },
+      "Quantity": {
+        "required": [
+          "amount"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Numeric value in a given unit",
+            "format": "float"
+          },
+          "units": {
+            "type": "string",
+            "description": "Unit"
+          }
+        },
+        "description": "An amount in a given unit"
+      },
+      "BucketRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the bucket. SV_MAPPING:ENTITLEMENT_ALLOCATION_TRE_V.ENTITLEMENT_ALLOCATION_ID"
+          }
+        },
+        "description": "Link to the resource that holds bucket information"
+      },
+      "UsageType": {
+        "type": "string",
+        "description": "Defines the type of the underlying Balance. Values are allowance/monetary. SV_MAPPING -perestapi.BUCKET_USAGE_TYPE",
+        "enum": [
+          "monetary",
+          "allowance"
+        ]
+      },
+      "RelatedParty": {
+        "required": [
+          "@referredType",
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of a related entity. SV_MAPPING: ACCOUNT_TRE_V.CUSTOMER_NODE_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the related entity - <http://<HOSTNAME>:<PORT>/<CUSTOMER URL>/<SV_MAPPING: CUSTOMER_NODE_TRE_V.CUSTOMER_NODE_ID>"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the related entity. SV_MAPPING: CUSTOMER_NODE_TRE_V.NODE_NAME"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance when needed for disambiguation. The value is default to customer. SV_MAPPING: perestapi.REFERRED_TYPE RT"
+          }
+        },
+        "description": "Related Entity reference. A related party defines party or party role linked to a specific entity. It is referring to customer node"
+      },
+      "ProductRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Product offer Id. SV_MAPPING: PRODUCT_OFFER_TRE_V.PRODUCT_OFFER_ID via ENTITLEMENT_TRE_V.PRODUCT_INSTANCE_ID -> PRODUCT_INSTANCE_TRE_V.PRODUCT_OFFER_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the related entity - <http://<HOSTNAME>:<PORT>/<Product Offer URL>/<PRODUCT_OFFER_TRE_V.PRODUCT_OFFER_ID>"
+          },
+          "name": {
+            "type": "string",
+            "description": "Product offer display name. SV_MAPPING PRODUCT_OFFER_TRE_V.PRODUCT_OFFER_DISPLAY_NAME via ENTITLEMENT_TRE_V.PRODUCT_INSTANCE_ID -> PRODUCT_OFFER_TRE_V.PRODUCT_OFFER_ID -> PRODUCT_OFFER_TRE_V.PRODUCT_OFFER_DISPLAY_NAME"
+          }
+        },
+        "description": "Product offering"
+      },
+      "TimePeriod": {
+        "required": [
+          "startDateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "startDateTime": {
+            "type": "string",
+            "description": "Start Date format: yyyy-mm-ddThh:nn:ss.",
+            "format": "date-time"
+          },
+          "endDateTime": {
+            "type": "string",
+            "description": "The effective end date Format: yyyy-mm-ddThh:nn:ss.",
+            "format": "date-time"
+          }
+        },
+        "description": "A base / value business entity used to represent a period of time between two time points."
+      },
+      "Bucket_List": {
+        "required": [
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationRef"
+          },
+          "buckets": {
+            "type": "array",
+            "description": "Describes the list of bucket details",
+            "items": {
+              "$ref": "#/components/schemas/Bucket"
+            }
+          }
+        },
+        "description": "Bucket List"
+      },
+      "PaginationRef": {
+        "required": [
+          "limit",
+          "offset",
+          "remainingRecords",
+          "scn",
+          "totalRecords"
+        ],
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "description": "Requested index for start of items to be provided in response",
+            "format": "int64"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Requested number of items to be provided in response",
+            "format": "int64"
+          },
+          "remainingRecords": {
+            "type": "integer",
+            "description": "Remaining number of items to be fetched",
+            "format": "int64"
+          },
+          "totalRecords": {
+            "type": "integer",
+            "description": "Total number of items matching criteria",
+            "format": "int64"
+          },
+          "scn": {
+            "type": "string",
+            "description": "Oracle system change number for read consistency"
+          }
+        },
+        "description": "Query results and paging details."
+      },
+      "Error": {
+        "required": [
+          "code",
+          "reason"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Application relevant detail, defined in the API or a common list."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Explanation of the reason for the error which can be shown to a client user."
+          },
+          "message": {
+            "type": "string",
+            "description": "More details and corrective actions related to the error which can be shown to a client user."
+          },
+          "status": {
+            "type": "string",
+            "description": "HTTP Error code extension"
+          },
+          "referenceError": {
+            "type": "string",
+            "description": "URI of documentation describing the error.",
+            "format": "uri"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub - classing, this defines the super - class."
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON - Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub - classing, this defines the sub - class entity name."
+          }
+        },
+        "description": "Used when an API throws an Error, typically with a HTTP error response - code(3xx, 4xx, 5xx)"
+      },
+      "Money": {
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "Currency (ISO4217 norm uses 3 letters to define the currency) eg-JMD"
+          },
+          "value": {
+            "type": "number",
+            "description": "floating point number that represents the amount.",
+            "format": "float"
+          }
+        },
+        "description": "A base / value business entity used to represent money. If the customer requested a topup of 100 and then added the taxes of 20% to it so the customer paid 120 in that case the topup amount in API request would be 120.\nIf the customer requested a topup of 100 and did not include the taxes then the topup amount would be 100 and hence the customer would get 81.17$ in his account"
+      },
+      "Resource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The Type of the logical resource. Possible Values : MSISDN"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the logical resource.  ServiceName"
+          }
+        },
+        "description": "A reference to the logicl resource to which balance to be transferred"
+      },
+      "pAccount": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the party account. SV_MAPPING ACCOUNT_TRE_V.ACCOUNT_ID.Either partyAccount/logicalResource/both has to be provided except for BalanceTransfer"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the sender Account - <http://<TREREST_HOSTNAME>:<TREREST_PORT>/<Account TreREST URL>/<SV_MAPPING:Cust_Acct.PrimaryAcctNum_X>"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of Account, Possible values : Prepaid (Market) if partyAccount item exist"
+          },
+          "accountType": {
+            "type": "string",
+            "description": "Sender account Type Name, Possible values Prepaid/Postpaid. SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_TYPE_DISPLAY_NAME.  "
+          },
+          "accountCurrency": {
+            "type": "string",
+            "description": "Account Currency of the Billing Account"
+          },
+          "expiryDate": {
+            "type": "string",
+            "description": "Expiry date after the topup eg:2023-03-31T00:00:00"
+          },
+          "accountBalance": {
+            "type": "string",
+            "description": "Account Balance after the top Up. "
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the party account"
+          }
+        },
+        "description": "A reference to the logicl resource from which balance is sent"
+      },
+      "channel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "unique identifier for the channel"
+          },
+          "name": {
+            "type": "string",
+            "description": "name of the channel"
+          }
+        },
+        "description": "indicator for the channel used to request the topupBalance operation"
+      },
+      "requestor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "If provided it is the Singleview contact unique identifier for the requestor"
+          },
+          "name": {
+            "type": "string",
+            "description": "name of the requestor. Digicel internaltional requestor name in case if its 3rd Party topup, used in notificaiton"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the requestor if its Digicel Contact - <http://<HOSTNAME>:<PORT>/Contact URL> - if the requestor is a valid Digicel contact. "
+          },
+          "role": {
+            "type": "string",
+            "description": "role of the requestor. TBD of all possible roles (agent/friend/employer) etc"
+          }
+        },
+        "description": "object that holds the information about the requestor"
+      },
+      "PaymentMethodRef": {
+        "required": [
+          "@type",
+          "details"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string",
+            "description": "type of the payment method. SV_MAPPING:PAYMENT_TYPE_TRE_V - Eg: Prepaid Payment  "
+          },
+          "details": {
+            "type": "object",
+            "properties": {
+              "bank": {
+                "type": "string",
+                "description": "Bank name. Applicable for credit card payments."
+              },
+              "cardNumber": {
+                "type": "string",
+                "description": "Last 4 digit of the card number is mandatory for credit card payment."
+              },
+              "creditCardToken": {
+                "type": "string",
+                "description": "Token that identifies the credit card in  Softpoint."
+              },
+              "ccAuthorization": {
+                "type": "string",
+                "description": "Authorization Code for softpoint. "
+              },
+              "cardType": {
+                "type": "string",
+                "description": "Voucher/Coupon Card Type Name. Applicable for Scratch Card and E-TopUp payment.Value should be based on reference data in reference type 'prod.VOUCHER_TYPES'."
+              },
+              "code": {
+                "type": "string",
+                "description": "Code. Applicable for voucher and coupon. Ex: Voucher Card Number/Coupon Reference Number"
+              },
+              "details": {
+                "type": "string",
+                "description": "Payment method details. Applicable for 'Generic' payment type.Not applicable for payment methods 'Bank Transfer', 'Barter' and 'Cheque'."
+              },
+              "description": {
+                "type": "string",
+                "description": "Payment description. Applicable for 'Generic' payment type."
+              },
+              "expirationDate": {
+                "type": "string",
+                "description": "Expiry Date. Applicable for credit card payment. Date Format: mm/yyyy"
+              },
+              "method": {
+                "type": "string",
+                "description": "Payment method. Mandatory for 'Generic' payment type.Valid values are: Cash/Credit Card)"
+              },
+              "nameOnCard": {
+                "type": "string",
+                "description": "Name on Card. Applicable for credit card payment."
+              }
+            },
+            "description": "If @type is bankAccountDebit then the details attribute object values will be derived from BankAccountDebitType object type. If @type is bankCard then the details attribute object values will be derived from BankCardType object type"
+          },
+          "name": {
+            "type": "string",
+            "description": "Friendly name assigned to the payment method."
+          },
+          "id": {
+            "type": "string",
+            "description": "unique Identifier of the Payment Method - Optional"
+          }
+        },
+        "description": "PaymentMethod reference. holds payment method used for recharge/topup option. eg: cash, creditcard"
+      },
+      "BankAccountDebitType": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "string",
+            "description": "Account number, SV_MAPPING:Cust_Acct.BankAcctNum_X"
+          },
+          "BIC": {
+            "type": "string",
+            "description": "BIC, SV_MAPPING:Cust_Acct.Bank_R",
+            "x-refdata-source": "RT-BANK"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Owner, SV_MAPPING:Cust_Acct.BankAcctName_X"
+          },
+          "paymentLimit": {
+            "type": "string",
+            "description": "Payment limit, SV_MAPPING:Cust_Acct.BankAcctReference_X"
+          },
+          "status": {
+            "type": "string",
+            "description": "BANK_ACCOUNT_STATUS_CODE, SV_MAPPING:Cust_Acct.BankAcctStatus_R",
+            "x-refdata-source": "RT-BANK_ACCOUNT_STATUS"
+          }
+        },
+        "description": "Details of a bank account"
+      },
+      "payment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "unique identifier for the payment"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the payment processed - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<Account TreREST URL>/<SV_MAPPING:Cust_Acct.PrimaryAcctNum_X>"
+          },
+          "name": {
+            "type": "string",
+            "description": "name of the payment"
+          }
+        },
+        "description": "Payment reference. Payment information is captured and stored."
+      },
+      "Requestorref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the customer"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the customer - <http://<HOSTNAME>:<PORT>/<PrepayBalanceManagement URL>/<customer node ID>."
+          }
+        }
+      },
+      "Bucket": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the bucket - SV_MAPPING: ENTITLEMENT_ALLOCATION_TRE_V.ENTITLEMENT_ALLOCATION_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the bucket. <http://<HOSTNAME>:<PORT>/<Balance URL>/<SV_MAPPING: ENTITLEMENT_ALLOCATION_TRE_V.ENTITLEMENT_ALLOCATION_ID>"
+          },
+          "confirmationDate": {
+            "type": "string",
+            "description": "The date and time at which this bucket commenced. Format: yyyy-mm-ddThh:nn:ss. SV_MAPPING: ENTITLEMENT_ALLOCATION_TRE_V.START_DATE",
+            "format": "date-time"
+          },
+          "isShared": {
+            "type": "string",
+            "description": "True if the bucket is shared between several devices or users. Depending on entitlement context i.e.:  isShared = True if context is customer or customer node, isShared = False if context is service.",
+            "x-refdata-source": "RT-BOOLEAN"
+          },
+          "entitlementCategory": {
+            "type": "string",
+            "description": "Entitlement category of the bucket. Value will be retrieved from ENTITLEMENT_CATEGORY RT. SV_MAPPING: ENTITLEMENT_TRE_V.ENTITLEMENT_CATEGORY_CODE"
+          },
+          "entitlementOfferCategory": {
+            "type": "string",
+            "description": "Entitlement offer category of the bucket. Value will be retrieved from perestapi.imp.CATEGORY RT. SV_MAPPING: DERIVED_ATTRIBUTE_ARRAY.RESULT1_VALUE"
+          },
+          "name": {
+            "type": "string",
+            "description": "Friendly name to identify the bucket. SV_MAPPING: ENTITLEMENT_TRE_V.ENTITLEMENT_NAME"
+          },
+          "requestedDate": {
+            "type": "string",
+            "description": "The date and time at which the bucket is requested. Format: yyyy-mm-ddThh:nn:ss. SV_MAPPING: ENTITLEMENT_TRE_V.START_DATE",
+            "format": "date-time"
+          },
+          "logicalResource": {
+            "type": "array",
+            "description": "A list of logical resource (service) references of the bucket. It could refer to secondary service of service specifc offer, default to primary service.",
+            "items": {
+              "$ref": "#/components/schemas/LogicalResourceRef"
+            }
+          },
+          "partyAccount": {
+            "$ref": "#/components/schemas/PartyAccountRef"
+          },
+          "product": {
+            "type": "array",
+            "description": "A list of product offer references.",
+            "items": {
+              "$ref": "#/components/schemas/ProductRef"
+            }
+          },
+          "relatedParty": {
+            "type": "array",
+            "description": "Used to provide information about any other entity with relation to the bucket balance. It could refer to current customer node and/or root customer node.",
+            "items": {
+              "$ref": "#/components/schemas/RelatedParty"
+            }
+          },
+          "initialValue": {
+            "description": "shows the inital value of the entitlement.",
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "consumedValue": {
+            "description": "shows the consumed value of the entitlement",
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "remainingValue": {
+            "description": "shows the remaining value of the entitlement.",
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status for the bucket e.g.: either active or expired. SV_MAPPING: The value is derived from ENTITLEMENT_ALLOCATION_TRE_V.START_DATE and ENTITLEMENT_ALLOCATION_TRE_V.EXPIRY_DATE. It is mapped to abbreviation value of perestapi.BUCKET_STATUS RT.",
+            "x-refdata-source": "RT-perestapi.BUCKET_STATUS"
+          },
+          "usageType": {
+            "$ref": "#/components/schemas/UsageType"
+          },
+          "validFor": {
+            "description": "The period for which the balance in the bucket is valid.",
+            "$ref": "#/components/schemas/TimePeriod"
+          },
+          "@type": {
+            "type": "string",
+            "description": "Type of the bucket. SV_MAPPING: ENTITLEMENT_TRE_V.ENTITLEMENT_TYPE_NAME"
+          }
+        },
+        "description": "A bucket (called UsageVolumeProduct in the SID Model) represents and tracks a quantity of usage (remaining or consumed). It could be either a quantity or an amount in a currency. It can represent a fixed number of SMS, MMS, call minutes, quantity of data and so on"
+      },
+      "topupPatchRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "auto-topup ID from list. required for all updates"
+          },
+          "isAutoTopup": {
+            "type": "boolean",
+            "description": "Valid Values True/False. required if AutoTopup cancellation is required."
+          },
+          "numberOfPeriods": {
+            "type": "integer",
+            "description": "For autotopup indicates the number of occurrences of the period the recharge operation must be executed. For Eg : To Match Current Digicel 7,14,28,30 days frequency, recurring period can be given as “Days” and the number of periods, which we would treat as frequency, would be 7, 14, 28 or 30.conditional Mandatory if isAutoTopup is enabled."
+          },
+          "PaymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethodRef"
+          }
+        }
+      },
+      "topupRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "unique identifier of Topup Balance Transaction. (Digicel International Website Transaction Id)"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason describing the transfer/topup."
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of the Topup - JSON Format yyyy-mm-ddThh:nn:ss"
+          },
+          "amount": {
+            "description": "Except for Voucher Topup conditional Mandatory for all other Topup. Holds amount and currency to be topped Up.",
+            "$ref": "#/components/schemas/Money"
+          },
+          "isAutoTopup": {
+            "type": "boolean",
+            "description": "indicates if the topup requested is an autotopup (to be processed periodically)"
+          },
+          "numberOfPeriods": {
+            "type": "integer",
+            "description": "For autotopup indicates the number of occurrences of the period the recharge operation must be executed. For Eg : To Match Current Digicel 7,14,28,30 days frequency, recurring period can be given as  “Days” and the number of periods, which we would treat as frequency, would be 7, 14, 28 or 30.conditional Mandatory if isAutoTopup is enabled."
+          },
+          "recurringPeriod": {
+            "type": "string",
+            "description": "For autotopup the periodicity for the recharge operation (monthly,weekly, Days ). Conditional Mandatory if isAutoTopup is enabled. "
+          },
+          "usageType": {
+            "type": "string",
+            "description": "Defines the type of balance Transfer, Possible values are monetory/allowance if its top-up. SV_MAPPING: RT-perestapi.TRANSFER_USAGE_TYPE "
+          },
+          "logicalresource": {
+            "description": "A reference to the logical resource to which balance to be transferred.Either partyAccount/logicalResource/both has to be provided.",
+            "$ref": "#/components/schemas/Resource"
+          },
+          "partyAccount": {
+            "description": "Unique identifier of the party account. SV_MAPPING- ACCOUNT_TRE_V.ACCOUNT_ID.Either partyAccount/logicalResource/both has to be provided. Not Required for Allowance Transfer and mandatory for Monetary Balance Transfer.",
+            "$ref": "#/components/schemas/pAccount"
+          },
+          "payment": {
+            "description": "A payment reference. Payment Captured in the upstreams to post to SV. Need to be unique value. Mapped to SV Payment- Reciept Number",
+            "$ref": "#/components/schemas/payment"
+          },
+          "channel": {
+            "description": "Indicator for the channel used to request the topupBalance operation. Refer to SV_MAPPING:perestapi.imp.SALES_CHANNEL",
+            "$ref": "#/components/schemas/channel"
+          },
+          "requestor": {
+            "$ref": "#/components/schemas/requestor"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethodRef"
+          },
+          "location": {
+            "type": "string",
+            "description": "location information of the user during the topup"
+          },
+          "voucher": {
+            "type": "string",
+            "description": "Identifier for a voucher when the topup can be performed by this means."
+          }
+        },
+        "description": "topup body request",
+        "example": {
+          "id": "234249883998772",
+          "reason": "Test Topup",
+          "date": "2023-03-27T21:23:00.000Z",
+          "location": "Jamaica",
+          "amount": {
+            "amount": "1010.00",
+            "units": "KYD"
+          },
+          "usageType": "monetary",
+          "logicalResource": {
+            "@type": "MSISDN",
+            "value": "13455000209"
+          },
+          "payment": {
+            "id": "432872654",
+            "name": "Test 123 "
+          },
+          "channel": {
+            "id": 1,
+            "name": "SelfCareApp"
+          },
+          "requestor": {
+            "id": "102113",
+            "name": "Test 4366 _con 0906"
+          },
+          "paymentMethod": {
+            "@type": "Prepaid Payment",
+            "name": "Main Card",
+            "details": {
+              "method": "Credit Card",
+              "cardNumber": "xgvbng",
+              "creditCardToken": "188140$2rcTTvns",
+              "expirationDate": "01/25",
+              "nameOnCard": "Michael Scott",
+              "ccAuthorization": "651974"
+            }
+          }
+        }
+      },
+      "topupRespRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "topupBalance id."
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the case - <http://<HOSTNAME>:<PORT>/<PrepayBalanceManagement URL>/<topupBalance ObjectKey>."
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the case. SV_MAPPING:payment.Status."
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "confirmationDate": {
+            "type": "string",
+            "description": "server topup confirmation date - JSON Format yyyy-mm-ddThh:nn:ss"
+          },
+          "logicalresource": {
+            "$ref": "#/components/schemas/Resource"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/channel"
+          },
+          "requestor": {
+            "$ref": "#/components/schemas/requestor"
+          },
+          "partyAccount": {
+            "$ref": "#/components/schemas/pAccount"
+          }
+        },
+        "description": "topup body request"
+      },
+      "AutoTopUpList": {
+        "type": "array",
+        "description": "Auto-topup List",
+        "items": {
+          "$ref": "#/components/schemas/autotopuplistref"
+        }
+      },
+      "autotopuplistref": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier from auto-topup list"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the auto-topup - <http://<HOSTNAME>:<PORT>/<PrepayBalanceManagement URL>/<autotopup ID>."
+          },
+          "isAutoTopup": {
+            "type": "boolean",
+            "description": "indicates if the topup requested is an autotopup (to be processed periodically)"
+          },
+          "numberOfPeriods": {
+            "type": "integer",
+            "description": "For autotopup indicates the number of occurrences of the period the recharge operation must be executed. For Eg : To Match Current Digicel 7,14,28,30 days frequency, recurring period can be given as “Days” and the number of periods, which we would treat as frequency, would be 7, 14, 28 or 30. Conditional Mandatory if isAutoTopup is enabled."
+          },
+          "recurringPeriod": {
+            "type": "string",
+            "description": "For autotopup the periodicity for the recharge operation (monthly,weekly, Days ). Conditional Mandatory if isAutoTopup is enabled. "
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "logicalresource": {
+            "$ref": "#/components/schemas/Resource"
+          },
+          "requestor": {
+            "$ref": "#/components/schemas/Requestorref"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethodRef"
+          }
+        }
+      }
+    }
+  }
+}

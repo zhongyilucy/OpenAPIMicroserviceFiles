@@ -1,0 +1,89 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/SIL4/POFCoachDriverQRCreator/1.0.0"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "QR Code Generator",
+    "description": "This is an endpoint used to return a QR Code"
+  },
+  "security": [
+    {
+      "application": [
+        "read",
+        "write"
+      ]
+    }
+  ],
+  "paths": {
+    "/QRCode": {
+      "post": {
+        "summary": " QR Generator",
+        "description": "The P&O Ferries travel booking system will call this endpoint to generate a qr code",
+        "requestBody": {
+          "description": "booking object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/booking"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bookingQRCode"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "booking": {
+        "required": [
+          "booking"
+        ],
+        "type": "object",
+        "properties": {
+          "booking": {
+            "type": "string",
+            "example": "ABC123"
+          }
+        }
+      },
+      "bookingQRCode": {
+        "required": [
+          "encryptedData"
+        ],
+        "type": "object",
+        "properties": {
+          "encryptedData": {
+            "type": "string",
+            "example": "xxxxxxxx"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "application": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      }
+    }
+  }
+}

@@ -1,0 +1,515 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Transfer Management",
+    "description":"This API initializes, manages, and authorizes trasnfer between bank accounts.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.paystack.co",
+      "description": "Base API endpoint"
+    }
+  ],
+  "paths": {
+    "/transferrecipient": {
+      "post": {
+        "tags": [
+          "Transfer Recipient"
+        ],
+        "summary": "Create Transfer Recipient",
+        "operationId": "transferrecipient_create",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/paths/~1transferrecipient/post/requestBody/content/application~1json/schema"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "type",
+                  "name",
+                  "account_number",
+                  "bank_code"
+                ],
+                "properties": {
+                  "type": {
+                    "description": "Recipient Type - nuban for NGN, mobile_money for MOMO in GHS, basa for ZAR and authorization for all.",
+                    "type": "string",
+                    "enum": [
+                      "nuban",
+                      "mobile_money",
+                      "basa",
+                      "authorization"
+                    ]
+                  },
+                  "name": {
+                    "description": "Recipient's name",
+                    "type": "string",
+                    "example": "Ada Lovelace"
+                  },
+                  "account_number": {
+                    "description": "Recipient's bank account number",
+                    "type": "string",
+                    "example": "0000000000"
+                  },
+                  "bank_code": {
+                    "description": "Recipient's bank code. You can get the list of Bank Codes by calling the List Banks endpoint",
+                    "type": "string",
+                    "example": "011"
+                  },
+                  "description": {
+                    "description": "A description for this recipient",
+                    "type": "string",
+                    "example": "Keeps our servers running"
+                  },
+                  "currency": {
+                    "description": "Currency for the account receiving the transfer",
+                    "type": "string",
+                    "enum": [
+                      "NGN",
+                      "GHS",
+                      "ZAR"
+                    ]
+                  },
+                  "authorization_code": {
+                    "description": "An authorization code from a previous transaction",
+                    "type": "string",
+                    "example": "AUTH_CODE"
+                  },
+                  "metadata": {
+                    "description": "Stringified JSON object of custom data",
+                    "type": "string",
+                    "example": "{referrer_id: 123}\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transfer Recipient Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/Ok/content/application~1json/schema"
+                },
+                "examples": {
+                  "Create Customer": {
+                    "value": {
+                      "status": true,
+                      "message": "Transfer recipient created successfully",
+                      "data": {
+                        "active": true,
+                        "createdAt": "2022-09-16T08:31:43.321Z",
+                        "currency": "NGN",
+                        "domain": "live",
+                        "id": 38770134,
+                        "integration": 463433,
+                        "metadata": {
+                          "referrer_id": 123
+                        },
+                        "name": "Ada Lovelace",
+                        "recipient_code": "RCP_2fl8jmb2v3kbleb",
+                        "type": "nuban",
+                        "updatedAt": "2022-09-16T08:31:43.321Z",
+                        "is_deleted": false,
+                        "isDeleted": false,
+                        "details": {
+                          "authorization_code": null,
+                          "account_number": 0,
+                          "account_name": "Doe Jane Loren",
+                          "bank_code": 9,
+                          "bank_name": "First Bank of Nigeria"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/paths/~1transfer/post/responses/401"
+          },
+          "default": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/transfer": {
+      "post": {
+        "tags": [
+          "Transfer"
+        ],
+        "summary": "Initiate Transfer",
+        "operationId": "transfer_initiate",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/paths/~1transfer/post/requestBody/content/application~1json/schema"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "source",
+                  "amount",
+                  "recipient"
+                ],
+                "properties": {
+                  "source": {
+                    "description": "Where should we transfer from? Only balance is allowed for now",
+                    "type": "string",
+                    "example": "balance"
+                  },
+                  "amount": {
+                    "description": "Amount to transfer in kobo if currency is NGN. pesewas if currency is GHS and cents for ZAR.",
+                    "type": "integer",
+                    "example": 10234
+                  },
+                  "recipient": {
+                    "description": "The transfer recipient's code",
+                    "type": "string",
+                    "example": "RCP_CODE"
+                  },
+                  "reason": {
+                    "description": "The reason or narration for the transfer.",
+                    "type": "string",
+                    "example": "Good job"
+                  },
+                  "currency": {
+                    "description": "Specify the currency of the transfer. Defaults to NGN.",
+                    "type": "string"
+                  },
+                  "reference": {
+                    "description": "If specified, the field should be a unique identifier (in lowercase) for the object. \nOnly -,_ and alphanumeric characters are allowed.",
+                    "type": "string",
+                    "example": "Transfer-123_unique"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/Ok/content/application~1json/schema"
+                },
+                "examples": {
+                  "Initiate Transfer": {
+                    "value": {
+                      "status": true,
+                      "message": "Transfer has been queued",
+                      "data": {
+                        "reference": "on5hyz9poe",
+                        "integration": 428626,
+                        "domain": "test",
+                        "amount": 3794800,
+                        "currency": "NGN",
+                        "source": "balance",
+                        "reason": "Holiday Flexing",
+                        "recipient": 6788170,
+                        "status": "success",
+                        "transfer_code": "TRF_fiyxvgkh71e717b",
+                        "id": 23070321,
+                        "createdAt": "2020-05-13T14:22:49.687Z",
+                        "updatedAt": "2020-05-13T14:22:49.687Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized operation",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "No-Authorization-Header": {
+                    "value": {
+                      "status": false,
+                      "message": "No Authorization Header was found"
+                    }
+                  },
+                  "Bad-Authorization-Header": {
+                    "value": {
+                      "status": false,
+                      "message": "Format is Authorization Bearer [secret key]"
+                    }
+                  },
+                  "Invalid-Key": {
+                    "value": {
+                      "status": false,
+                      "message": "Invalid key"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Customer": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "email"
+            ],
+            "properties": {
+              "email": {
+                "description": "Customer's email address",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "description": "Customer's first name",
+                "type": "string",
+                "example": "Some"
+              },
+              "last_name": {
+                "description": "Customer's last name",
+                "type": "string",
+                "example": "Body"
+              },
+              "phone": {
+                "description": "Customer's phone number",
+                "type": "string",
+                "example": "+2348123456789"
+              },
+              "metadata": {
+                "description": "Stringified JSON object of custom data",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "authorization_code"
+            ],
+            "properties": {
+              "authorization_code": {
+                "description": "Customer's authorization code to be deactivated",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "customer"
+            ],
+            "properties": {
+              "customer": {
+                "description": "Customer's code, or email address",
+                "type": "string"
+              },
+              "risk_action": {
+                "description": "One of the possible risk actions [ default, allow, deny ]. allow to whitelist. \ndeny to blacklist. Customers start with a default risk action.\n",
+                "type": "string",
+                "enum": [
+                  "default",
+                  "allow",
+                  "deny"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "country",
+              "bvn",
+              "bank_code",
+              "account_number"
+            ],
+            "properties": {
+              "type": {
+                "description": "Predefined types of identification.",
+                "type": "string",
+                "enum": [
+                  "bvn",
+                  "bank_account"
+                ]
+              },
+              "country": {
+                "description": "Two-letter country code of identification issuer",
+                "type": "string",
+                "example": "NG"
+              },
+              "bvn": {
+                "description": "Customer's Bank Verification Number",
+                "type": "integer",
+                "example": 123456789
+              },
+              "bank_code": {
+                "description": "You can get the list of bank codes by calling the List Banks endpoint (https://api.paystack.co/bank).",
+                "type": "string",
+                "example": "007"
+              },
+              "account_number": {
+                "description": "Customer's bank account number.",
+                "type": "string",
+                "example": "0111111111"
+              },
+              "first_name": {
+                "description": "Customer's first name",
+                "type": "string",
+                "example": "Uchenna"
+              },
+              "last_name": {
+                "description": "Customer's last name",
+                "type": "string",
+                "example": "Okoro"
+              }
+            }
+          }
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Response": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Ok": {
+        "description": "Successful operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Created": {
+        "description": "Resource created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Response"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Entity not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "status": false,
+              "message": "Entity not found"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "status": false,
+              "message": "Invalid key"
+            }
+          }
+        }
+      },
+      "GeneralError": {
+        "description": "General Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

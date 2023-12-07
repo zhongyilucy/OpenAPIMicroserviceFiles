@@ -1,0 +1,150 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Retail Customers Email Management",
+    "description": "Retail Customers Management API that retrieves and manages the email of customers of the shop.",
+    "contact": {
+      "name": "Enterprise Data Management & Engineering",
+      "email": "DL_AFI_RetailMasterData_IntegrationSupport@ashleyfurniture.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/AFI-Integrations/retail-customers/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://edme.dev.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "DEV target service."
+    },
+    {
+      "url": "https://edme.stage.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "STAGE target service."
+    },
+    {
+      "url": "https://edme.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "PROD target service."
+    },
+    {
+      "url": "https://devapigw.ashleyfurniture.com/retail-customers/v1",
+      "description": "DEV public base URL."
+    },
+    {
+      "url": "https://stageapigw.ashleyfurniture.com/retail-customers/v1",
+      "description": "STAGE public base URL."
+    },
+    {
+      "url": "https://apigw3.ashleyfurniture.com/retail-customers/v1",
+      "description": "PROD public base URL."
+    }
+  ],
+  "security": [
+    {
+      "apimSubscriptionKey": []
+    }
+  ],
+  "paths": {
+    "/customers/{custId}/emails": {
+      "get": {
+        "operationId": "GetRetailCustomerEmailAddresses",
+        "summary": "Get collection of retail customer email addresses.",
+        "description": "Request a collection containing all email addresses associated with the specified customer.",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/CustId-url"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-OK-CustomerEmailsCollection"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "404": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/404-NotFound"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      }
+    },
+    "/customers/{custId}/emails/{emailId}": {
+      "get": {
+        "operationId": "GetRetailCustomerEmailAddressById",
+        "summary": "Get specific retail customer email address.",
+        "description": "Request a specific retail customer email address by ID.",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/CustId-url"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/EmailId-url"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-OK-CustomerEmail"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "404": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/404-NotFound"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "parameters": {},
+    "requestBodies": {},
+    "responses": {
+      "200-OK-CustomerEmailsCollection": {
+        "description": "Success - returns a collection of retail customer email addresses matching the provided criteria.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/emailAddressCollectionResponse"
+            }
+          }
+        }
+      },
+      "200-OK-CustomerEmail": {
+        "description": "Success - return a specific retail customer email address.",
+        "headers": {
+          "ETag": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/headers/ETag"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/emailAddress"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apimSubscriptionKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Ocp-Apim-Subscription-Key",
+        "description": "Subscription key managed by Azure API Management (APIM))"
+      }
+    }
+  }
+}

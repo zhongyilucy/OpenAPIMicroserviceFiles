@@ -1,0 +1,112 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Image metadata API",
+    "description": "This api retrieves the metadata of the images inside the system.",
+    "contact": {
+      "email": "support@allread.ai"
+    },
+    "license": {
+      "name": "© 2023 AllRead Machine Learning Technologies.  All rights reserved",
+      "url": "https://www.allread.ai"
+    }
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/jesus.tejedor/media-repository/1.0.0"
+    }
+  ],
+  "tags": [
+    {
+      "name": "image",
+      "description": "CRUD over image metada. Create and update only allowed over metadata"
+    }
+  ],
+  "paths": {
+    "/image/meta/{id}": {
+      "get": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Get the image file as jpg binary by ID",
+        "description": "Meta information of the registered image. Size of the image,  type of image, when the image was made, the stream where the image  was obtained, etc.'",
+        "operationId": "getImageMetaById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id that needs to be fetched.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Expected response with the proper image metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Image"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id supplied"
+          },
+          "404": {
+            "description": "Image not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Image": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "stream_name": {
+            "type": "string",
+            "example": "lane_1_cam_0"
+          },
+          "time": {
+            "type": "integer",
+            "description": "Unix timestamp 13 digits milliseconds",
+            "format": "int64",
+            "example": 1661268817000
+          },
+          "width": {
+            "type": "integer",
+            "description": "image height expressed in pixels",
+            "format": "int32",
+            "example": 1920
+          },
+          "height": {
+            "type": "integer",
+            "description": "image height expressed in pixels",
+            "format": "int32",
+            "example": 1080
+          },
+          "size": {
+            "type": "integer",
+            "description": "physical size of the image expressed in bytes",
+            "format": "int64",
+            "example": 3482
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,318 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.2",
+    "title": "Location API",
+    "description": "The Location API provides a way to retrieve location from a merchant."
+  },
+  "servers": [
+    {
+      "url": "https://api.tillersystems.com",
+      "description": "Production"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/Tillersystems/Location/1.0.2"
+    }
+  ],
+  "paths": {
+    "/locations/v1/{storeId}/": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Get locations",
+        "description": "Retrieve a list of locations associated with a store",
+        "operationId": "getLocations",
+        "security": [
+          {
+            "oauth": [
+              "location/read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "The id identifying the store.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number",
+              "example": 1234
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "List of locations associated with a store.",
+                  "items": {
+                    "$ref": "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/locations/v1/{storeId}/areas/": {
+      "get": {
+        "tags": [
+          "Area"
+        ],
+        "summary": "Get areas",
+        "description": "Retrieve a list of areas associated with a store",
+        "operationId": "getAreas",
+        "security": [
+          {
+            "oauth": [
+              "location/read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "The id identifying the store.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number",
+              "example": 1234
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "List of areas associated with a store.",
+                  "items": {
+                    "$ref": "#/components/schemas/Area"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "BadRequestError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "message": "Bad Request"
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "message": "Unauthorized"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "message": "Not Found"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "message": "An unexpected error occured"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "description": "Describe a location",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the location.",
+            "readOnly": true,
+            "example": 14567
+          },
+          "storeId": {
+            "type": "integer",
+            "description": "identifier of the store",
+            "example": 123
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the location",
+            "example": "Table 12"
+          },
+          "capacity": {
+            "type": "integer",
+            "description": "default number of persons/seats/places...",
+            "example": 4
+          },
+          "coordinates": {
+            "$ref": "#/components/schemas/Coordinates"
+          },
+          "shape": {
+            "type": "string"
+          },
+          "area": {
+            "$ref": "#/components/schemas/Area"
+          }
+        }
+      },
+      "Area": {
+        "type": "object",
+        "description": "Area that can contain multiple locations.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the area.",
+            "readOnly": true,
+            "example": 42
+          },
+          "storeId": {
+            "type": "integer",
+            "description": "identifier of the store",
+            "example": 123
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the area",
+            "example": "Bar"
+          },
+          "position": {
+            "type": "integer",
+            "description": "Position in simple plan",
+            "readOnly": true,
+            "example": 42
+          },
+          "height": {
+            "type": "integer",
+            "description": "height of the area",
+            "readOnly": true,
+            "example": 42
+          },
+          "width": {
+            "type": "integer",
+            "description": "width of the area",
+            "readOnly": true,
+            "example": 42
+          }
+        }
+      },
+      "Coordinates": {
+        "type": "object",
+        "description": "Position of the location",
+        "properties": {
+          "positionX": {
+            "type": "integer",
+            "description": "X of the location",
+            "readOnly": true,
+            "example": 42
+          },
+          "positionY": {
+            "type": "integer",
+            "description": "Y of the location",
+            "readOnly": true,
+            "example": 42
+          },
+          "position": {
+            "type": "integer",
+            "description": "Position in simple plan",
+            "readOnly": true,
+            "example": 42
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "oauth": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://oauth.api.tiller.systems/oauth2/authorize",
+            "tokenUrl": "https://oauth.api.tiller.systems/oauth2/token",
+            "scopes": {
+              "location/read": "Retrieve locations from a store"
+            }
+          }
+        }
+      }
+    }
+  }
+}

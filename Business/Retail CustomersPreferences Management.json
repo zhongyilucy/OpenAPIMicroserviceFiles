@@ -1,0 +1,171 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Retail Customers Preferences Management",
+    "description": "Retail Customers Management API that retrieves and manages the prereferences of customers of the shop.",
+    "contact": {
+      "name": "Enterprise Data Management & Engineering",
+      "email": "DL_AFI_RetailMasterData_IntegrationSupport@ashleyfurniture.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/AFI-Integrations/retail-customers/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://edme.dev.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "DEV target service."
+    },
+    {
+      "url": "https://edme.stage.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "STAGE target service."
+    },
+    {
+      "url": "https://edme.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "PROD target service."
+    },
+    {
+      "url": "https://devapigw.ashleyfurniture.com/retail-customers/v1",
+      "description": "DEV public base URL."
+    },
+    {
+      "url": "https://stageapigw.ashleyfurniture.com/retail-customers/v1",
+      "description": "STAGE public base URL."
+    },
+    {
+      "url": "https://apigw3.ashleyfurniture.com/retail-customers/v1",
+      "description": "PROD public base URL."
+    }
+  ],
+  "security": [
+    {
+      "apimSubscriptionKey": []
+    }
+  ],
+  "paths": {
+    "/preferences": {
+      "get": {
+        "operationId": "GetCustomerPreferences",
+        "summary": "Get filtered collection of customer preferences",
+        "description": "Request a collection of customer preferences that meet the criteria provided in the query string.",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/EmailAddress-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/EmailAddressList-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/PhoneNumber-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/PhoneNumberList-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/Purpose-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/Organization-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/Channel-query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-OK-PreferencesCollection"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "404": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/404-NotFound"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      },
+      "post": {
+        "operationId": "AddUpdateCustomerPreferences",
+        "summary": "Add or update a customer's preferences",
+        "description": "Add or update a customer's preferences for the provided communication target (email or phone).",
+        "requestBody": {
+          "description": "New or updated preference object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/emailPreferenceRequest"
+                  },
+                  {
+                    "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/phonePreferenceRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/202-Accepted-CustomerPreference"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "parameters": {},
+    "requestBodies": {},
+    "responses": {
+      "200-OK-PreferencesCollection": {
+        "description": "Success - returns a collection of customer preferences matching the provided criteria.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/emailPreferencesCollectionResponse"
+                },
+                {
+                  "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/phonePreferencesCollectionResponse"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "202-Accepted-Customer": {
+        "description": "Accepted - the submitted customer information has been received and queued for processing."
+      },
+      "202-Accepted-CustomerPreference": {
+        "description": "Accepted - the submitted preference change has been received and queued for processing."
+      }
+    },
+    "securitySchemes": {
+      "apimSubscriptionKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Ocp-Apim-Subscription-Key",
+        "description": "Subscription key managed by Azure API Management (APIM))"
+      }
+    }
+  }
+}

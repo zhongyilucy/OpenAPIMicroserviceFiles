@@ -1,0 +1,91 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "10.58.1",
+    "title": "ReferralsDetail",
+    "description": "Common ReferralsDetail API"
+  },
+  "paths": {
+    "/referrals/{id}/": {
+      "get": {
+        "summary": "Get details of a referral",
+        "description": "API returns the details associated with the Referral.",
+        "operationId": "referrals_read",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/AcceptHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/AuthorizationHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/ContentTypeHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/RefererHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/UserAgentHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/ForwardedForHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/UserNameHeader/10.0.1#/components/parameters/UserNameHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/WebSessionIdHeader/10.0.1#/components/parameters/WebSessionIdHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/CorrelationIdHeader/10.0.1#/components/parameters/CorrelationIdHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/IdentitiesHeader/10.0.3#/components/parameters/IdentitiesHeader"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Referral ID defined by the payer",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A Referral Object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ReferralModel/10.61.1#/components/schemas/Referral"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,370 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Recipes Website",
+    "description": "The API for for a website to get cooking recipes",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/AWAISYA_1/recipes-website/1.0.0"
+    }
+  ],
+  "paths": {
+    "/recipes": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get a list of all the recipes in database, with option to limit",
+        "description": "Returns a list of all recipes",
+        "operationId": "getAllRecipes",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "max number of recipes to return",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/getRecipes"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get a recipe from the database by id",
+        "description": "Returns a recipe by id",
+        "operationId": "getRecipe",
+        "parameters": [
+          {
+            "name": "recipe id",
+            "in": "query",
+            "description": "The id of the recipe you want",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getRecipe"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Add a recipe to the database",
+        "description": "Add the recipe",
+        "operationId": "addRecipe",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/addRecipe"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/randomRecipes": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "description": "Returns random recipes (you can choose the amount)",
+        "operationId": "getRandomRecipes",
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "description": "The amount of random recipes you want to get",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getRecipes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/searchRecipes": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "description": "Returns a list of all the recipes in the website",
+        "operationId": "searchRecipes",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "What the client wants to search",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The max number of recipes to return",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "applicationjson": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/getRecipes"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      
+      "Recipe": {
+        "required": [
+          "gluten",
+          "image",
+          "ingridiants",
+          "instructions",
+          "name",
+          "numOfPortions",
+          "popularity",
+          "time",
+          "vegenOrVegterian"
+        ],
+        "properties": {
+          "image": {
+            "$ref": "#/components/schemas/image"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/image"
+            }
+          },
+          "time": {
+            "type": "number",
+            "description": "The time in minutes that takes to make the meal",
+            "format": "float",
+            "example": 20
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the recipe",
+            "example": "cookie"
+          },
+          "popularity": {
+            "type": "integer",
+            "description": "The number of likes the recipe has",
+            "example": 38
+          },
+          "vegenOrVegterian": {
+            "type": "string",
+            "description": "Can be vegan/vagiterian/none",
+            "example": "vegan"
+          },
+          "gluten": {
+            "type": "boolean",
+            "description": "Tells if the meal include gluten",
+            "example": true
+          },
+          "instructions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Array of instuctions of the recipe",
+              "example": "First put 1 kg of white flour into the mixer"
+            }
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipe_ingredients"
+            }
+          },
+          "numOfPortions": {
+            "type": "number",
+            "description": "The amount of portions from the recipe",
+            "example": 4
+          }
+        }
+      },
+      "image": {
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "URL to the image",
+            "example": "https://url.com/image.png"
+          }
+        }
+      },
+      "watchedRecipe": {
+        "properties": {
+          "userToken": {
+            "$ref": "#/components/schemas/userToken"
+          },
+          "id": {
+            "type": "integer",
+            "description": "The id of the recipe that the user watched",
+            "example": 36
+          }
+        }
+      },
+      "userToken": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "The token of conected user who want to add a recipe",
+            "example": "df61e3e4e63a7220a9de1a0b54d39b1f"
+          }
+        }
+      },
+      "getRecipe": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The recipe id",
+            "example": 7
+          },
+          "recipe": {
+            "$ref": "#/components/schemas/Recipe"
+          }
+        }
+      },
+      "getRecipes": {
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "The amount of recipes to returned",
+            "example": 10
+          },
+          "recipes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/getRecipe"
+            }
+          }
+        }
+      },
+      "addRecipe": {
+        "required": [
+          "recipe",
+          "userToken"
+        ],
+        "properties": {
+          "recipe": {
+            "$ref": "#/components/schemas/Recipe"
+          },
+          "userToken": {
+            "$ref": "#/components/schemas/userToken"
+          }
+        }
+      },
+      "Recipe_amount": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "The amount required from the ingridiant",
+            "example": 1.5
+          },
+          "measure": {
+            "type": "string",
+            "description": "The name of the unit's measure",
+            "example": "kg"
+          }
+        }
+      },
+      "Recipe_ingredients": {
+        "type": "object",
+        "properties": {
+          "ingredient": {
+            "type": "string",
+            "description": "A single ingredient name",
+            "example": "sugar"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Recipe_amount"
+          }
+        }
+      }
+    }
+  }
+}

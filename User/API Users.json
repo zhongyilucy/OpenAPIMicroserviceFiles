@@ -1,0 +1,416 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Users",
+    "version": "1.0.0",
+    "description": "This is a sample API to create, retrieve, and delete users.",
+    "contact": {
+      "name": "Enrique Adrian Saldivar Duarte",
+      "email": "enrisal2000@gmail.com",
+      "url": "https://www.henrysdev.me"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Managing users account"
+    }
+  ],
+  "paths": {
+    "/api/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Endpoint to get all users",
+        "description": "\nOnly available for moderators or above.\n\nRequire an access token to perform the operation.",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user or users was find",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Successful Response": {
+                    "value": "[\n  {\n    \"username\": \"someusername\",\n    \"email\": \"someemail@gmail.com\",\n    \"password\": \"password\"\n  },\n  {\n    \"username\": \"username\",\n    \"email\": \"email@gmail.com\",\n    \"password\": \"password\"\n  }\n]"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Can be triggered by:\n  - No user found, if the token contains invalid information\n  - Users not found, if not users found"
+          },
+          "500": {
+            "description": "The server try to perform the operation but failed. It occurs probably while searching on the database with some wrong parameter."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Endpoint to add an user",
+        "description": "\nOnly available for admins.\n\nRequire an access token to perform the operation.",
+        "requestBody": {
+          "content": {
+            "New user": {
+              "schema": {
+                "type": "object",
+                "example": "{\n  \"username\": \"someusername\",\n  \"email\": \"someemail@gmail.com\",\n  \"password\": \"password\",\n  \"roles\": [\"admin\"]\n}"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user or users was created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Successful Response": {
+                    "value": "{\n  \"username\": \"someusername\",\n  \"email\": \"someemail@gmail.com\",\n  \"password\": \"password\",\n  \"roles\": [\"admin\"]\n}"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Require admin role"
+          },
+          "404": {
+            "description": "Can be triggered by:\n  - No user found, if the token contains invalid information"
+          },
+          "500": {
+            "description": "The server try to perform the operation but failed. It occurs probably while searching on the database with some wrong parameter."
+          }
+        }
+      }
+    },
+    "/api/users/<userId>": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Endpoint to get a user by id.",
+        "description": "\n\nOnly available for moderators or above.\n\nRequire an access toke to perform.",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user was find",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Successful Response": {
+                    "value": "{\n  \"username\": \"someusername\",\n  \"email\": \"someemail@gmail.com\"\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Can be triggered by:\n  - No user found, if the token contains invalid information\n  - User not found, if not user found"
+          },
+          "500": {
+            "description": "The server try to perform the operation but failed. It occurs probably while searching on the database with some wrong parameter."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Endpoint to completely update an user by id.",
+        "description": "\n\nOnly available for admins.\n\nRequire a token to perform.",
+        "requestBody": {
+          "content": {
+            "User to update": {
+              "schema": {
+                "type": "object",
+                "example": "{\n  \"username\": \"someusername\",\n  \"email\": \"someemail@gmail.com\",\n  \"password\": \"password\"\n}"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user was updated",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Successful Response": {
+                    "value": "{\n  \"username\": \"someusername\",\n  \"email\": \"someemail@gmail.com\",\n  \"password\": \"password\"\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Can be triggered by:\n  - No user found, if the token contains invalid information\n  - Users not found, if not users found"
+          },
+          "500": {
+            "description": "The server try to perform the operation but failed. It occurs probably while searching or updating on the database with some wrong parameter."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Endpoint to partially update a user by id.",
+        "description": "\n\nOnly available for admins.\n\nRequire an access token to perform.",
+        "requestBody": {
+          "content": {
+            "User to update": {
+              "schema": {
+                "type": "object",
+                "example": "{\n  \"username\": \"someusername\",\n  \"email\": \"someemail@gmail.com\",\n  \"password\": \"password\"\n}"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user was updated",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Successful Response": {
+                    "value": "{\n  \"username\": \"someusername\",\n  \"email\": \"someemail@gmail.com\",\n  \"password\": \"password\"\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Can be triggered by:\n  - No user found, if the token contains invalid information\n  - Users not found, if not users found"
+          },
+          "500": {
+            "description": "The server try to perform the operation but failed. It occurs probably while searching or updating on the database with some wrong parameter."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Endpoint to delete a user by id.",
+        "description": "\n\nOnly available for admins.\n\nRequire an access token to perform.",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user was deleted",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Successful Response": {
+                    "value": "{\n  \"username\": \"someusername\",\n  \"email\": \"someemail@gmail.com\",\n  \"password\": \"password\"\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Can be triggered by:\n  - No user found, if the token contains invalid information\n  - Users not found, if not users found"
+          },
+          "500": {
+            "description": "The server try to perform the operation but failed. It occurs probably while searching or deleting on the database with some wrong parameter."
+          }
+        }
+      }
+    },
+    "/api/auth/signup": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Endpoint to sign up a new user",
+        "description": "\n\nRequire a username, email and password.\n\nReturns the user and a token.",
+        "requestBody": {
+          "content": {
+            "New user": {
+              "schema": {
+                "type": "object",
+                "example": "{\n  \"username\": \"someusername\",\n  \"email\": \"someemail@gmail.com\",\n  \"password\": \"password\"\n}"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Successful Response": {
+                    "value": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzQyZGQ2ZGE1ZGQwOGQ5NWJjY2M1MyIsImlhdCI6MTY3MzgwMTE3NCwiZXhwIjoxNjczODg3NTc0fQ.WHfC-V3_CBt0vLM1SEh53cPhXkVsg7KOpNw8PENlhpw\",\n    \"username\": \"Hardman\",\n    \"email\": \"Hardman@gmail.com\",\n    \"roles\": [\n        \"63c3111ae72e6a3000e17795\"\n    ]\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If some field is empty or if the username or email is duplicated."
+          },
+          "500": {
+            "description": "The server doesn't know how to handle the error."
+          }
+        }
+      }
+    },
+    "/api/auth/signin": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Endpoint to sign in a user",
+        "description": "\n\nRequire a email and password.\n\nReturns the user and a token.",
+        "requestBody": {
+          "content": {
+            "User": {
+              "schema": {
+                "type": "object",
+                "example": "{\n  \"email\": \"someemail@gmail.com\",\n  \"password\": \"password\"\n}"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Successful Response": {
+                    "value": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzM0MTdjNjA2YjFkM2Q3NTkyYTFhZiIsImlhdCI6MTY3MzgwMTQ3MiwiZXhwIjoxNjczODg3ODcyfQ.T8V64DuhTbo9sGXtLoMsRQU9nxt_1pTuN49W2EHEeQs\",\n    \"username\": \"Harvey\",\n    \"email\": \"harvey@gmail.com\",\n    \"roles\": [\n        {\n            \"_id\": \"63c3111ae72e6a3000e17795\",\n            \"name\": \"user\"\n        }\n    ]\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If some field is empty."
+          },
+          "401": {
+            "description": "The email or the password is incorrect."
+          },
+          "500": {
+            "description": "The server doesn't know how to handle the error."
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "url": "https://github.com/xHenrySx/API-REST/blob/master/README.md",
+    "description": "GitHub Documentation"
+  }
+}

@@ -1,0 +1,290 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "This API creates and manages invoices for the users.",
+    "version": "1.4.0",
+    "title": "Invoice Creation API",
+    "license": {
+      "name": "Git Repo",
+      "url": "https://github.com/cseteaching-unsw-edu-au/se2021-23t1-einvoicing-api-f12a-gobgobgoo-creation-api"
+    }
+  },
+  "servers": [
+    {
+      "description": "Invoice Creation API",
+      "url": "http://deploy-s2-4-env.eba-fxeq7rku.ap-southeast-2.elasticbeanstalk.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Invoice",
+      "description": "Everything about your Invoice",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Admins",
+      "description": "Everything about admin"
+    }
+  ],
+  "paths": {
+    "/invoices": {
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Create a new invoice",
+        "description": "Uploads an invoice file and creates a new invoice with a unique ID.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The invoice file to be uploaded. Must be of type .json"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created a new invoice.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "invoiceId": {
+                      "type": "integer",
+                      "description": "The unique ID of the newly created invoice."
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "An authentication token."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "No file was attached.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message indicating that no file was attached."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid authentication token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message indicating that the authentication token is invalid."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid request method or incorrect data type provided.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message indicating that the request method is invalid or the data type is incorrect."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Returns a list of all created e-invoices",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "operationId": "getInvoices",
+        "responses": {
+          "200": {
+            "description": "Returns an array of all created invoices",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "invoice": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Invoice"
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid Token"
+          }
+        }
+      }
+    },
+    "/invoices/{invoiceId}": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Returns single e-invoice",
+        "description": "Returns single e-invoice provided the Id is correctly input.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "operationId": "findIncvoiceById",
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "path",
+            "description": "ID of invoice to get",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Incorrect invoice Id"
+          }
+        }
+      }
+    },
+    "/clear/{invoiceId}": {
+      "delete": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Deletes single e-invoice",
+        "description": "Deletes single e-invoice",
+        "operationId": "deleteInvoiceById",
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "path",
+            "description": "ID of invoice to get",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice deleted."
+          },
+          "400": {
+            "description": "Incorrect invoice Id"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Invoice": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "filename": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "filename"
+        ]
+      },
+      "InventoryItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "name",
+          "price",
+          "quantity"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

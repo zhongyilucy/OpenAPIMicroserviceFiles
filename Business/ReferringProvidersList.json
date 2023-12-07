@@ -1,0 +1,186 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ReferringProvidersList",
+    "description": "Common ReferringProvidersList API",
+    "version": "10.53.1"
+  },
+  "paths": {
+    "/referring-providers/": {
+      "get": {
+        "tags": [
+          "authorization & referral"
+        ],
+        "summary": "Get a list of Providers for use as a referring provider in an authorization or referral transfer of care,  associated with input query parameters.",
+        "description": "Returns a list of Providers for use as a referring provider in a authorization or referral transfer of care.\n\n\nThis response should also respect the user profile identities header which relates a user to their authorized TaxIDs, Facilitys, Locations, and Providers.\n\nSearch can be performed using any / all combinations of query parameters.\n",
+        "operationId": "referring_providers_list",
+        "parameters": [
+          {
+            "name": "preapproved_member_number",
+            "in": "query",
+            "description": "Semantically, when given a preapproved_member_number, providers should be returned that would be pre-approved by Payers if they were specified on an authorization or referral given that member.\n\nExample - /providers/?preapproved_member_number=1010abc",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "specialty",
+            "in": "query",
+            "description": "Should return providers given this specialty.\nExample - /providers/?specialty=Cardiology",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "service_category",
+            "in": "query",
+            "description": "Should return providers given this service_category.\nExample - /providers/?service_category=Cardiology",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Should return providers given this name.\n\nShould be Fuzzy search on all of first, middle, and last name of the provider.\n\nExample - /providers/?name=Doe -> returns Jon Doe, Jane Doe, Jane R Doe Example - /providers/?name=Mik -> returns Mike Smith, Mika Smith, Mikael B Donnovan",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "first_name",
+            "in": "query",
+            "description": "Should return providers given this name.\n\nShould be Fuzzy search on first_name of the provider.\n\nExample - /providers/?first_name=Doe Example - /providers/?first_name=Mik",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "last_name",
+            "in": "query",
+            "description": "Should return providers given this name.\n\nShould be Fuzzy search on last_name of the provider.\n\nExample - /providers/?last_name=Doe Example - /providers/?last_name=Mik",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider_id",
+            "in": "query",
+            "description": "Filters down to provider with this provider_id or providers with matching provider_id if given an array.\n\nExample - /providers/?provider_id=provider-abc-123 Example - /providers/?provider_id=p-123&provider_id=p4321",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "provider_number",
+            "in": "query",
+            "description": "Filters down to provider with this provider_number or providers with matching provider_number if given an array.\n\nExample - /providers/?provider_number=provider-abc-123 Example - /providers/?provider_number=p-123&provider_number=p-4321",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "npi",
+            "in": "query",
+            "description": "Should filter down to the provider with this npi\n\nExample - /providers/?npi=12345abc",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/orderingParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageSizeParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A paginated list of providers filtered based on the input parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "count",
+                    "results"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Count representing the number of objects returned in the results array"
+                    },
+                    "next": {
+                      "type": "integer",
+                      "description": "query identifier defined by the api developer for getting the next set of records"
+                    },
+                    "previous": {
+                      "type": "integer",
+                      "description": "query identifier defined by the api developer for getting the previous set of records"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ProviderModel/10.55.1#/components/schemas/Provider"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

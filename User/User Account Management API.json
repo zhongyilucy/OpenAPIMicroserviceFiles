@@ -1,0 +1,506 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "User Account Management API",
+    "description":"This API creates, manages, and retrieves users in the system.",
+    "contact": {
+      "email": "Muhammed.Ramadan@sbs.net"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/MUHAMMEDRAMADAN/ElEbrahyma/1.0.0"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/MUHAMMEDRAMADAN/Parking-System/1.0.1"
+    },
+    {
+      "url": "http://172.105.154.30:55555"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": ""
+    },
+    {
+      "name": "user",
+      "description": ""
+    },
+    {
+      "name": "reservation",
+      "description": ""
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "signUp",
+        "description": "This can  be done by the user.",
+        "operationId": "signUp",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateUserRequest"
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/Created"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/auth/forgetPassword": {
+      "put": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "forget user password",
+        "description": "forget user password",
+        "operationId": "forgetPassword",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ForgetPasswordRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Ok"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createUser",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateUserRequest"
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/requestBodies/UpdateUserRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/users/list": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Returns a filtered list of users",
+        "description": "Returns a filtered list of users",
+        "operationId": "getUsersByFilters",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RequestGrid"
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UpdateUserRequest"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/changePassword/": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "changePassword user password",
+        "description": "changePassword user password",
+        "operationId": "changePassword",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ChangePasswordRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Ok"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/resetPassword": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Reset user password",
+        "description": "Reset user password",
+        "operationId": "resetPassword",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ResetPasswordRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Ok"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+   "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "ConfirmOTP": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "code"
+          },
+          "phone": {
+            "type": "string",
+            "example": "phone"
+          }
+        }
+      },
+      "OTPRequest": {
+        "required": [
+          "phone"
+        ],
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "example": "phone"
+          },
+          "isRegistration": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "ResetPasswordRequest": {
+        "required": [
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          }
+        }
+      },
+      "ChangePasswordRequest": {
+        "required": [
+          "phone",
+          "oldPassword",
+          "newPassword"
+        ],
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "description": "Old password",
+            "type": "string",
+            "example": "12345-Aa"
+          },
+          "newPassword": {
+            "description": "New password",
+            "type": "string",
+            "example": "12345-Aa"
+          },
+          "phone": {
+            "type": "string"
+          }
+        }
+      },
+      "ForgetPasswordRequest": {
+        "required": [
+          "phone",
+          "newPassword"
+        ],
+        "type": "object",
+        "properties": {
+          "newPassword": {
+            "description": "New password",
+            "type": "string",
+            "example": "12345-Aa"
+          },
+          "phone": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateUserRequest": {
+        "required": [
+          "phone"
+        ],
+        "type": "object",
+        "properties": {
+          "dahuaUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "carNumber": {
+            "type": "string",
+            "example": "112ABC",
+            "maxLength": 10
+          },
+          "isRegistered": {
+            "type": "boolean",
+            "example": false
+          },
+          "phone": {
+            "type": "string",
+            "example": "12345"
+          }
+        }
+      },
+      "UpdateUserRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateUserRequest"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "example": 10
+              }
+            }
+          }
+        ]
+      }
+    },
+    "requestBodies": {
+
+      "ForgetPasswordRequest": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ForgetPasswordRequest"
+            }
+          }
+        }
+      },
+      "ChangePasswordRequest": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ChangePasswordRequest"
+            }
+          }
+        }
+      },
+      "OTPRequest": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/OTPRequest"
+            }
+          }
+        }
+      },
+      "ResetPasswordRequest": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ResetPasswordRequest"
+            }
+          }
+        }
+      },
+      "CreateUserRequest": {
+        "description": "User object that needs to be created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateUserRequest"
+            }
+          }
+        }
+      },
+      "UpdateUserRequest": {
+        "description": "User object that needs to be updated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateUserRequest"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "Ok": {
+        "description": "Operation succeeded, 200"
+      },
+      "Created": {
+        "description": "Post resource done successfully, 201"
+      },
+      "BadRequest": {
+        "description": "Illegal input for operation, 400",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StatusResponse"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Entity not found, 404",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StatusResponse"
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error, 500",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StatusResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized, 401",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/StatusResponse"
+            }
+          }
+        }
+      }
+    }
+  }
+}

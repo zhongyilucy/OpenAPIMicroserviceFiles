@@ -1,0 +1,2900 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Flight Booking Internal API",
+    "description": "Flight Booking Management API",
+    "contact": {
+      "email": "oneair@ncl.com"
+    },
+    "version": "1.1.0"
+  },
+  "tags": [
+    {
+      "name": "res-system",
+      "description": "Operations available to external Res System"
+    }
+  ],
+  "paths": {
+    "/flight/booking/ticket/auth": {
+      "post": {
+        "tags": [
+          "res-system"
+        ],
+        "summary": "Request ticket to be issued for guest(s)",
+        "description": "Request ticket to be issued for guest(s)",
+        "operationId": "bookingAuthTicket",
+        "requestBody": {
+          "description": "AirBookingAuthTicketRq",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AirBookingAuthTicketRq"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "The specified resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorMessage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "AirBookingAuthTicketRq"
+      }
+    },
+    "/flight/booking/guest/remove": {
+      "post": {
+        "tags": [
+          "res-system"
+        ],
+        "summary": "Remove a list of guests from a booking",
+        "description": "Remove guest(s) guests on a booking",
+        "operationId": "bookingRemoveGuest",
+        "requestBody": {
+          "description": "AirRemoveGuestRq",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AirBookingRemoveGuestRq"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "The specified resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorMessage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "AirRemoveGuestRq"
+      }
+    },
+    "/flight/booking/guest/modify": {
+      "post": {
+        "tags": [
+          "res-system"
+        ],
+        "summary": "Modify guest on a booking",
+        "description": "Modifies guests on a booking",
+        "operationId": "bookingModifyGuest",
+        "requestBody": {
+          "description": "AirModifyGuestRq",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AirBookingModifyGuestRq"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "The specified resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorMessage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "AirModifyGuestRq"
+      }
+    },
+    "/flight/booking/create": {
+      "post": {
+        "tags": [
+          "res-system"
+        ],
+        "summary": "Creates flight booking",
+        "description": "Books a flight",
+        "operationId": "flightBook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AirBookingCreateRq"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "The specified resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorMessage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "AirBookingCreateRq"
+      }
+    },
+    "/flight/booking/modify": {
+      "post": {
+        "tags": [
+          "res-system"
+        ],
+        "summary": "Modify flight booking",
+        "description": "Modifies a booked a flight",
+        "operationId": "flightBookModify",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AirBookingModify"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "The specified resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorMessage"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Empty",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "AirBookingModify"
+      }
+    },
+    "/flight/pnr/find-by-res-id": {
+      "post": {
+        "tags": [
+          "res-system"
+        ],
+        "summary": "Find PNR by resid",
+        "description": "Find PNR by ResId",
+        "operationId": "pnrByResId",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AirBookingByResIdRq"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "The specified resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorMessage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "AirBookingByResIdRq"
+      }
+    },
+    "/flight/pnr/attach": {
+      "post": {
+        "tags": [
+          "res-system"
+        ],
+        "summary": "Atttach PNR to resid",
+        "description": "Attach PNR to ResId",
+        "operationId": "attachPnrToResId",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AirBookingAttachPnrToResIdRq"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "The specified resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorMessage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "AirBookingAttachPnrToResIdRq"
+      }
+    },
+    "/flight/search": {
+      "post": {
+        "tags": [
+          "res-system"
+        ],
+        "summary": "Search flights",
+        "description": "Searches for a flight",
+        "operationId": "flightSearch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AirSearchRq"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "The specified resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorMessage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "AirSearchRq"
+      }
+    },
+    "/flight/verify": {
+      "post": {
+        "tags": [
+          "res-system"
+        ],
+        "summary": "Verify Flight Information",
+        "description": "Verify Flight Information",
+        "operationId": "verifyFlightInfo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlightVerifyRq"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "The specified resource was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorMessage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "FlightVerifyRq"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PricingPTC": {
+        "type": "object",
+        "properties": {
+          "passengerTypeCode": {
+            "type": "string",
+            "example": "JCB"
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "PriceComparisonItems": {
+        "required": [
+          "totalFareAmount"
+        ],
+        "type": "object",
+        "properties": {
+          "totalFareAmount": {
+            "type": "number",
+            "example": 1233
+          },
+          "priceIncreaseAmount": {
+            "type": "number",
+            "example": 1456
+          },
+          "priceIncreasePercent": {
+            "type": "number",
+            "example": 1.2
+          },
+          "priceIncreaseFlag": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "AirPriceItems": {
+        "type": "object",
+        "properties": {
+          "associatedSegments": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "accountCode": {
+            "type": "string"
+          },
+          "corporateId": {
+            "type": "string"
+          },
+          "pricingQualifiers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PricingPTC"
+            }
+          },
+          "FOPnoCC": {
+            "type": "string",
+            "example": "CA",
+            "enum": [
+              "CA",
+              "CK"
+            ]
+          },
+          "FOPProfileReference": {
+            "type": "integer",
+            "example": 1
+          },
+          "priceComparison": {
+            "$ref": "#/components/schemas/PriceComparisonItems"
+          },
+          "tourCode": {
+            "type": "string",
+            "example": "UATOUR"
+          },
+          "endorsement": {
+            "type": "string",
+            "example": "REF AGY"
+          },
+          "validatingCarrier": {
+            "type": "string",
+            "example": "UA"
+          }
+        }
+      },
+      "CreatePnrTicketingInfo": {
+        "required": [
+          "ticketType"
+        ],
+        "type": "object",
+        "properties": {
+          "ticketType": {
+            "type": "string",
+            "example": "7TAW"
+          },
+          "ticketingTimeLimit": {
+            "type": "string",
+            "example": "12-21T08:00"
+          }
+        }
+      },
+      "RetentionSegment": {
+        "required": [
+          "departureDateTime",
+          "numberInParty",
+          "originLocation",
+          "retentionText",
+          "segmentType",
+          "status",
+          "vendor"
+        ],
+        "type": "object",
+        "properties": {
+          "originLocation": {
+            "type": "string",
+            "example": "MIA"
+          },
+          "departureDateTime": {
+            "type": "string",
+            "example": "09-04"
+          },
+          "retentionText": {
+            "type": "string",
+            "example": "Retention Line"
+          },
+          "vendor": {
+            "type": "string",
+            "example": "1S"
+          },
+          "status": {
+            "type": "string",
+            "example": "HK"
+          },
+          "numberInParty": {
+            "type": "integer",
+            "example": 2
+          },
+          "segmentType": {
+            "type": "string",
+            "example": "OTH"
+          }
+        }
+      },
+      "Remark": {
+        "required": [
+          "remarkText",
+          "remarkType"
+        ],
+        "type": "object",
+        "properties": {
+          "remarkText": {
+            "type": "string",
+            "example": "some important text"
+          },
+          "remarkCode": {
+            "type": "string",
+            "description": "1 character, \"*\" or \"M\"",
+            "example": "*"
+          },
+          "remarkType": {
+            "type": "string",
+            "example": "Alpha-coded",
+            "enum": [
+              "Alpha-Coded",
+              "Client Address",
+              "Corporate",
+              "Delivery Address",
+              "General",
+              "Group Name",
+              "Hidden",
+              "Historical",
+              "Invoice",
+              "Itinerary"
+            ]
+          },
+          "passengerNumber": {
+            "type": "string",
+            "example": "1.1"
+          }
+        }
+      },
+      "OsiElement": {
+        "required": [
+          "OSICode",
+          "OSIText"
+        ],
+        "type": "object",
+        "properties": {
+          "OSIAirline": {
+            "type": "string",
+            "example": "AA"
+          },
+          "OSICode": {
+            "type": "string",
+            "example": "OSI"
+          },
+          "OSIText": {
+            "type": "string",
+            "example": "First port of call.."
+          }
+        }
+      },
+      "SsrElement": {
+        "required": [
+          "SSRCode"
+        ],
+        "type": "object",
+        "properties": {
+          "SSRAirline": {
+            "type": "string",
+            "example": "AA"
+          },
+          "SSRCode": {
+            "type": "string",
+            "example": "OTHS"
+          },
+          "SSRText": {
+            "type": "string",
+            "example": "Tour Operator"
+          },
+          "passengerNumber": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "CreatePnrInfo": {
+        "required": [
+          "agencyProfileName",
+          "createPnrTicketingInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "agencyProfileName": {
+            "type": "string",
+            "example": "NCL MIAMI"
+          },
+          "createPnrTicketingInfo": {
+            "$ref": "#/components/schemas/CreatePnrTicketingInfo"
+          },
+          "retentionLine": {
+            "$ref": "#/components/schemas/RetentionSegment"
+          },
+          "remarksList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Remark"
+            }
+          },
+          "OSIList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OsiElement"
+            }
+          },
+          "SSRList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SsrElement"
+            }
+          }
+        }
+      },
+      "SearchOptions": {
+        "type": "object",
+        "properties": {
+          "multiTicketing": {
+            "type": "boolean",
+            "example": true
+          },
+          "multiCarrier": {
+            "type": "boolean",
+            "description": "Allow mixed carriers",
+            "example": true
+          },
+          "numberOfResults": {
+            "type": "integer",
+            "description": "Number of results to return",
+            "example": 20
+          },
+          "minCost": {
+            "type": "integer",
+            "description": "Min cost of ticket. Seems to be Amadeus only.",
+            "example": 90
+          },
+          "maxCost": {
+            "type": "integer",
+            "description": "Max cost of ticket. Seems to be Amadeus only.",
+            "example": 9000
+          },
+          "searchFareType": {
+            "type": "string",
+            "enum": [
+              "PUBLISHED",
+              "NEGOTIATED",
+              "BOTH",
+              "UNKNOWN"
+            ]
+          },
+          "travelPreferences": {
+            "$ref": "#/components/schemas/TravelPreferences"
+          },
+          "travelExtensions": {
+            "$ref": "#/components/schemas/TravelExtensions"
+          },
+          "maxStopsQuantity": {
+            "type": "integer",
+            "example": 2
+          }
+        }
+      },
+      "TravelerInfoSummaryItem": {
+        "required": [
+          "extraSeatIndicator",
+          "guestClientId",
+          "passengerType",
+          "travelerNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "travelerNumber": {
+            "type": "integer",
+            "description": "Index number of traveler",
+            "example": 1
+          },
+          "guestClientId": {
+            "type": "integer",
+            "description": "Passenger id from Cruise Res system",
+            "example": 12345
+          },
+          "passengerType": {
+            "type": "string",
+            "example": "ADT",
+            "enum": [
+              "ADT",
+              "CHD",
+              "INF",
+              "INS"
+            ]
+          },
+          "pricingPTC": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Not an enum as list can change at anytime.",
+              "example": "JCB"
+            }
+          },
+          "extraSeatIndicator": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "Port": {
+        "required": [
+          "code",
+          "countryCode",
+          "seqNum"
+        ],
+        "type": "object",
+        "properties": {
+          "seqNum": {
+            "type": "integer",
+            "description": "Sequence number of port in the sequence of ports. Starting at 0",
+            "example": 0
+          },
+          "code": {
+            "type": "string",
+            "description": "Port code",
+            "example": "JNU"
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Country Code Of Port",
+            "example": "US"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of Port",
+            "example": "JUNEAU"
+          }
+        }
+      },
+      "CruiseDetails": {
+        "required": [
+          "debarkPort",
+          "debarkationTime",
+          "embarkPort",
+          "embarkationTime",
+          "ports",
+          "shipCode"
+        ],
+        "type": "object",
+        "properties": {
+          "embarkPort": {
+            "type": "string",
+            "description": "Embarkation port of Cruise",
+            "example": "SEA"
+          },
+          "debarkPort": {
+            "type": "string",
+            "description": "Debarkation port of Cruise",
+            "example": "SEA"
+          },
+          "embarkationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "debarkationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "shipCode": {
+            "type": "string",
+            "example": "ENCORE"
+          },
+          "ports": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Port"
+            }
+          }
+        }
+      },
+      "VacationDetails": {
+        "required": [
+          "endDate",
+          "startDate"
+        ],
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Start date of cruise",
+            "format": "date",
+            "example": "2023-09-18T00:00:00.000Z"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of cruise",
+            "format": "date",
+            "example": "2023-09-25T00:00:00.000Z"
+          },
+          "startAirport": {
+            "type": "string",
+            "example": "MIA"
+          },
+          "endAirport": {
+            "type": "string",
+            "example": "PTY"
+          }
+        }
+      },
+      "ReservationDetails": {
+        "required": [
+          "channel",
+          "currencyCode",
+          "language",
+          "officeCode",
+          "resIdentifier",
+          "reservationType",
+          "source",
+          "status",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "resIdentifier": {
+            "$ref": "#/components/schemas/ResIdentifier"
+          },
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code of Reservation currency",
+            "example": "USD"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language preference of reservation",
+            "example": "ENG"
+          },
+          "officeCode": {
+            "type": "string",
+            "description": "Office code of reservation",
+            "example": "NCL MIAMI"
+          },
+          "reservationType": {
+            "type": "string",
+            "description": "Type of air reservation, BUNDLED or STANDARD",
+            "example": "BUNLDED"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of cruise reservation. OF, BK, CX, etc",
+            "example": "OF"
+          },
+          "source": {
+            "type": "string",
+            "description": "Source of reservation",
+            "example": "INTERNETA"
+          },
+          "channel": {
+            "type": "string",
+            "description": "channel of reservation",
+            "example": "INTERNETA"
+          },
+          "username": {
+            "type": "string",
+            "description": "Username who created reservation",
+            "example": "INTERACTIVEUK"
+          },
+          "cabinNumber": {
+            "type": "string",
+            "example": "8022"
+          },
+          "finalPaymentDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finalPaymentAmount": {
+            "type": "number",
+            "format": "double",
+            "example": 1234.99
+          }
+        }
+      },
+      "AgencyInfo": {
+        "required": [
+          "city",
+          "country",
+          "id",
+          "name",
+          "phone",
+          "postalCode",
+          "street"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of agency booking was created under",
+            "example": "8"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of agency of booking",
+            "example": "NCL DIRECT - LONDON/GRP"
+          },
+          "street": {
+            "type": "string",
+            "description": "Street address of agency",
+            "example": "MOUNTBATTEN HOUSE"
+          },
+          "city": {
+            "type": "string",
+            "example": "Southhamton"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country code of agency country",
+            "example": "UK"
+          },
+          "postalCode": {
+            "type": "string",
+            "example": "S015 2JU"
+          },
+          "phone": {
+            "type": "string",
+            "example": "03332412655"
+          },
+          "classification": {
+            "type": "string",
+            "example": "LONDON LT"
+          }
+        }
+      },
+      "OriginDestinationInformation": {
+        "required": [
+          "airSegmentList"
+        ],
+        "type": "object",
+        "properties": {
+          "airItinMode": {
+            "type": "string",
+            "description": "Only Amadeus seems to have this",
+            "example": "Outer"
+          },
+          "airSegmentList": {
+            "type": "array",
+            "example": [
+              {
+                "segmentSequenceNumber": 1,
+                "preferredCabin": "ECONOMY",
+                "preferredAirline": [
+                  "AA"
+                ],
+                "originLocation": {
+                  "locationCode": "JFK",
+                  "latestDateTime": "2022-09-11T08:13:15.000Z"
+                },
+                "destinationLocation": {
+                  "locationCode": "MIA",
+                  "earliestDateTime": "2022-09-11T16:13:15.000Z",
+                  "latestDateTime": "2022-09-11T23:13:15.000Z"
+                }
+              },
+              {
+                "segmentSequenceNumber": 2,
+                "originLocation": {
+                  "locationCode": "MIA",
+                  "ealiestDateTime": "2022-09-18T12:00:00.000Z"
+                },
+                "destinationLocation": {
+                  "locationCode": "JFK",
+                  "latestDateTime": "2022-09-11T23:59:59.000Z"
+                }
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/AirSegment"
+            }
+          }
+        }
+      },
+      "AirSearchRq": {
+        "required": [
+          "POS",
+          "agencyInfo",
+          "cruiseDetails",
+          "originDestinationInformation",
+          "reservationDetails",
+          "travelerInfoSummary",
+          "vacationDetails"
+        ],
+        "type": "object",
+        "properties": {
+          "POS": {
+            "$ref": "#/components/schemas/POS"
+          },
+          "originDestinationInformation": {
+            "$ref": "#/components/schemas/OriginDestinationInformation"
+          },
+          "travelerInfoSummary": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TravelerInfoSummaryItem"
+            }
+          },
+          "searchOptions": {
+            "$ref": "#/components/schemas/SearchOptions"
+          },
+          "cruiseDetails": {
+            "$ref": "#/components/schemas/CruiseDetails"
+          },
+          "vacationDetails": {
+            "$ref": "#/components/schemas/VacationDetails"
+          },
+          "reservationDetails": {
+            "$ref": "#/components/schemas/ReservationDetails"
+          },
+          "agencyInfo": {
+            "$ref": "#/components/schemas/AgencyInfo"
+          }
+        }
+      },
+      "AirSearchResults": {
+        "required": [
+          "airResultList"
+        ],
+        "type": "object",
+        "properties": {
+          "airSearchResultsId": {
+            "type": "string",
+            "example": "1677136"
+          },
+          "airResultList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AirResult"
+            }
+          }
+        }
+      },
+      "AirSearchRs": {
+        "required": [
+          "numberOfResults"
+        ],
+        "type": "object",
+        "properties": {
+          "messageInfo": {
+            "$ref": "#/components/schemas/MessageInfo"
+          },
+          "airSearchResults": {
+            "$ref": "#/components/schemas/AirSearchResults"
+          },
+          "numberOfResults": {
+            "type": "integer",
+            "example": 100
+          }
+        }
+      },
+      "FlightVerifyRq": {
+        "required": [
+          "POS",
+          "departure",
+          "flightNumber",
+          "flightProviderCode"
+        ],
+        "type": "object",
+        "properties": {
+          "POS": {
+            "$ref": "#/components/schemas/POS"
+          },
+          "flightProviderCode": {
+            "type": "string",
+            "example": "DL"
+          },
+          "flightNumber": {
+            "type": "string",
+            "example": "9180"
+          },
+          "departure": {
+            "$ref": "#/components/schemas/AirportEvent"
+          },
+          "arrival": {
+            "$ref": "#/components/schemas/AirportEvent"
+          }
+        }
+      },
+      "AirportEvent": {
+        "required": [
+          "airport",
+          "dateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "airport": {
+            "type": "string",
+            "example": "JFK"
+          },
+          "dateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "city": {
+            "type": "string",
+            "example": "LAS"
+          },
+          "country": {
+            "type": "string",
+            "example": "US"
+          }
+        }
+      },
+      "FlightVerifyRs": {
+        "type": "object",
+        "properties": {
+          "messageInfo": {
+            "$ref": "#/components/schemas/MessageInfo"
+          },
+          "flightList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlightInfo"
+            }
+          }
+        }
+      },
+      "AirBookingAttachPnrToResIdRq": {
+        "required": [
+          "POS",
+          "agencyInfo",
+          "cruiseDetails",
+          "passengers",
+          "pnrId",
+          "reservationDetails",
+          "vacationDetails"
+        ],
+        "type": "object",
+        "properties": {
+          "POS": {
+            "$ref": "#/components/schemas/POS"
+          },
+          "pnrId": {
+            "type": "string",
+            "example": "4LUQAG"
+          },
+          "passengers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Passenger"
+            }
+          },
+          "cruiseDetails": {
+            "$ref": "#/components/schemas/CruiseDetails"
+          },
+          "vacationDetails": {
+            "$ref": "#/components/schemas/VacationDetails"
+          },
+          "reservationDetails": {
+            "$ref": "#/components/schemas/ReservationDetails"
+          },
+          "agencyInfo": {
+            "$ref": "#/components/schemas/AgencyInfo"
+          }
+        }
+      },
+      "AirBookingAttachPnrToResIdRs": {
+        "type": "object",
+        "properties": {
+          "messageInfo": {
+            "$ref": "#/components/schemas/MessageInfo"
+          },
+          "bookings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Booking"
+            }
+          }
+        }
+      },
+      "FlightIdentifier": {
+        "required": [
+          "flightNumber",
+          "operatorCode",
+          "providerCode"
+        ],
+        "type": "object",
+        "properties": {
+          "providerCode": {
+            "type": "string",
+            "description": "marketing airline",
+            "example": "AA"
+          },
+          "operatorCode": {
+            "type": "string",
+            "description": "operating airline",
+            "example": "DL"
+          },
+          "flightNumber": {
+            "type": "string",
+            "description": "marketing flight number",
+            "example": "F123"
+          }
+        }
+      },
+      "AirlinePreference": {
+        "required": [
+          "airlineCode"
+        ],
+        "type": "object",
+        "properties": {
+          "airlineCode": {
+            "type": "string",
+            "description": "marketing airline",
+            "example": "AA"
+          },
+          "airlineType": {
+            "type": "string",
+            "example": "Operating",
+            "enum": [
+              "Operating",
+              "Marketing"
+            ]
+          }
+        }
+      },
+      "FlightPreference": {
+        "required": [
+          "airlineCode",
+          "preferenceType"
+        ],
+        "type": "object",
+        "properties": {
+          "airlineCode": {
+            "type": "string",
+            "description": "marketing airline",
+            "example": "AA"
+          },
+          "airlineType": {
+            "type": "string",
+            "example": "Operating",
+            "enum": [
+              "Operating",
+              "Marketing"
+            ]
+          },
+          "flightNumber": {
+            "type": "string",
+            "example": "123"
+          },
+          "preferenceType": {
+            "type": "string",
+            "example": "PREFERRED",
+            "enum": [
+              "PREFERRED",
+              "EXCLUSIVE"
+            ]
+          }
+        }
+      },
+      "BookingIdentifier": {
+        "required": [
+          "bookingId",
+          "pnrRecordLocator"
+        ],
+        "type": "object",
+        "properties": {
+          "bookingId": {
+            "type": "string",
+            "example": "46476978QA"
+          },
+          "pnrRecordLocator": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Current know version of the air booking by the messages producers. Consumer should ignore inbound messages if less than their current known version.",
+            "example": 123
+          }
+        }
+      },
+      "ResIdentifier": {
+        "required": [
+          "reservationId",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "reservationId": {
+            "type": "string",
+            "example": "46476978"
+          },
+          "version": {
+            "type": "integer",
+            "description": "Current know version of the reservation by the messages producers. Consumer should ignore inbound messages if less than their current known version",
+            "example": 123
+          }
+        }
+      },
+      "AirBookingByResIdRq": {
+        "required": [
+          "POS",
+          "resIdentifier"
+        ],
+        "type": "object",
+        "properties": {
+          "POS": {
+            "$ref": "#/components/schemas/POS"
+          },
+          "resIdentifier": {
+            "$ref": "#/components/schemas/ResIdentifier"
+          }
+        }
+      },
+      "AirBookingByResIdRs": {
+        "type": "object",
+        "properties": {
+          "messageInfo": {
+            "$ref": "#/components/schemas/MessageInfo"
+          },
+          "bookings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Booking"
+            }
+          }
+        }
+      },
+      "AirBookingAuthTicketRq": {
+        "required": [
+          "POS",
+          "bookingIdentifier",
+          "guestClientIds"
+        ],
+        "type": "object",
+        "properties": {
+          "POS": {
+            "$ref": "#/components/schemas/POS"
+          },
+          "bookingIdentifier": {
+            "$ref": "#/components/schemas/BookingIdentifier"
+          },
+          "guestClientIds": {
+            "type": "array",
+            "example": [
+              2211873,
+              2211874
+            ],
+            "items": {
+              "type": "integer"
+            }
+          },
+          "recordLocator": {
+            "type": "string",
+            "example": "ABC123"
+          },
+          "priceQuote": {
+            "type": "array",
+            "example": [
+              1,
+              2
+            ],
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "AirBookingAuthTicketRs": {
+        "type": "object",
+        "properties": {
+          "messageInfo": {
+            "$ref": "#/components/schemas/MessageInfo"
+          },
+          "successful": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "AirBookingRemoveGuestRq": {
+        "required": [
+          "POS",
+          "bookingIdentifier",
+          "guestList"
+        ],
+        "type": "object",
+        "properties": {
+          "POS": {
+            "$ref": "#/components/schemas/POS"
+          },
+          "bookingIdentifier": {
+            "$ref": "#/components/schemas/BookingIdentifier"
+          },
+          "guestList": {
+            "type": "array",
+            "example": [
+              {
+                "guestClientId": 1841234,
+                "firstName": "SAM",
+                "lastName": "TESTER"
+              },
+              {
+                "guestClientId": 1841235,
+                "firstName": "FRED",
+                "lastName": "TESTER"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/GuestToRemove"
+            }
+          },
+          "recordLocator": {
+            "type": "string",
+            "example": "ABC123"
+          },
+          "priceQuote": {
+            "type": "array",
+            "example": [
+              1,
+              2
+            ],
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "AirBookingRemoveGuestRs": {
+        "required": [
+          "bookings"
+        ],
+        "type": "object",
+        "properties": {
+          "messageInfo": {
+            "$ref": "#/components/schemas/MessageInfo"
+          },
+          "bookings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Booking"
+            }
+          }
+        }
+      },
+      "AirBookingModifyGuestRq": {
+        "required": [
+          "POS",
+          "bookingIdentifier",
+          "guestModifyList",
+          "reservationDetails"
+        ],
+        "type": "object",
+        "properties": {
+          "POS": {
+            "$ref": "#/components/schemas/POS"
+          },
+          "bookingIdentifier": {
+            "$ref": "#/components/schemas/BookingIdentifier"
+          },
+          "reservationDetails": {
+            "$ref": "#/components/schemas/ReservationDetails"
+          },
+          "guestModifyList": {
+            "type": "array",
+            "example": [
+              {
+                "passengerNumber": 1,
+                "passengerInfo": {
+                  "guestClientId": "1250713",
+                  "nameTitle": "Dr",
+                  "firstName": "JOHN",
+                  "middleName": "FRANK",
+                  "lastName": "SMITH",
+                  "nameSuffix": "Sr",
+                  "extraSeatIndicator": true
+                },
+                "dateOfBirth": "1920-01-01T00:00:00.000Z",
+                "gender": "F"
+              },
+              {
+                "passengerNumber": 2,
+                "passengerInfo": {
+                  "guestClientId": "1250714",
+                  "nameTitle": "Mrs",
+                  "firstName": "JANE",
+                  "lastName": "SMITH",
+                  "nameSuffix": "Sr",
+                  "extraSeatIndicator": false
+                },
+                "dateOfBirth": "1920-01-01T00:00:00.000Z",
+                "gender": "F"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Passenger"
+            }
+          }
+        }
+      },
+      "AirBookingModifyGuestRs": {
+        "type": "object",
+        "properties": {
+          "messageInfo": {
+            "$ref": "#/components/schemas/MessageInfo"
+          },
+          "bookings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Booking"
+            }
+          }
+        }
+      },
+      "AirBookingCreateRs": {
+        "type": "object",
+        "properties": {
+          "messageInfo": {
+            "$ref": "#/components/schemas/MessageInfo"
+          },
+          "bookings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Booking"
+            }
+          }
+        }
+      },
+      "SelectedFlight": {
+        "required": [
+          "resultId",
+          "selectedOption"
+        ],
+        "type": "object",
+        "properties": {
+          "resultId": {
+            "type": "string",
+            "description": "Identifier from the flight search. This is unique to a search and must be used when selecting a flight",
+            "example": "1766907"
+          },
+          "selectedOption": {
+            "type": "string",
+            "description": "specific flight identifier from search result. Must be a result from the matching resultId",
+            "example": "1"
+          }
+        }
+      },
+      "AirBookingCreateRq": {
+        "required": [
+          "POS",
+          "agencyInfo",
+          "cruiseDetails",
+          "flightPassengers",
+          "reservationDetails",
+          "selectedFlight",
+          "vacationDetails"
+        ],
+        "type": "object",
+        "properties": {
+          "POS": {
+            "$ref": "#/components/schemas/POS"
+          },
+          "selectedFlight": {
+            "$ref": "#/components/schemas/SelectedFlight"
+          },
+          "flightPassengers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Passenger"
+            }
+          },
+          "createShell": {
+            "type": "boolean",
+            "example": false
+          },
+          "cruiseDetails": {
+            "$ref": "#/components/schemas/CruiseDetails"
+          },
+          "vacationDetails": {
+            "$ref": "#/components/schemas/VacationDetails"
+          },
+          "reservationDetails": {
+            "$ref": "#/components/schemas/ReservationDetails"
+          },
+          "agencyInfo": {
+            "$ref": "#/components/schemas/AgencyInfo"
+          },
+          "bookingDetailsItem": {
+            "$ref": "#/components/schemas/BookingDetails"
+          }
+        }
+      },
+      "BookingDetails": {
+        "type": "object",
+        "properties": {
+          "flights": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlightDetails"
+            }
+          },
+          "createPnrInfoItem": {
+            "$ref": "#/components/schemas/CreatePnrInfo"
+          },
+          "airPrice": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AirPriceItems"
+            }
+          }
+        }
+      },
+      "FlightDetails": {
+        "required": [
+          "arrivalDateTime",
+          "bookingClass",
+          "departureDateTime",
+          "destinationLocationCode",
+          "flightNumber",
+          "marketingAirlineCode",
+          "numberInParty",
+          "originLocationCode"
+        ],
+        "type": "object",
+        "properties": {
+          "legReferenceNumber": {
+            "type": "integer",
+            "example": 1
+          },
+          "destinationLocationCode": {
+            "type": "string",
+            "example": "MIA"
+          },
+          "equipmentType": {
+            "type": "string",
+            "example": "standard"
+          },
+          "marketingAirlineCode": {
+            "type": "string",
+            "example": "UA"
+          },
+          "marketingFlightNumber": {
+            "type": "integer",
+            "example": 123
+          },
+          "operatingAirlineCode": {
+            "type": "string",
+            "example": "BA"
+          },
+          "originLocationCode": {
+            "type": "string",
+            "example": "IAH"
+          },
+          "arrivalDateTime": {
+            "type": "string",
+            "example": "2014-09-04T10:05:00.000Z"
+          },
+          "departureDateTime": {
+            "type": "string",
+            "example": "2014-09-04T10:05:00.000Z"
+          },
+          "flightNumber": {
+            "type": "string",
+            "example": "F124"
+          },
+          "numberInParty": {
+            "type": "string",
+            "example": "4"
+          },
+          "bookingClass": {
+            "type": "string",
+            "example": "F"
+          },
+          "marriageGroup": {
+            "type": "string",
+            "example": "O",
+            "enum": [
+              "O, I"
+            ]
+          },
+          "isTicketLessFlight": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "AirBookingModify": {
+        "required": [
+          "bookings"
+        ],
+        "type": "object",
+        "properties": {
+          "messageInfo": {
+            "$ref": "#/components/schemas/MessageInfo"
+          },
+          "bookings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Booking"
+            }
+          },
+          "resIdentifier": {
+            "$ref": "#/components/schemas/ResIdentifier"
+          }
+        }
+      },
+      "Booking": {
+        "required": [
+          "bookingIdentifier"
+        ],
+        "type": "object",
+        "properties": {
+          "bookingIdentifier": {
+            "$ref": "#/components/schemas/BookingIdentifier"
+          },
+          "pnrList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pnr"
+            }
+          },
+          "cancelledPnrs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "typeCode": {
+            "type": "string",
+            "example": "E",
+            "enum": [
+              "I",
+              "W",
+              "E"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "example": "Fatal",
+            "enum": [
+              "Fatal",
+              "NonFatal"
+            ]
+          },
+          "idNumber": {
+            "type": "string",
+            "example": "6452"
+          },
+          "messageText": {
+            "type": "string",
+            "example": "GuestClientIds not found in Booking"
+          }
+        }
+      },
+      "GuestToRemove": {
+        "required": [
+          "firstName",
+          "guestClientId",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "guestClientId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "passengerTypeCode": {
+            "type": "string",
+            "example": "ADT",
+            "enum": [
+              "ADT, INF, INS, CHD"
+            ]
+          }
+        }
+      },
+      "Pnr": {
+        "type": "object",
+        "properties": {
+          "pnrHeader": {
+            "$ref": "#/components/schemas/PnrHeader"
+          },
+          "pnrPassengers": {
+            "type": "array",
+            "example": [
+              {
+                "passengerNumber": 1,
+                "passengerInfo": {
+                  "guestClientId": "1250713",
+                  "nameTitle": "Dr",
+                  "firstName": "JOHN",
+                  "middleName": "FRANK",
+                  "lastName": "SMITH",
+                  "nameSuffix": "Sr",
+                  "extraSeatIndicator": true
+                },
+                "dateOfBirth": "1920-01-01T00:00:00.000Z",
+                "gender": "F",
+                "seatAssignments": {
+                  "segmentRefNum": 1,
+                  "legNumRef": 1,
+                  "seatNumber": "22D"
+                }
+              },
+              {
+                "passengerNumber": 2,
+                "passengerInfo": {
+                  "guestClientId": "1250714",
+                  "nameTitle": "Mrs",
+                  "firstName": "JANE",
+                  "lastName": "SMITH",
+                  "nameSuffix": "Sr",
+                  "extraSeatIndicator": false
+                },
+                "dateOfBirth": "1920-01-01T00:00:00.000Z",
+                "gender": "F",
+                "seatAssignments": {
+                  "segmentRefNum": 1,
+                  "legNumRef": 1,
+                  "seatNumber": "22E"
+                }
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Passenger"
+            }
+          },
+          "segmentList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Segment"
+            }
+          },
+          "pnrCost": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResultCost"
+            }
+          },
+          "ticketInfoList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketInfo"
+            }
+          }
+        }
+      },
+      "PnrHeader": {
+        "required": [
+          "created",
+          "recordLocator"
+        ],
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "string",
+            "format": "date"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date"
+          },
+          "recordLocator": {
+            "type": "string"
+          },
+          "ownerOfficeId": {
+            "type": "string"
+          },
+          "airItinMode": {
+            "type": "string"
+          },
+          "resIdentifier": {
+            "$ref": "#/components/schemas/ResIdentifier"
+          }
+        }
+      },
+      "POS": {
+        "required": [
+          "apiVersion",
+          "customerId",
+          "messageId",
+          "officeCode"
+        ],
+        "type": "object",
+        "properties": {
+          "apiVersion": {
+            "type": "string",
+            "example": "1.00"
+          },
+          "customerId": {
+            "type": "string",
+            "example": "CustId"
+          },
+          "messageId": {
+            "type": "string",
+            "example": "{F2767DED-DF67-42D5-AC68-2E945A2B7379}"
+          },
+          "officeCode": {
+            "type": "string",
+            "example": "NCL MIAMI"
+          },
+          "officeGroupId": {
+            "type": "string",
+            "example": "miami"
+          }
+        }
+      },
+      "PassengerInfo": {
+        "required": [
+          "clientId",
+          "firstName",
+          "guestClientId",
+          "guestId",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "guestClientId": {
+            "type": "string"
+          },
+          "clientId": {
+            "type": "string"
+          },
+          "guestId": {
+            "type": "string"
+          },
+          "nameTitle": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "passengerTypeCode": {
+            "type": "string"
+          },
+          "infantAdultRef": {
+            "type": "integer"
+          },
+          "extraSeatIndicator": {
+            "type": "boolean"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "clientType": {
+            "type": "string",
+            "example": "PROSPECT"
+          },
+          "email": {
+            "type": "string",
+            "example": "test@test.com"
+          }
+        }
+      },
+      "SeatAssignment": {
+        "required": [
+          "legRefNum",
+          "segmentRefNum"
+        ],
+        "type": "object",
+        "properties": {
+          "segmentRefNum": {
+            "type": "integer"
+          },
+          "legRefNum": {
+            "type": "integer"
+          },
+          "seatNumber": {
+            "type": "string"
+          }
+        }
+      },
+      "Passenger": {
+        "required": [
+          "passengerInfo",
+          "passengerNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "passengerNumber": {
+            "type": "integer"
+          },
+          "passengerInfo": {
+            "$ref": "#/components/schemas/PassengerInfo"
+          },
+          "seatAssignments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SeatAssignment"
+            }
+          },
+          "travelDocumentInfo": {
+            "$ref": "#/components/schemas/TravelDocumentInfo"
+          },
+          "tSADocumentInfo": {
+            "$ref": "#/components/schemas/TSADocumentInfo"
+          },
+          "preferences": {
+            "$ref": "#/components/schemas/PassengerPreferences"
+          }
+        }
+      },
+      "TravelDocumentInfo": {
+        "type": "object",
+        "properties": {
+          "nationalityCode": {
+            "type": "string",
+            "example": "US"
+          },
+          "issueCountryCode": {
+            "type": "string",
+            "example": "US"
+          },
+          "documentNumber": {
+            "type": "string",
+            "example": "12345"
+          },
+          "travelDocumentType": {
+            "type": "string",
+            "example": "NORMALPASSPORT"
+          },
+          "documentIssueDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2015-01-01T00:00:00.000Z"
+          },
+          "documentExpiryDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2015-01-01T00:00:00.000Z"
+          }
+        }
+      },
+      "TSADocumentInfo": {
+        "type": "object",
+        "properties": {
+          "redressControlNumber": {
+            "type": "string",
+            "example": "1"
+          },
+          "knownTravelerNumber": {
+            "type": "string",
+            "example": "1"
+          }
+        }
+      },
+      "PassengerPreferences": {
+        "type": "object",
+        "properties": {
+          "seatPositionPreference": {
+            "type": "string",
+            "example": "WINDOW"
+          },
+          "specialMealRequest": {
+            "type": "string",
+            "example": "AVML"
+          },
+          "wheelchairRequest": {
+            "type": "string",
+            "example": "WCBD"
+          },
+          "FrequentFlyNumbers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FrequentFlyerInfo"
+            }
+          }
+        }
+      },
+      "FrequentFlyerInfo": {
+        "type": "object",
+        "properties": {
+          "airlineCode": {
+            "type": "string",
+            "example": "AA"
+          },
+          "frequentFlyerNumber": {
+            "type": "string",
+            "example": "F12345678"
+          }
+        }
+      },
+      "MessageInfo": {
+        "required": [
+          "messageSentAt"
+        ],
+        "type": "object",
+        "properties": {
+          "messageSentAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-09-11T18:13:15.000Z"
+          },
+          "messageId": {
+            "type": "string",
+            "example": "2a70307f-4487-403e-b385-5b537f99d33c"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            }
+          },
+          "status": {
+            "type": "string",
+            "example": "Complete",
+            "enum": [
+              "Complete",
+              "Incomplete",
+              "NotProcessed",
+              "Unknown"
+            ]
+          }
+        }
+      },
+      "AirResult": {
+        "required": [
+          "resultId"
+        ],
+        "type": "object",
+        "properties": {
+          "externalSource": {
+            "type": "string",
+            "example": "SABRE",
+            "enum": [
+              "SABRE",
+              "AMADEUSCS"
+            ]
+          },
+          "resultId": {
+            "type": "integer",
+            "example": 1
+          },
+          "affinityId": {
+            "type": "integer",
+            "example": 1
+          },
+          "stopover": {
+            "type": "integer",
+            "description": "number of stopovers in a journey",
+            "example": 3
+          },
+          "itineraryType": {
+            "type": "string",
+            "description": "options: OW = One way and RT = Round Trip",
+            "example": "OW"
+          },
+          "segmentList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Segment"
+            }
+          },
+          "resultCosts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResultCost"
+            }
+          }
+        }
+      },
+      "FlightSegmentLegReference": {
+        "required": [
+          "flightLegNumber",
+          "flightSegmentReference"
+        ],
+        "type": "object",
+        "properties": {
+          "flightSegmentReference": {
+            "type": "integer"
+          },
+          "flightLegNumber": {
+            "type": "integer"
+          }
+        }
+      },
+      "MultiTicketFareRules": {
+        "type": "object",
+        "properties": {
+          "fareType": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "RA"
+            }
+          },
+          "isRefundable": {
+            "type": "boolean",
+            "example": false
+          },
+          "isChangeable": {
+            "type": "boolean",
+            "example": true
+          },
+          "penalties": {
+            "type": "array",
+            "example": [
+              {
+                "code": "MT",
+                "amount": 150,
+                "currencyCode": "USD"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/PriceElement"
+            }
+          },
+          "ticketByDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "refundableStr": {
+            "type": "string",
+            "description": "used for backwards compatibility with AMC"
+          }
+        }
+      },
+      "MultiTicketCost": {
+        "required": [
+          "costReference"
+        ],
+        "type": "object",
+        "properties": {
+          "costReference": {
+            "type": "integer"
+          },
+          "flightCosts": {
+            "type": "array",
+            "example": [
+              {
+                "code": "baseFareAmount",
+                "amount": 470,
+                "currencyCode": "USD"
+              },
+              {
+                "code": "totalFareAmount",
+                "amount": 41.27,
+                "currencyCode": "USD"
+              },
+              {
+                "code": "totalTaxAmount",
+                "amount": 511.27,
+                "currencyCode": "USD"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/PriceElement"
+            }
+          },
+          "fareRules": {
+            "$ref": "#/components/schemas/MultiTicketFareRules"
+          },
+          "fareBasisPerLeg": {
+            "type": "array",
+            "example": [
+              "SHXRAX11",
+              "SHXRAX12"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "hostPTC": {
+            "type": "string",
+            "description": "Not an enum as this is defined by GDS",
+            "example": "ADT"
+          },
+          "fareCategory": {
+            "type": "string",
+            "example": "NEGOTIATED"
+          },
+          "baggageInformationLink": {
+            "type": "string",
+            "example": "http://bags.amadeus.com/Display.aspx?a=AC"
+          },
+          "validatingCarrier": {
+            "type": "string",
+            "example": "AC"
+          },
+          "pricingPTC": {
+            "type": "string",
+            "description": "Not an enum as list can change at anytime.",
+            "example": "JCB"
+          },
+          "matchedCorporateId": {
+            "type": "string",
+            "example": "NCL12"
+          },
+          "matchedAccountCode": {
+            "type": "string",
+            "example": "NCL12"
+          }
+        }
+      },
+      "MultiTicket": {
+        "required": [
+          "fareSegmentList",
+          "multiTicketCostList"
+        ],
+        "type": "object",
+        "properties": {
+          "fareSegmentList": {
+            "type": "array",
+            "example": [
+              {
+                "flightSegmentReference": 1,
+                "flightLegNumber": 1
+              },
+              {
+                "flightSegmentReference": 1,
+                "flightLegNumber": 2
+              },
+              {
+                "flightSegmentReference": 2,
+                "flightLegNumber": 1
+              },
+              {
+                "flightSegmentReference": 2,
+                "flightLegNumber": 2
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/FlightSegmentLegReference"
+            }
+          },
+          "multiTicketCostList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MultiTicketCost"
+            }
+          }
+        }
+      },
+      "TicketInfo": {
+        "required": [
+          "costReference",
+          "passengerNumber",
+          "ticketNumber",
+          "ticketStatus",
+          "ticketedDate"
+        ],
+        "type": "object",
+        "properties": {
+          "passengerNumber": {
+            "type": "integer",
+            "example": 1
+          },
+          "providerCode": {
+            "type": "string",
+            "description": "Not sure we need this..."
+          },
+          "ticketNumber": {
+            "type": "string",
+            "example": "7845336768"
+          },
+          "ticketStatus": {
+            "type": "string",
+            "example": "T",
+            "enum": [
+              "T",
+              "R",
+              "I",
+              "V",
+              "FH"
+            ]
+          },
+          "ticketedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "costReference": {
+            "type": "integer",
+            "description": "refefrence to multiTicketCost.costReference",
+            "example": 1
+          }
+        }
+      },
+      "ResultCost": {
+        "required": [
+          "passengerTypeCode"
+        ],
+        "type": "object",
+        "properties": {
+          "passengers": {
+            "type": "array",
+            "example": [
+              "1",
+              "2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "passengerTypeCode": {
+            "type": "string",
+            "description": "Passenger type code",
+            "example": "ADT",
+            "enum": [
+              "ADT",
+              "CHD",
+              "INF",
+              "INS"
+            ]
+          },
+          "displayPrice": {
+            "type": "number",
+            "format": "double",
+            "example": 932.88
+          },
+          "multiTicketList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MultiTicket"
+            }
+          }
+        }
+      },
+      "PriceElement": {
+        "required": [
+          "amount",
+          "code",
+          "currencyCode"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "FARE_BASE",
+              "TOTAL_TAX",
+              "TOTAL_AIR_COST"
+            ]
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "currencyCode": {
+            "type": "string",
+            "example": "USD"
+          }
+        }
+      },
+      "Segment": {
+        "required": [
+          "segmentSequence"
+        ],
+        "type": "object",
+        "properties": {
+          "segmentSequence": {
+            "type": "integer",
+            "example": 1
+          },
+          "segmentLegs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentLeg"
+            }
+          },
+          "elapsedTimeOfSegment": {
+            "type": "integer",
+            "example": 1535
+          },
+          "segmentEventType": {
+            "type": "string",
+            "example": "START_EVENT"
+          },
+          "validatingCarrierCode": {
+            "type": "string",
+            "example": "UA"
+          },
+          "flightDirection": {
+            "type": "string",
+            "description": "OUTBOUND is flying out to cruise port. RETURN is returning home",
+            "enum": [
+              "OUTBOUND",
+              "RETURN"
+            ]
+          }
+        }
+      },
+      "SegmentLeg": {
+        "required": [
+          "legSequence"
+        ],
+        "type": "object",
+        "properties": {
+          "legSequence": {
+            "type": "integer",
+            "example": 1
+          },
+          "flightInfo": {
+            "$ref": "#/components/schemas/FlightInfo"
+          },
+          "classOfService": {
+            "type": "string",
+            "example": "S"
+          },
+          "cabinType": {
+            "type": "string",
+            "example": "ECONOMY"
+          },
+          "isCharterFlight": {
+            "type": "boolean",
+            "example": false
+          },
+          "isTicketlessFlight": {
+            "type": "boolean",
+            "example": true
+          },
+          "isPartnerTicketing": {
+            "type": "boolean",
+            "example": false
+          },
+          "codeShare": {
+            "type": "string",
+            "description": "Airline sharing the profit on the ticket",
+            "example": "AIR CANADA ROUGE"
+          },
+          "legStatus": {
+            "type": "string",
+            "example": "HK"
+          },
+          "additionalInfo": {
+            "$ref": "#/components/schemas/AdditionalInfo"
+          }
+        }
+      },
+      "FlightInfo": {
+        "required": [
+          "arrivalInfo",
+          "departureInfo",
+          "flightIdentity"
+        ],
+        "type": "object",
+        "properties": {
+          "departureInfo": {
+            "$ref": "#/components/schemas/AirportEvent"
+          },
+          "arrivalInfo": {
+            "$ref": "#/components/schemas/AirportEvent"
+          },
+          "flightIdentity": {
+            "$ref": "#/components/schemas/FlightIdentifier"
+          },
+          "isConnectingFlight": {
+            "type": "boolean",
+            "example": true
+          },
+          "numberOfStops": {
+            "type": "integer",
+            "example": 2
+          },
+          "equipmentType": {
+            "type": "string",
+            "example": "319"
+          },
+          "arrivalInTerminal": {
+            "type": "string",
+            "example": "4"
+          },
+          "checkInTerminal": {
+            "type": "string",
+            "example": "3"
+          },
+          "flyingTimeOfLeg": {
+            "type": "integer",
+            "description": "flight duration in minutes",
+            "example": 289
+          },
+          "isDomesticFlight": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "AirSegment": {
+        "required": [
+          "destinationLocation",
+          "originLocation",
+          "segmentSequenceNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "segmentSequenceNumber": {
+            "type": "integer",
+            "description": "The sequence number of the segment",
+            "example": 1
+          },
+          "preferredCabin": {
+            "type": "string",
+            "example": "FIRST",
+            "enum": [
+              "FIRST",
+              "BUSINESS",
+              "ECONOMY",
+              "PREMIUM_ECONOMY",
+              "ANY"
+            ]
+          },
+          "flightPreferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlightPreference"
+            }
+          },
+          "nonStopFlight": {
+            "type": "boolean",
+            "example": true
+          },
+          "includeNearbyAirports": {
+            "type": "boolean",
+            "example": true
+          },
+          "nearbyRadius": {
+            "type": "integer",
+            "description": "radius mileage should not exceed 100",
+            "example": 60
+          },
+          "originLocation": {
+            "$ref": "#/components/schemas/LocationCriteria"
+          },
+          "destinationLocation": {
+            "$ref": "#/components/schemas/LocationCriteria"
+          },
+          "connectionTime": {
+            "$ref": "#/components/schemas/ConnectionTime"
+          },
+          "totalTravelTime": {
+            "type": "integer",
+            "example": 200
+          },
+          "flightDirection": {
+            "type": "string",
+            "enum": [
+              "OUTBOUND",
+              "RETURN"
+            ]
+          }
+        }
+      },
+      "LocationCriteria": {
+        "required": [
+          "locationCode"
+        ],
+        "type": "object",
+        "properties": {
+          "locationCode": {
+            "type": "string",
+            "example": "JFK"
+          },
+          "locationType": {
+            "type": "string",
+            "description": "options: A=airport/C=city"
+          },
+          "earliestDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "latestDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sisterAirports": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "maximum 4 values",
+              "example": ""
+            }
+          }
+        }
+      },
+      "TravelPreferences": {
+        "type": "object",
+        "properties": {
+          "interline": {
+            "type": "boolean",
+            "example": true
+          },
+          "baggage": {
+            "type": "boolean",
+            "example": true
+          },
+          "excludeAirline": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AirlinePreference"
+            }
+          }
+        }
+      },
+      "TravelExtensions": {
+        "type": "object",
+        "properties": {
+          "excludedCountries": {
+            "type": "array",
+            "example": [
+              "US",
+              "QB"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "preferredCountries": {
+            "type": "array",
+            "example": [
+              "MX",
+              "BZ"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "serviceClass": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassOfService"
+            }
+          },
+          "fareBasisList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FareBasis"
+            }
+          },
+          "fareParametersList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FareParameters"
+            }
+          }
+        }
+      },
+      "ConnectionTime": {
+        "type": "object",
+        "properties": {
+          "minConnectionTime": {
+            "type": "number",
+            "example": 20
+          },
+          "maxConnectionTime": {
+            "type": "number",
+            "example": 20
+          },
+          "excludedConnectionBegin": {
+            "type": "string",
+            "format": "time",
+            "example": "HHMM"
+          },
+          "excludedConnectionEnds": {
+            "type": "string",
+            "format": "time",
+            "example": "HHMM"
+          }
+        }
+      },
+      "ClassOfService": {
+        "type": "object",
+        "properties": {
+          "classCode": {
+            "type": "string",
+            "example": "U"
+          },
+          "preferredLevel": {
+            "type": "string",
+            "description": "preferredLevel options: preferred, unacceptable",
+            "example": "preferred"
+          }
+        }
+      },
+      "FareBasis": {
+        "type": "object",
+        "properties": {
+          "fareBasisCode": {
+            "type": "string",
+            "example": "YOW"
+          },
+          "preferredLevel": {
+            "type": "string",
+            "description": "preferredLevel options: preferred, unacceptable",
+            "example": "preferred"
+          }
+        }
+      },
+      "FareParameters": {
+        "type": "object",
+        "properties": {
+          "accountCode": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": ""
+            }
+          },
+          "corporateId": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": ""
+            }
+          }
+        }
+      },
+      "AdditionalInfo": {
+        "type": "object",
+        "properties": {
+          "elapsedTime": {
+            "type": "integer",
+            "example": 354
+          },
+          "eTicketable": {
+            "type": "boolean",
+            "example": true
+          },
+          "frequency": {
+            "type": "string",
+            "example": "SMTF"
+          },
+          "stopCount": {
+            "type": "integer",
+            "example": 3
+          },
+          "totalMilesFlown": {
+            "type": "integer",
+            "example": 3000
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "BadRequest",
+        "content": {
+          "*/*": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ErrorMessage"
+              }
+            }
+          }
+        }
+      },
+      "DefaultError": {
+        "description": "Unexpected error",
+        "content": {
+          "*/*": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ErrorMessage"
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The specified resource was not found",
+        "content": {
+          "*/*": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ErrorMessage"
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "*/*": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ErrorMessage"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

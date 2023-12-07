@@ -1,0 +1,172 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Fines API",
+    "description": "The system that retrieves the amount of fines for users in the library system.",
+    "version": "0.1"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000"
+    }
+  ],
+  "paths": {
+    "/api/fines/me": {
+      "get": {
+        "tags": [
+          "Fines"
+        ],
+        "summary": "Get authenticated user's fines",
+        "description": "Retrieve the amount of fine owed by the authenticated user",
+        "responses": {
+          "200": {
+            "description": "Fine amount returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "integer",
+                      "description": "ID of the user"
+                    },
+                    "fine_amount": {
+                      "type": "number",
+                      "format": "double",
+                      "description": "Amount of fine owed"
+                    }
+                  }
+                },
+                "examples": {
+                  "0": {
+                    "value": "{\n  \"fine_amount\": 0,\n  \"user_id\": 4\n}\n"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "http://127.0.0.1:5000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://127.0.0.1:5000"
+        }
+      ]
+    },
+    "/api/fines/{user_id}": {
+      "get": {
+        "tags": [
+          "Fines"
+        ],
+        "summary": "Get user's fines",
+        "description": "Retrieve the amount of fine owed by a user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "description": "ID of the user",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fine amount returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "integer",
+                      "description": "ID of the user"
+                    },
+                    "fine_amount": {
+                      "type": "number",
+                      "format": "double",
+                      "description": "Amount of fine owed"
+                    }
+                  }
+                },
+                "examples": {
+                  "0": {
+                    "value": "{\n  \"fine_amount\": 0,\n  \"user_id\": 3\n}\n"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "http://127.0.0.1:5000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://127.0.0.1:5000"
+        }
+      ]
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basic": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

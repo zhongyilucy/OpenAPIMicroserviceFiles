@@ -1,0 +1,216 @@
+{
+  "openapi": "3.0.0",
+  "x-stoplight": {
+    "id": "dmucgkspeu44u"
+  },
+  "info": {
+    "title": "train-api",
+    "version": "1.0.0",
+    "description": "The API retrieves trains."
+  },
+  "servers": [
+    {
+      "url": "http://mbali.ddns.net:8080/api/v1",
+      "description": "Production test server"
+    },
+    {
+      "url": "http://localhost:5001/api/v1",
+      "description": "local dev server 1"
+    },
+    {
+      "url": "http://localhost:8080/api/v1",
+      "description": "local dev server 2"
+    }
+  ],
+  "paths": {
+    "/train/{trainNumber}": {
+      "description":"Get train by its number",
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "Train found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrainInfo"
+                },
+                "examples": {
+                  "Sample train info": {
+                    "value": {
+                      "id": 4015,
+                      "trainNumber": "12650",
+                      "trainName": "YPR SAMPARK KRT",
+                      "trainFullName": "Karnataka Sampark Kranti Express (Via Ballari) (PT)",
+                      "stationFromCode": "NZM",
+                      "stationFromName": "Hazrat Nizamuddin",
+                      "stationToCode": "YPR",
+                      "stationToName": "Yesvantpur Junction",
+                      "departureTime": "08:20:00",
+                      "arrivalTime": "05:30:00",
+                      "duration": "45:10:00",
+                      "trainRunsOn": {
+                        "trainRunsOnSun": "Y",
+                        "trainRunsOnMon": "Y",
+                        "trainRunsOnTue": "Y",
+                        "trainRunsOnWed": "N",
+                        "trainRunsOnThu": "Y",
+                        "trainRunsOnFri": "N",
+                        "trainRunsOnSat": "Y"
+                      },
+                      "distance": 2748,
+                      "availableClasses": [
+                        "2S",
+                        "SL",
+                        "3A",
+                        "2A",
+                        "1A"
+                      ],
+                      "trainTypeCode": "SKR",
+                      "trainTypeName": "Sampark Kranti",
+                      "updatedAt": "2023-02-05T20:38:45.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "operationId": "get-train-info",
+        "description": "Get train info"
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/trainNumber"
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "TrainInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "trainNumber": {
+            "type": "string"
+          },
+          "trainName": {
+            "type": "string"
+          },
+          "trainFullName": {
+            "type": "string"
+          },
+          "stationFromCode": {
+            "type": "string"
+          },
+          "stationFromName": {
+            "type": "string"
+          },
+          "stationToCode": {
+            "type": "string"
+          },
+          "stationToName": {
+            "type": "string"
+          },
+          "departureTime": {
+            "type": "string"
+          },
+          "arrivalTime": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {},
+    "requestBodies": {},
+    "parameters": {
+      "trainNumber": {
+        "name": "trainNumber",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 5,
+          "example": "12650"
+        },
+        "description": "Train number"
+      },
+      "stationCode": {
+        "name": "stationCode",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "KIR"
+        },
+        "description": "Station Code"
+      },
+      "trainInfo": {
+        "name": "trainInfo",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "default": true,
+          "example": true
+        },
+        "description": "Train info with timetable"
+      },
+      "fullTrainTimetable": {
+        "name": "fullTrainTimetable",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "default": false,
+          "example": false
+        },
+        "description": "All intermediate stations"
+      },
+      "fromStationCode": {
+        "name": "fromStationCode",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "NZM"
+        },
+        "description": "From station code"
+      },
+      "toStationCode": {
+        "name": "toStationCode",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "GWL"
+        },
+        "description": "To station code"
+      },
+      "limit": {
+        "name": "limit",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "example": 10,
+          "default": 10
+        },
+        "description": "Limit number of queried result"
+      }
+    },
+    "responses": {}
+  }
+}

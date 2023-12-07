@@ -1,0 +1,53 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/Z5313062/F10A_PIKACHU/1.0.0"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "Get Image API",
+    "description": "The API gets images from the database"
+  },
+  "tags": [
+    {
+      "name": "Database",
+      "description": "Database operations"
+    }
+  ],
+  "paths": {
+    "/get_image/{image}": {
+      "post": {
+        "tags": [
+          "Database"
+        ],
+        "description": "The user's image gets inputted into database",
+        "parameters": [
+          {
+            "name": "image",
+            "in": "path",
+            "required": true,
+            "description": "The path of the image file to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

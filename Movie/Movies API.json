@@ -1,0 +1,333 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Retrieves details of movies in the databased",
+    "version": "1.0.1",
+    "title": "Movies API",
+    "contact": {
+      "email": "joeylgutierrez@gmail.com",
+      "name": "Joseph Gutierrez"
+    }
+  },
+  "paths": {
+    "/movies": {
+      "get": {
+        "summary": "list movies",
+        "operationId": "listMovies",
+        "description": "Get a list of movies with pagination.   List can be also filtered by genre or year optionally.\n",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "year",
+            "description": "pass an optional year to list by year",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1900,
+              "maximum": 2021
+            }
+          },
+          {
+            "in": "query",
+            "name": "genre",
+            "description": "pass an optional genre to list by genre",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "request page for pagination 0 based",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "maximum number of records to return",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "enum": [
+                1,
+                25,
+                50,
+                100,
+                150
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "sort direction",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "movie results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieSearchResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        },
+        "tags": [
+          "Movies"
+        ]
+      }
+    },
+    "/movies/{id}": {
+      "get": {
+        "summary": "retrieve a movie",
+        "operationId": "getMovie",
+        "description": "Return a full movie object by Id.\n",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ratings"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Movies"
+        ],
+        "responses": {
+          "200": {
+            "description": "movie results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MovieSearchResult": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "imdbId",
+          "releaseDate",
+          "budget",
+          "genres"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 5
+          },
+          "title": {
+            "type": "string",
+            "example": "Four Rooms"
+          },
+          "imdbId": {
+            "type": "string",
+            "example": "tt0113101"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date",
+            "example": "1995-12-09"
+          },
+          "budget": {
+            "type": "string",
+            "example": "$4,000,000"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": [
+              {
+                "id": 80,
+                "name": "Crime"
+              },
+              {
+                "id": 35,
+                "name": "Comedy"
+              }
+            ]
+          }
+        }
+      },
+      "Movie": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "title",
+              "imdbId",
+              "releaseDate",
+              "budget",
+              "genres",
+              "overview",
+              "productionCompanies",
+              "revenue",
+              "runtime",
+              "language",
+              "status",
+              "omdbRatings"
+            ],
+            "properties": {
+              "overview": {
+                "type": "string",
+                "example": "It's Ted the Bellhop's first night on the job...and the hotel's very unusual guests are about to place him in some outrageous predicaments. It seems that this evening's room service is serving up one unbelievable happening after another."
+              },
+              "productionCompanies": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": 14,
+                    "name": "Miramax Films"
+                  },
+                  {
+                    "id": 59,
+                    "name": "A Band Apart"
+                  }
+                ]
+              },
+              "revenue": {
+                "type": "integer",
+                "format": "int32",
+                "example": 4300000
+              },
+              "runtime": {
+                "type": "integer",
+                "format": "int32",
+                "example": 98
+              },
+              "language": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "status": {
+                "type": "string",
+                "example": "Released"
+              },
+              "omdbRatings": {
+                "type": "object",
+                "properties": {
+                  "imdb": {
+                    "type": "string",
+                    "example": 6.8
+                  },
+                  "metascore": {
+                    "type": "string",
+                    "example": "N/A"
+                  }
+                }
+              },
+              "ratings": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Rating"
+                },
+                "example": [
+                  {
+                    "id": 965,
+                    "userId": 15,
+                    "movieId": 5,
+                    "rating": 4.5,
+                    "timestamp": 1093070098
+                  },
+                  {
+                    "id": 3055,
+                    "userId": 18,
+                    "movieId": 5,
+                    "rating": 3,
+                    "timestamp": 856006982
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "description": "paths to get movie information",
+      "name": "Movies"
+    },
+    {
+      "description": "paths for movie ratings",
+      "name": "Ratings"
+    }
+  ]
+}

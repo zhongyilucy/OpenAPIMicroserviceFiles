@@ -1,0 +1,88 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Product Coverages List API",
+    "version": "10.94.1",
+    "title": "ProductCoveragesList",
+    "contact": {
+      "email": "admins@zipari.com"
+    }
+  },
+  "paths": {
+    "/product-coverages/": {
+      "get": {
+        "summary": "Product Coverages List",
+        "description": "Get a list of product coverages.",
+        "tags": [
+          "Product Coverages List"
+        ],
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/orderingParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageSizeParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A paginated array of ProductCoverage objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "count",
+                    "results"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "next": {
+                      "description": "Most Zipari 'List' APIs have the 'next' property as an integer, but here it is defined as a url link. This may be an error.",
+                      "type": "string"
+                    },
+                    "previous": {
+                      "description": "Most Zipari 'List' APIs have the 'previous' property as an integer, but here it is defined as a url link. This may be an error.",
+                      "type": "string"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ProductCoverageModel/10.98.1#/components/schemas/ProductCoverage"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

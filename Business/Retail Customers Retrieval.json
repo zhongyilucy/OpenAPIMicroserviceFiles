@@ -1,0 +1,257 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Retail Customers Management",
+    "description": "Retail Customers Management API that retrieves and manages the customers of the shop.",
+    "contact": {
+      "name": "Enterprise Data Management & Engineering",
+      "email": "DL_AFI_RetailMasterData_IntegrationSupport@ashleyfurniture.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/AFI-Integrations/retail-customers/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://edme.dev.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "DEV target service."
+    },
+    {
+      "url": "https://edme.stage.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "STAGE target service."
+    },
+    {
+      "url": "https://edme.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "PROD target service."
+    },
+    {
+      "url": "https://devapigw.ashleyfurniture.com/retail-customers/v1",
+      "description": "DEV public base URL."
+    },
+    {
+      "url": "https://stageapigw.ashleyfurniture.com/retail-customers/v1",
+      "description": "STAGE public base URL."
+    },
+    {
+      "url": "https://apigw3.ashleyfurniture.com/retail-customers/v1",
+      "description": "PROD public base URL."
+    }
+  ],
+  "security": [
+    {
+      "apimSubscriptionKey": []
+    }
+  ],
+  "paths": {
+    "/customers": {
+      "get": {
+        "operationId": "GetRetailCustomers",
+        "summary": "Get filtered collection of retail customers.",
+        "description": "Request a collection of retail customers that meet the criteria provided in the query string.",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/parameters/offset-Query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/parameters/limit-Query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/SourceSystem-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/SourceSystemId-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/EmailAddress-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/PhoneNumber-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/FirstName-query"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/LastName-query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-OK-CustomersCollection"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "404": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/404-NotFound"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      },
+      "post": {
+        "operationId": "AddRetailCustomer",
+        "summary": "Add or update a customer to the retail customer master (Golden ID not known).",
+        "description": "Send new customer data where a (Golden) customer ID does not exist or is not known. The customer data will be added to the Retail Customer Master, evaluated for potential matches, merged with an existing customer or a new Golden customer created. Processing is done asynchronously, so an immediate response containing the customer information will not be provided.",
+        "requestBody": {
+          "description": "New or updated customer object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/customerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/202-Accepted-Customer"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      }
+    },
+    "/customers/{custId}": {
+      "get": {
+        "operationId": "GetRetailCustomerById",
+        "summary": "Get a single retail customer by ID.",
+        "description": "Request details about a specific customer using the master customer ID.",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/CustId-url"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-OK-Customer"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "404": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/404-NotFound"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      },
+      "put": {
+        "operationId": "UpdateRetailCustomer",
+        "summary": "Update an existing customer in the retail customer master (by ID).",
+        "description": "Send updated customer data where a (Golden) customer ID is known. The customer data will be added to the Retail Customer Master, and processed to apply the necessary updates. Processing is done asynchronously, so an immediate response containing the updates will not be provided.",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/CustId-url"
+          }
+        ],
+        "requestBody": {
+          "description": "Updated customer object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/customerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/202-Accepted-Customer"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "RemoveRetailCustomer",
+        "summary": "Remove an existing customer's information from the retail customer master (by ID).",
+        "description": "Support for CCPA, GDPR or similar customer data removal requests. Processing is done asynchronously, so there may be some delay in completion of this request.",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/CustId-url"
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/202-Accepted-Customer"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "parameters": {},
+    "requestBodies": {},
+    "responses": {
+      "200-OK-CustomersCollection": {
+        "description": "Success - returns a collection of retail customers matching the provided criteria.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/customerCollectionResponse"
+            }
+          }
+        }
+      },
+      "200-OK-Customer": {
+        "description": "Success - return a specific retail customer.",
+        "headers": {
+          "ETag": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/headers/ETag"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/customer"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apimSubscriptionKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Ocp-Apim-Subscription-Key",
+        "description": "Subscription key managed by Azure API Management (APIM))"
+      }
+    }
+  }
+}

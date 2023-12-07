@@ -1,0 +1,365 @@
+{
+  "openapi": "3.0.1",
+  "servers": [
+    {
+      "url": "https://business.hema.digital",
+      "description": "Hema business layer (prod)"
+    },
+    {
+      "url": "https://int.business-preprod.hema.digital",
+      "description": "Hema business layer (int)"
+    }
+  ],
+  "info": {
+    "version": "2.0.4",
+    "title": "Hema Giftcard API V2",
+    "description": "Managing pre-orders for giftcards."
+  },
+  "tags": [
+    {
+      "name": "giftcard-system",
+      "description": "Paths to do giftcard operations by external systems"
+    }
+  ],
+  "paths": {
+    "/giftcard/v2/pre-orders": {
+      "post": {
+        "summary": "Create a pre-order",
+        "description": "Create a new pre-order for a giftcard",
+        "operationId": "CreatePreOrder",
+        "tags": [
+          "giftcard-system"
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/PostPreOrders"
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/PostPreOrdersResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          },
+          "504": {
+            "$ref": "#/components/responses/GatewayTimeout"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "giftcard.system.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/giftcard/v2/pre-orders/{orderId}/approve": {
+      "post": {
+        "summary": "Approve a pre-order",
+        "description": "Aprove a giftcard pre-order",
+        "operationId": "ApprovePreOrder",
+        "tags": [
+          "giftcard-system"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OrderId"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/PostPreOrdersApproveResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          },
+          "504": {
+            "$ref": "#/components/responses/GatewayTimeout"
+          }
+        },
+        "security": [
+          {
+            "oauth": [
+              "giftcard.system.write"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "oauth": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://auth.hema.digital/token",
+            "scopes": {
+              "giftcard.system.write": "Grants access to create a giftcard"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "There was a conflict in the data supplied",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Error"
+                },
+                {
+                  "$ref": "#/components/schemas/AuthorizerError"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "GatewayTimeout": {
+        "description": "Gateway timeout",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "ServiceUnavailable": {
+        "description": "Service unavailable",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "PostPreOrdersResponse": {
+        "description": "The order has been created successfully",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PreOrderId"
+            }
+          }
+        }
+      },
+      "PostPreOrdersApproveResponse": {
+        "description": "The order has been approved successfully"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthorizerError": {
+        "type": "object",
+        "required": [
+          "Message"
+        ],
+        "properties": {
+          "Message": {
+            "type": "string"
+          }
+        }
+      },
+      "OrderId": {
+        "type": "string",
+        "pattern": "^[0-9]{4,}$",
+        "example": "197169"
+      },
+      "PreOrderId": {
+        "type": "object",
+        "required": [
+          "orderId"
+        ],
+        "properties": {
+          "orderId": {
+            "$ref": "#/components/schemas/OrderId"
+          }
+        }
+      },
+      "PreOrder": {
+        "type": "object",
+        "required": [
+          "value",
+          "customerEmailAddress",
+          "expiryDate",
+          "culture",
+          "country",
+          "reason"
+        ],
+        "properties": {
+          "invoiceReference": {
+            "description": "a reference or description for internal/financial purposes",
+            "type": "string",
+            "maxLength": 64
+          },
+          "value": {
+            "description": "the value of the giftcard",
+            "type": "number",
+            "format": "float",
+            "example": 37.5
+          },
+          "customerEmailAddress": {
+            "description": "the e-mail address of the customer",
+            "type": "string",
+            "format": "email"
+          },
+          "expiryDate": {
+            "description": "the expiry date of the order",
+            "type": "string",
+            "format": "date-time"
+          },
+          "culture": {
+            "description": "culture of giftcard to be generated",
+            "type": "string",
+            "enum": [
+              "en-EN",
+              "nl-NL",
+              "de-DE",
+              "fr-FR"
+            ]
+          },
+          "country": {
+            "description": "the country code of the customer receiving the giftcard",
+            "type": "string",
+            "example": "NL"
+          },
+          "reason": {
+            "description": "the reason for the giftcard generation",
+            "type": "string",
+            "enum": [
+              "REIMBURSEMENT",
+              "ITEM_NOT_DELIVERED",
+              "PACKAGE_NOT_DELIVERED",
+              "ITEM_DAMAGED",
+              "INCORRECT_ITEM_DELIVERED",
+              "INCORRECT_PACKAGE_DELIVERED",
+              "COMPLAINT",
+              "COMPLAINT_PASTRY",
+              "DELIVERY_COSTS",
+              "MATTRESS",
+              "INCORRECT_ONLINE_DISCOUNT",
+              "PRICE_DIFFERENCE",
+              "OTHER"
+            ]
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "PostPreOrders": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PreOrder"
+            }
+          }
+        }
+      }
+    }
+  }
+}

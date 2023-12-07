@@ -1,0 +1,439 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "2.0",
+    "title": "Purchase Order",
+    "description": "The Purchase Order API provides user the ability view their existing purchase orders which they can use for their orders. This usually refers to Blanket Purchase Order.  A Blanket Purchase is an agreement arranged between a customer and Equinix to deliver goods or services at a predetermined price on a recurring basis for a specified time period.",
+    "termsOfService": "https://developer.equinix.com/agreement",
+    "contact": {
+      "name": "Equinix API Support",
+      "email": "api-support@equinix.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Purchase Order",
+      "description": "Purchase Order"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://api.equinix.com"
+    },
+    {
+      "url": "https://sandboxapi.equinix.com"
+    }
+  ],
+  "paths": {
+    "/colocations/v2/purchaseOrders": {
+      "get": {
+        "tags": [
+          "Purchase Order"
+        ],
+        "summary": "Retrieve purchase Order",
+        "operationId": "Retrieve purchase Order",
+        "description": "This API allows user to retrieve purchase order information based on IBXs, account numbers, and product types.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "accountNumbers",
+            "in": "query",
+            "description": "Account Number to be filtered",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "maxItems": 1
+            }
+          },
+          {
+            "name": "productTypes",
+            "in": "query",
+            "description": "Product type to be filtered",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "CROSS_CONNECT",
+                  "SMART_HANDS",
+                  "POWER",
+                  "NETWORK",
+                  "SMARTKEY",
+                  "SMVSENSOR",
+                  "SMARTVIEW",
+                  "SERVICES"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 1
+            }
+          },
+          {
+            "name": "ibxs",
+            "in": "query",
+            "description": "IBX to be filtered.",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "maxItems": 1
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Use `offset` to control the number of records to be skipped in the response.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Use `limit` to restrict the number of records in the response.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/purchaseOrderResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "number": "1091238010",
+                      "amount": 2020,
+                      "remainingAmount": 2020,
+                      "startDate": "2020-05-22",
+                      "endDate": "2021-05-22",
+                      "productTypes": [
+                        "CROSS_CONNECT",
+                        "NETWORK"
+                      ],
+                      "productCategories": [
+                        "INTERCONNECTION"
+                      ],
+                      "ibxs": [
+                        "AM1"
+                      ],
+                      "description": "Interconnection"
+                    }
+                  ],
+                  "pagination": {
+                    "offset": 0,
+                    "limit": 25,
+                    "total": 100,
+                    "next": "/purchaseOrders?offset=25&limit=25",
+                    "previous": "/purchaseOrders?offset=0&limit=25"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "date_format_exceptions": {
+                    "value": [
+                      {
+                        "errorCode": "EQ-2095010",
+                        "errorMessage": "Value is not within the valid range",
+                        "correlationId": "99740129126918",
+                        "additionalInfo": [
+                          {
+                            "property": "startDate",
+                            "value": "2020-01-24"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "date_range_exceptions": {
+                    "value": [
+                      {
+                        "errorCode": "EQ-2095010",
+                        "errorMessage": "From date and to date should be with in less than or 3 mounts",
+                        "correlationId": "99740129126918",
+                        "additionalInfo": [
+                          {
+                            "property": "startDate",
+                            "value": "2020-01-24"
+                          },
+                          {
+                            "property": "endDate",
+                            "value": "2020-07-24"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": [
+                  {
+                    "errorCode": "EQ-2095005",
+                    "errorMessage": "Permission denied access purchase orders details",
+                    "correlationId": "99740129126918"
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": [
+                  {
+                    "errorCode": "EQ-2095030",
+                    "errorMessage": "The server has encountered an unexpected error. We apologize for the inconvenience. Please try again later.",
+                    "correlationId": "99740129126918"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "title": "Error Info",
+        "type": "array",
+        "items": {
+          "title": "Error details",
+          "type": "object",
+          "properties": {
+            "errorCode": {
+              "type": "string",
+              "example": "EQ-20YYXXX"
+            },
+            "errorMessage": {
+              "type": "string",
+              "example": "Error message"
+            },
+            "details": {
+              "type": "string",
+              "example": "Error details"
+            },
+            "correlationId": {
+              "type": "string",
+              "example": "Correlation ID to trace the error back"
+            },
+            "help": {
+              "type": "string",
+              "example": "URL to a help page for the corresponding errorCode"
+            },
+            "additionalInfo": {
+              "title": "Error details",
+              "type": "object",
+              "properties": {
+                "property": {
+                  "type": "string",
+                  "example": "id"
+                },
+                "reason": {
+                  "type": "string",
+                  "example": "missing id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "purchaseOrderDetails": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "number": {
+            "type": "string",
+            "description": "Purchase order number",
+            "example": "1091238010"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Total amount of purchase order",
+            "example": "2020"
+          },
+          "remainingAmount": {
+            "type": "number",
+            "description": "Remaining amount of purchase order",
+            "example": "2020"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Plan start date in `YYYY-MM-DD` format",
+            "example": "2020-05-22"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Plan end date in `YYYY-MM-DD` format",
+            "example": "2021-05-22"
+          },
+          "productTypes": {
+            "type": "array",
+            "description": "The list of product which purchase order is applicable for",
+            "items": {
+              "type": "string",
+              "enum": [
+                "POWER",
+                "SPACE",
+                "SMART_HANDS",
+                "SERVICES",
+                "CROSS_CONNECT",
+                "NETWORK",
+                "SMVSENSOR",
+                "SMARTVIEW",
+                "SMARTKEY"
+              ]
+            },
+            "example": [
+              "POWER",
+              "SPACE",
+              "SMART_HANDS",
+              "SERVICES",
+              "CROSS_CONNECT",
+              "NETWORK",
+              "SMVSENSOR",
+              "SMARTVIEW",
+              "SMARTKEY"
+            ]
+          },
+          "productCategories": {
+            "type": "array",
+            "description": "The list of categories which `productTypes` belongs to",
+            "items": {
+              "type": "string",
+              "enum": [
+                "POWER",
+                "SPACE",
+                "SMART_HANDS",
+                "SERVICES",
+                "INTERCONNECTION"
+              ]
+            }
+          },
+          "ibxs": {
+            "type": "array",
+            "description": "List of IBXs the purchase order is restricted to. When `ibxs` is empty, this means that purchase order has no restrictions and applies to all Equinix IBXs",
+            "items": {
+              "type": "string",
+              "example": "AM1"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": "Purchase order number descriptions",
+            "example": "Interconnection"
+          }
+        },
+        "description": "Purchase Order"
+      },
+      "purchaseOrderResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/purchaseOrderDetails"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/pagination"
+          }
+        }
+      },
+      "pagination": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "example": 0
+          },
+          "limit": {
+            "type": "integer",
+            "example": 25
+          },
+          "total": {
+            "type": "integer",
+            "example": 100
+          },
+          "next": {
+            "type": "string",
+            "example": "/purchaseOrders?offset=25&limit=25"
+          },
+          "previous": {
+            "type": "string",
+            "example": "/purchaseOrders?offset=0&limit=25"
+          }
+        },
+        "description": "Paginations"
+      }
+    }
+  }
+}

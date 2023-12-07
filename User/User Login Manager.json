@@ -1,0 +1,71 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "User Login Manager",
+    "description": "API Endpoints that allows users to log into the databased",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/Viggie1/Contact-Manager/1.0.0"
+    },
+    {
+      "url": "http://virtserver.swaggerhub.com/Viggie1/Contact-Manager/1.0.0"
+    }
+  ],
+  "paths": {
+    "/Login.php": {
+      "post": {
+        "summary": "Logs in",
+        "description": "Logs a user in.",
+        "requestBody": {
+          "description": "Login",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "User Logged In Successfuly.",
+            "content": {}
+          },
+          "401": {
+            "description": "Credentials are wrong",
+            "content": {}
+          },
+          "404": {
+            "description": "URL Not Found",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "loginItem"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Login": {
+        "required": [
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "jDoe123"
+          },
+          "password": {
+            "type": "string",
+            "example": "superDoe123!"
+          }
+        }
+      }
+    }
+  }
+}

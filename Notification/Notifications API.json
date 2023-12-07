@@ -1,0 +1,95 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.1",
+    "title": "Notifications API",
+    "description": "This api creates and manages notifications for orders"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/CafeOfTheWorld/CafeAPI/1.0.1"
+    }
+  ],
+  "paths": {
+    "/notifications": {
+      "get": {
+        "tags": [
+          "notifications"
+        ],
+        "operationId": "getNotifications",
+        "summary": "Get notifications related to order confirmation Id",
+        "description": "Client should be able to get all notifications related to his confirmation ID",
+        "parameters": [
+          {
+            "name": "confirmation",
+            "in": "query",
+            "description": "Confirmation",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Confirmation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notifications related to order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notification"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "notifications",
+      "description": "Notifications about orders processing"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Confirmation": {
+        "type": "object",
+        "required": [
+          "token",
+          "awaitingId"
+        ],
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "YRTDTRSRTE786876"
+          },
+          "awaitingId": {
+            "$ref": "#/components/schemas/AwaitingId"
+          }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Your order is ready!"
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-11-10T15:00:00.001Z"
+          }
+        }
+      }
+    }
+  }
+}

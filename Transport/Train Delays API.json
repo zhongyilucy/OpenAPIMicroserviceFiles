@@ -1,0 +1,63 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "3.0.0",
+    "title": "Train Delays API",
+    "description": "An API that provides real-time information on train delays"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/2021CT93047_1/PublicTransit/3.0.0"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://3e4d-103-147-208-112.in.ngrok.io"
+    }
+  ],
+  "paths": {
+    "/train/{train_number}/delay": {
+      "get": {
+        "summary": "Get the delay information for a specific train route",
+        "parameters": [
+          {
+            "name": "train_number",
+            "in": "path",
+            "required": true,
+            "description": "The number of the train route",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "delay": {
+                      "type": "string",
+                      "description": "The delay in minutes for the train route"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The specified Train number is invalid"
+          },
+          "404": {
+            "description": "A user with the specified Train number was not found"
+          }
+        },
+        "tags": [
+          "train"
+        ]
+      }
+    }
+  }  
+}

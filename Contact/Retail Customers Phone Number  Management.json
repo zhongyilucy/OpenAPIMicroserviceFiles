@@ -1,0 +1,140 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Retail Customers Phone Number Management",
+    "description": "Retail Customers Management API that retrieves and manages the phone number of customers of the shop.",
+    "contact": {
+      "name": "Enterprise Data Management & Engineering",
+      "email": "DL_AFI_RetailMasterData_IntegrationSupport@ashleyfurniture.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/AFI-Integrations/retail-customers/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://edme.dev.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "DEV target service."
+    },
+    {
+      "url": "https://edme.stage.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "STAGE target service."
+    },
+    {
+      "url": "https://edme.ashleyfurniture.com/retail-customer-master/v1",
+      "description": "PROD target service."
+    },
+    {
+      "url": "https://devapigw.ashleyfurniture.com/retail-customers/v1",
+      "description": "DEV public base URL."
+    },
+    {
+      "url": "https://stageapigw.ashleyfurniture.com/retail-customers/v1",
+      "description": "STAGE public base URL."
+    },
+    {
+      "url": "https://apigw3.ashleyfurniture.com/retail-customers/v1",
+      "description": "PROD public base URL."
+    }
+  ],
+  "security": [
+    {
+      "apimSubscriptionKey": []
+    }
+  ],
+  "paths": {
+    "/customers/{custId}/phoneNumbers": {
+      "get": {
+        "operationId": "GetRetailCustomerPhoneNumbers",
+        "summary": "Get collection of retail customer phone numbers.",
+        "description": "Request a collection containing all phone numbers associated with the specified customer.",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/CustId-url"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-OK-CustomerPhoneNumbersCollection"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "404": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/404-NotFound"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      }
+    },
+    "/customers/{custId}/phoneNumbers/{phoneId}": {
+      "get": {
+        "operationId": "GetRetailCustomerPhoneNumberById",
+        "summary": "Get specific retail customer phone number.",
+        "description": "Request a specific retail customer phone number by ID.",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/CustId-url"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/parameters/PhoneId-url"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-OK-CustomerPhoneNumber"
+          },
+          "400": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/400-BadRequest"
+          },
+          "401": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/401-Unauthorized"
+          },
+          "404": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/404-NotFound"
+          },
+          "5XX": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/responses/5XX-ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "parameters": {},
+    "requestBodies": {},
+    "responses": {
+      "200-OK-CustomerPhoneNumber": {
+        "description": "Success - return a specific retail customer phone number.",
+        "headers": {
+          "ETag": {
+            "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/ashley-core-common-domain/1.0.6#/components/headers/ETag"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "https://api.swaggerhub.com/domains/AFI-Integrations/retail-customer-domain/1.0.0#/components/schemas/phoneNumber"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apimSubscriptionKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Ocp-Apim-Subscription-Key",
+        "description": "Subscription key managed by Azure API Management (APIM))"
+      }
+    }
+  }
+}

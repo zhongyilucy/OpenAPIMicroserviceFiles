@@ -1,0 +1,150 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Orders Management",
+    "version": "1.0.0",
+    "description": "This API retrieves and manages the purchased orders in the system."
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/AHMED180116/E-Commerce/1.0.0"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Orders"
+    }
+  ],
+  "paths": {
+    "/api/v1/products/{productId}/orders": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Create order",
+        "description": "user uses it to make order in specific product with product id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "description": "the black one",
+                  "quantity": 5,
+                  "address": "giza"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get all orders for specific product",
+        "description": "product provider uses it to view all order for specific product with product id",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/orders/{orderId}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get one order",
+        "description": "user use it to view his specific order with order id",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Update Order",
+        "description": "order maker uses it to update his order details with order id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "description": "the black one",
+                  "quantity": 3,
+                  "address": "cairo"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Delete order",
+        "description": "order maker uses it to delete his order details with order id",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/orders/{orderId}/verify": {
+      "patch": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Verify order",
+        "description": "product provider verify the order is done to increase the quantity of stock with order id",
+        "requestBody": {
+          "content": {
+            "text/plain": {}
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

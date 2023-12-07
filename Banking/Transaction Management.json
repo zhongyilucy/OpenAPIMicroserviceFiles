@@ -1,0 +1,548 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Transaction Management",
+    "description":"This API initializes, manages, and authorizes transactions from customers.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.paystack.co",
+      "description": "Base API endpoint"
+    }
+  ],
+  "paths": {
+    "/transaction/initialize": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Initialize Transaction",
+        "operationId": "transaction_initialize",
+        "description": "Create a new transaction",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/paths/~1transaction~1initialize/post/requestBody/content/application~1json/schema"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "amount"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "Customer's email address",
+                    "type": "string",
+                    "example": "person@email.com"
+                  },
+                  "amount": {
+                    "description": "Amount should be in kobo if currency is NGN, pesewas, if currency is GHS, and cents, if currency is ZAR",
+                    "type": "integer",
+                    "example": 10247
+                  },
+                  "currency": {
+                    "description": "The transaction currency",
+                    "type": "string",
+                    "enum": [
+                      "NGN",
+                      "GHS",
+                      "ZAR",
+                      "USD"
+                    ]
+                  },
+                  "reference": {
+                    "description": "Unique transaction reference. Only -, ., = and alphanumeric characters allowed.",
+                    "type": "string",
+                    "example": "123.uniq=ref-"
+                  },
+                  "callback_url": {
+                    "description": "Fully qualified url. Use this to override the callback url provided on the dashboard for this transaction",
+                    "type": "string",
+                    "example": "https://example.com/"
+                  },
+                  "plan": {
+                    "description": "If transaction is to create a subscription to a predefined plan, provide plan code here. \nThis would invalidate the value provided in amount",
+                    "type": "string",
+                    "example": "PLN_123wede"
+                  },
+                  "invoice_limit": {
+                    "description": "Number of times to charge customer during subscription to plan",
+                    "type": "integer",
+                    "example": 10
+                  },
+                  "metadata": {
+                    "description": "Stringified JSON object of custom data",
+                    "type": "object",
+                    "example": {
+                      "metadata": {
+                        "cart_id": 398,
+                        "custom_fields": [
+                          {
+                            "display_name": "Invoice ID",
+                            "variable_name": "Invoice ID",
+                            "value": 209
+                          },
+                          {
+                            "display_name": "Cart Items",
+                            "variable_name": "cart_items",
+                            "value": "3 bananas, 12 mangoes"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "channels": {
+                    "description": "An array of payment channels to control what channels you want to make available to the user to make a payment with",
+                    "type": "array",
+                    "enum": [
+                      "card",
+                      "bank",
+                      "ussd",
+                      "qr",
+                      "eft",
+                      "mobile_money",
+                      "bank_transfer"
+                    ]
+                  },
+                  "split_code": {
+                    "description": "The split code of the transaction split",
+                    "type": "string",
+                    "example": "SPL_123AbZ"
+                  },
+                  "subaccount": {
+                    "description": "The code for the subaccount that owns the payment",
+                    "type": "string",
+                    "example": "ACCT_23abcdefgh"
+                  },
+                  "transaction_charge": {
+                    "description": "A flat fee to charge the subaccount for a transaction. \nThis overrides the split percentage set when the subaccount was created",
+                    "type": "integer",
+                    "example": 12300
+                  },
+                  "bearer": {
+                    "description": "The bearer of the transaction charge",
+                    "type": "string",
+                    "enum": [
+                      "account",
+                      "subaccount"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/Ok/content/application~1json/schema"
+                },
+                "examples": {
+                  "Initiailize Transaction": {
+                    "value": {
+                      "status": true,
+                      "message": "Authorization URL created",
+                      "data": {
+                        "authorization_url": "https://checkout.paystack.com/spnajmit2hgi2c1",
+                        "access_code": "spandaoende",
+                        "reference": "ad123ada"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/paths/~1transfer/post/responses/401"
+          },
+          "default": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/transaction/charge_authorization": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Charge Authorization",
+        "operationId": "transaction_chargeAuthorization",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/paths/~1transaction~1charge_authorization/post/requestBody/content/application~1json/schema"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "amount",
+                  "authorization_code"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "Customer's email address used during the first transaction",
+                    "type": "string",
+                    "example": "person@email.com"
+                  },
+                  "amount": {
+                    "description": "Amount should be in kobo if currency is NGN, pesewas, if currency is GHS, and cents, if currency is ZAR",
+                    "type": "integer",
+                    "example": 10247
+                  },
+                  "authorization_code": {
+                    "description": "Valid authorization code to charge",
+                    "type": "string",
+                    "example": "AUTH_CODE"
+                  },
+                  "reference": {
+                    "description": "Unique transaction reference. Only -, ., = and alphanumeric characters allowed.",
+                    "type": "string",
+                    "example": "123.uniq=ref-2"
+                  },
+                  "currency": {
+                    "description": "The transaction currency",
+                    "type": "string",
+                    "enum": [
+                      "NGN",
+                      "GHS",
+                      "ZAR",
+                      "USD"
+                    ]
+                  },
+                  "metadata": {
+                    "description": "Stringified JSON object of custom data",
+                    "type": "object",
+                    "example": {
+                      "cart_id": 398,
+                      "custom_fields": [
+                        {
+                          "display_name": "Invoice ID",
+                          "variable_name": "Invoice ID",
+                          "value": 209
+                        },
+                        {
+                          "display_name": "Cart Items",
+                          "variable_name": "cart_items",
+                          "value": "3 bananas, 12 mangoes"
+                        }
+                      ]
+                    }
+                  },
+                  "split_code": {
+                    "description": "The split code of the transaction split",
+                    "type": "string",
+                    "example": "SPL_123AbZ"
+                  },
+                  "subaccount": {
+                    "description": "The code for the subaccount that owns the payment",
+                    "type": "string",
+                    "example": "ACCT_23abcdefgh"
+                  },
+                  "transaction_charge": {
+                    "description": "A flat fee to charge the subaccount for a transaction. \nThis overrides the split percentage set when the subaccount was created",
+                    "type": "integer",
+                    "example": 12300
+                  },
+                  "bearer": {
+                    "description": "The bearer of the transaction charge",
+                    "type": "string",
+                    "enum": [
+                      "account",
+                      "subaccount"
+                    ]
+                  },
+                  "queue": {
+                    "description": "If you are making a scheduled charge call, it is a good idea to queue them so the processing system does not get overloaded causing transaction processing errors.",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/Ok/content/application~1json/schema"
+                },
+                "examples": {
+                  "Charge Authorization": {
+                    "value": {
+                      "status": true,
+                      "message": "Charge attempted",
+                      "data": {
+                        "amount": 500000,
+                        "currency": "NGN",
+                        "reference": "123.uniq=ref-2",
+                        "metadata": "cart_id:398, custom_fields:[{}]",
+                        "split_code": "SPL_123AbZ",
+                        "subaccount": "ACCT_23abcdefgh"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/paths/~1transfer/post/responses/401"
+          },
+          "default": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Customer": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "email"
+            ],
+            "properties": {
+              "email": {
+                "description": "Customer's email address",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "description": "Customer's first name",
+                "type": "string",
+                "example": "Some"
+              },
+              "last_name": {
+                "description": "Customer's last name",
+                "type": "string",
+                "example": "Body"
+              },
+              "phone": {
+                "description": "Customer's phone number",
+                "type": "string",
+                "example": "+2348123456789"
+              },
+              "metadata": {
+                "description": "Stringified JSON object of custom data",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "authorization_code"
+            ],
+            "properties": {
+              "authorization_code": {
+                "description": "Customer's authorization code to be deactivated",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "customer"
+            ],
+            "properties": {
+              "customer": {
+                "description": "Customer's code, or email address",
+                "type": "string"
+              },
+              "risk_action": {
+                "description": "One of the possible risk actions [ default, allow, deny ]. allow to whitelist. \ndeny to blacklist. Customers start with a default risk action.\n",
+                "type": "string",
+                "enum": [
+                  "default",
+                  "allow",
+                  "deny"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "country",
+              "bvn",
+              "bank_code",
+              "account_number"
+            ],
+            "properties": {
+              "type": {
+                "description": "Predefined types of identification.",
+                "type": "string",
+                "enum": [
+                  "bvn",
+                  "bank_account"
+                ]
+              },
+              "country": {
+                "description": "Two-letter country code of identification issuer",
+                "type": "string",
+                "example": "NG"
+              },
+              "bvn": {
+                "description": "Customer's Bank Verification Number",
+                "type": "integer",
+                "example": 123456789
+              },
+              "bank_code": {
+                "description": "You can get the list of bank codes by calling the List Banks endpoint (https://api.paystack.co/bank).",
+                "type": "string",
+                "example": "007"
+              },
+              "account_number": {
+                "description": "Customer's bank account number.",
+                "type": "string",
+                "example": "0111111111"
+              },
+              "first_name": {
+                "description": "Customer's first name",
+                "type": "string",
+                "example": "Uchenna"
+              },
+              "last_name": {
+                "description": "Customer's last name",
+                "type": "string",
+                "example": "Okoro"
+              }
+            }
+          }
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Response": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Ok": {
+        "description": "Successful operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Created": {
+        "description": "Resource created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Response"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Entity not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "status": false,
+              "message": "Entity not found"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "status": false,
+              "message": "Invalid key"
+            }
+          }
+        }
+      },
+      "GeneralError": {
+        "description": "General Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

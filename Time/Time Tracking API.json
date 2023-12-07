@@ -1,0 +1,195 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Time Tracking API",
+    "description": "This API tracks the time that users spent on tasks",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/log_time/": {
+      "post": {
+        "summary": "Log time spent on a project task",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "project_id": {
+                    "type": "integer"
+                  },
+                  "task_id": {
+                    "type": "integer"
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "time_spent": {
+                    "type": "string",
+                    "pattern": "^\\d{2}:\\d{2}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-swagger-router-controller": "TaigaTimeTrackedPlugin.views.log_time"
+      }
+    },
+    "/get_time/": {
+      "get": {
+        "summary": "Get total time spent on a project task by a user",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "query",
+            "description": "Project ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "query",
+            "description": "Task ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_time": {
+                      "type": "string",
+                      "pattern": "^\\d{2}:\\d{2}$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-swagger-router-controller": "TaigaTimeTrackedPlugin.views.get_time"
+      }
+    },
+    "/get_time_by_period/": {
+      "get": {
+        "summary": "Get total time spent on a project task by a user within a specific period",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "query",
+            "description": "Project ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "query",
+            "description": "Task ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Start date (YYYY-MM-DD)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "End date (YYYY-MM-DD)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_time": {
+                      "type": "string",
+                      "pattern": "^\\d{2}:\\d{2}$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-swagger-router-controller": "TaigaTimeTrackedPlugin.views.get_time_by_period"
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/AlexTyutyunnykUA/TAIGA/1.0.0"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "http://127.0.0.1:8000/"
+    }
+  ]
+}

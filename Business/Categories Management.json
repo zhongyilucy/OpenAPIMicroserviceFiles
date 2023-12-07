@@ -1,0 +1,128 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Categories Management",
+    "version": "1.0.0",
+    "description":"This API retrieves and manages the categories of selling items in the system."
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/AHMED180116/E-Commerce/1.0.0"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Categories"
+    }
+  ],
+  "paths": {
+    "/api/v1/categories": {
+      "post": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Add Selling Item category",
+        "description": "admin uses it to create new Selling Item category",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "smart devices",
+                  "description": "phones, TVs and smart watches"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Get all Selling Item categories",
+        "description": "user uses it to view all Selling Item categories",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories/{categoriesId}": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Get one Selling Item category",
+        "description": "user uses it to view specific Selling Item category with category id",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Delete Selling Item category",
+        "description": "user uses it to delete specific Selling Item category with category id",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/categories/{categoriesId": {
+      "patch": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Update Selling Item category",
+        "description": "user uses it to update specific Selling Item category with category id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "smart devices",
+                  "description": "mobiles and monitors and PCs and TVs"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

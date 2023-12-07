@@ -1,0 +1,148 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.1",
+    "title": "Order Management",
+    "description": "This api creates and manages orders for a coffee shop"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/CafeOfTheWorld/CafeAPI/1.0.1"
+    }
+  ],
+  "paths": {
+    "/orders": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "operationId": "getOpenOrders",
+        "summary": "Open Orders",
+        "description": "Get list of open orders",
+        "responses": {
+          "200": {
+            "description": "List of processing and waiting orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OpenedOrder"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "orders"
+        ],
+        "operationId": "createOrder",
+        "summary": "Create order",
+        "description": "Client should be able submit order",
+        "parameters": [
+          {
+            "name": "items",
+            "in": "query",
+            "description": "Order items",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/OrderItem"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order confirmation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Confirmation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unable to process"
+          },
+          "500": {
+            "description": "Sorry, we're closed today"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "orders",
+      "description": "Clients orders"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "OrderItem": {
+        "type": "object",
+        "required": [
+          "coffeeId",
+          "numberOfCups"
+        ],
+        "properties": {
+          "coffeeId": {
+            "$ref": "#/components/schemas/CoffeeId"
+          },
+          "numberOfCups": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        }
+      },
+      "Confirmation": {
+        "type": "object",
+        "required": [
+          "token",
+          "awaitingId"
+        ],
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "YRTDTRSRTE786876"
+          },
+          "awaitingId": {
+            "$ref": "#/components/schemas/AwaitingId"
+          }
+        }
+      },
+      "OpenedOrder": {
+        "type": "object",
+        "required": [
+          "awaitingId",
+          "cupsLeft",
+          "cupsTotal"
+        ],
+        "properties": {
+          "awaitingId": {
+            "$ref": "#/components/schemas/AwaitingId"
+          },
+          "cupsLeft": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
+          },
+          "cupsTotal": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
+          }
+        }
+      }
+    }
+  }
+}

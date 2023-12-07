@@ -1,0 +1,772 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Application Management API",
+    "description": "Service to manage applications inside the system",
+    "contact": {
+      "name": "mimik technology inc.",
+      "url": "https://developers.mimik.com/",
+      "email": "support.sdk@mimik.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "2.0.0"
+  },
+  "tags": [
+    {
+      "name": "Admin",
+      "description": "Admin user calls"
+    },
+    {
+      "name": "System",
+      "description": "Server to server calls"
+    },
+    {
+      "name": "Edge",
+      "description": "edge calls"
+    }
+  ],
+  "paths": {
+    "/devices": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "List all the registered devices",
+        "description": "By passing in the appropriate options, you can search for available devices in the system.<p>The returned devices will not have the list of associated applications or services.",
+        "operationId": "searchDevices",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The start date for defining the interval in which the device was registered",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The end date for defining the interval in which the device was registered",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Defines the number of devices to return in a given page, should the call want data returned using pagination.",
+            "required": true,
+            "schema": {
+              "maximum": 100,
+              "minimum": 10,
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "name": "startAfter",
+            "in": "query",
+            "description": "Defines the id of the last record from previous page.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DeviceNoAssociations"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "System error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AdminSecurity": [
+              "read:devices"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "deviceController"
+      },
+      "post": {
+        "tags": [
+          "Edge",
+          "Admin"
+        ],
+        "summary": "Register a device",
+        "description": "Register a device to the service.<p>This request triggers the registration of the device to a notification service with the parameters associated with the notification property.",
+        "operationId": "createDevice",
+        "requestBody": {
+          "description": "The information to register a device",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewDevice"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "The created device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Device"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "System error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "SystemSecurity": [
+              "create:device"
+            ]
+          },
+          {
+            "AdminSecurity": [
+              "create:device"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "deviceController",
+        "x-codegen-request-body-name": "newDevice"
+      }
+    },
+    "/devices/{nodeId}": {
+      "get": {
+        "tags": [
+          "Admin",
+          "Edge"
+        ],
+        "summary": "Get device",
+        "description": "Get the device associated with the given nodeId.<p>The `applications` and `services` properties will be returned to give the list of applications and list of services associated with the device. It the request to the association failed instead of the association the error of the request will be returned.",
+        "operationId": "getDevice",
+        "parameters": [
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "The nodeId of the device",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The device with the given deviceId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Device"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "System error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "SystemSecurity": [
+              "read:device"
+            ]
+          },
+          {
+            "AdminSecurity": [
+              "read:device"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "deviceController"
+      },
+      "delete": {
+        "tags": [
+          "Admin",
+          "Edge"
+        ],
+        "summary": "Delete device",
+        "description": "Delete the device associated with the device id. <p>If an association exists with a service or a application the deletion request will fail and return an `unprocessable` error.<p>The request triggers the deregistration of the device from the notification service.",
+        "operationId": "deleteDevice",
+        "parameters": [
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "The nodeId of the device",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The node id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "SystemSecurity": [
+              "delete:device"
+            ]
+          },
+          {
+            "AdminSecurity": [
+              "delete:device"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "deviceController"
+      }
+    },
+    "/devices/{nodeId}/services/{id}": {
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Delete the associated service",
+        "description": "Delete the associated service from the given device",
+        "operationId": "deleteAssociationServiceDevice",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the service",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "The nodeId of the device",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The node id and id of the service",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "The id of the service",
+                          "format": "uuid"
+                        },
+                        "nodeId": {
+                          "type": "string",
+                          "description": "The nodeId of the device"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "AdminSecurity": [
+              "delete:associatedservice"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "deviceController"
+      }
+    },
+    "/devices/{nodeId}/applications/{id}": {
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Delete the associated application",
+        "description": "Delete the associated application from the given device",
+        "operationId": "deleteAssociationApplicationDevice",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the application",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "The nodeId of the device",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The node id and id of the application",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "The id of the application",
+                          "format": "uuid"
+                        },
+                        "nodeId": {
+                          "type": "string",
+                          "description": "The nodeId of the device"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "AdminSecurity": [
+              "delete:associatedapp"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "deviceController"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "required": [
+          "message",
+          "statusCode",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "info": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      },
+      "StatusUpdateInfo": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "notificationReceived",
+              "cancelledByUser",
+              "failed",
+              "completed",
+              "deployed"
+            ]
+          },
+          "statusReason": {
+            "type": "string",
+            "example": "Any reason that needs to be documented for status"
+          }
+        }
+      },
+      "StatusUpdate": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "postedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        ]
+      },
+      "NewDevice": {
+        "required": [
+          "description",
+          "name",
+          "nodeId",
+          "notification"
+        ],
+        "type": "object",
+        "properties": {
+          "nodeId": {
+            "type": "string",
+            "description": "node id in mDS to get the information details about the device"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Name of the device",
+            "example": "A device"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Description of the device",
+            "example": "A device that needs to be managed"
+          },
+          "notification": {
+            "required": [
+              "appId",
+              "deviceId",
+              "deviceToken",
+              "phoneNumber",
+              "platform"
+            ],
+            "type": "object",
+            "properties": {
+              "phoneNumber": {
+                "type": "string",
+                "description": "phone number associated with the device",
+                "example": "2688746858"
+              },
+              "appId": {
+                "type": "string",
+                "description": "Unique application identifier",
+                "example": "4555466788"
+              },
+              "deviceId": {
+                "type": "string",
+                "description": "Unique device identifier",
+                "example": "575749390038"
+              },
+              "deviceToken": {
+                "type": "string",
+                "description": "DeviceToken associated with the device",
+                "example": "atoken"
+              },
+              "platform": {
+                "type": "string",
+                "description": "device platform (iOS, Android etc.)",
+                "example": "android",
+                "enum": [
+                  "ios",
+                  "android"
+                ]
+              }
+            },
+            "description": "information needed for registering a device to the notification service"
+          }
+        }
+      },
+      "DeviceNoAssociations": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NewDevice"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "createdAt": {
+                "type": "string",
+                "description": "Time of the registration of the device",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "description": "Time of the latest update on the device",
+                "format": "date-time"
+              }
+            }
+          }
+        ]
+      },
+      "Device": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DeviceNoAssociations"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "applications": {
+                "type": "array",
+                "description": "List of applications the device is associated with",
+                "items": {
+                  "$ref": "#/components/schemas/ApplicationAssociation"
+                }
+              },
+              "services": {
+                "type": "array",
+                "description": "List of services the device is associated with",
+                "items": {
+                  "$ref": "#/components/schemas/ServiceAssociation"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "SystemSecurity": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://mimik.auth0.com/auth/token",
+            "scopes": {
+              "create:app": "register an application",
+              "read:apps": "Get all the registered applications",
+              "read:app": "Get the application designated by the id",
+              "create:service": "register a service",
+              "read:services": "Get all the registered services",
+              "read:service": "Get the service designated by the id",
+              "create:associatedapp": "Create an association device with app",
+              "create:associatedservice": "Create an association device with service",
+              "update:associatedapp": "Update the status of an association",
+              "update:associatedservice": "Update the status of an association",
+              "delete:associatedapp": "Delete association between a device and an app",
+              "delete:associatedservice": "Delete association between a device and an service",
+              "create:device": "Create a device",
+              "delete:device": "Delete a device",
+              "read:device": "Get the device with the given deviceId",
+              "read:appservices": "Get the list of services for a given application"
+            }
+          }
+        }
+      },
+      "AdminSecurity": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://mimik.auth0.com/auth/token",
+            "scopes": {
+              "read:system": "Read the system information",
+              "read:apps": "Get all the registered applications",
+              "read:app": "Get the application designated by the id",
+              "create:app": "Create an application",
+              "delete:app": "Delete an application",
+              "read:services": "Get all the registered services",
+              "read:service": "Get the service designated by the id",
+              "create:service": "Create a service",
+              "delete:service": "Delete a service",
+              "read:associatedapp": "Get all the devices associated with app",
+              "read:associatedservice": "Get all the devices associated with service",
+              "create:associatedapp": "Create an association device with app",
+              "create:associatedservice": "Create an association device with service",
+              "delete:associatedapp": "Delete association between a device and an app",
+              "delete:associatedservice": "Delete association between a device and an service",
+              "create:device": "Create a device",
+              "delete:device": "Delete a device",
+              "read:devices": "Get all the registered devices",
+              "read:device": "Get the device with the given deviceId",
+              "read:appservices": "Get the list of services for a given application"
+            }
+          }
+        }
+      }
+    }
+  }
+}

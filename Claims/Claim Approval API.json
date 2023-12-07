@@ -1,0 +1,610 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Claim Approval API",
+    "description": "Retrieves Approved claims API",
+    "contact": {
+      "email": "development@expensys.com"
+    },
+    "license": {
+      "name": "Escalus Software Systems Ltd. Licence"
+    },
+    "version": "1.0.1"
+  },
+  "tags": [
+    {
+      "name": "approval",
+      "description": "Endpoint for managing claims which require approval"
+    }
+  ],
+  "paths": {
+    "/approvals": {
+      "get": {
+        "tags": [
+          "approval"
+        ],
+        "summary": "Get all claims requiring approval",
+        "description": "Get all claims requiring approval by the logged in user",
+        "operationId": "getClaimsForApproval",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Auth-Token",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique token for a logged in user.",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "summary",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Return a full claim with all data, or a summary with less data",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Claim"
+                      },
+                      {
+                        "$ref": "#/components/schemas/CurrencyReconciliation"
+                      },
+                      {
+                        "$ref": "#/components/schemas/PersonalExpense"
+                      },
+                      {
+                        "$ref": "#/components/schemas/StatementBasedCardExpense"
+                      },
+                      {
+                        "$ref": "#/components/schemas/TripExpense"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid claim number(s)"
+          },
+          "401": {
+            "description": "Not logged in"
+          },
+          "404": {
+            "description": "No such claim number"
+          }
+        }
+      }
+    },
+    "/approvals/{claimId}/actions/approve": {
+      "post": {
+        "tags": [
+          "approval"
+        ],
+        "summary": "Approve a claim",
+        "description": "Approve a claim",
+        "operationId": "approveClaim",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Auth-Token",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique token for a logged in user.",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "claimId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Claim number to approve",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid claim number"
+          },
+          "401": {
+            "description": "Not logged in"
+          }
+        }
+      }
+    },
+    "/approvals/{claimId}/actions/reject": {
+      "post": {
+        "tags": [
+          "approval"
+        ],
+        "summary": "Reject a claim",
+        "description": "Reject a claim",
+        "operationId": "rejectClaim",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Auth-Token",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique token for a logged in user.",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "claimId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Claim number to approve",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reason"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid claim number"
+          },
+          "401": {
+            "description": "Not logged in"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Claim": {
+        "type": "object",
+        "properties": {
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Attachment"
+            }
+          },
+          "claimant": {
+            "type": "string",
+            "example": "Bob Claimant"
+          },
+          "currencyCode": {
+            "type": "string",
+            "example": "GBP"
+          },
+          "delegateFor": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/BasicClaimComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/AirfareClaimComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/AllowanceClaimComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/HotelClaimComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/JourneyClaimComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/PerDiemClaimComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/RailFareClaimComponent"
+                }
+              ]
+            }
+          },
+          "number": {
+            "type": "string",
+            "example": "PE-AP101-S1"
+          },
+          "primaryCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Code"
+            }
+          },
+          "secondaryCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Code"
+            }
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "submissionDate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "CurrencyReconciliation": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Claim"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "advance": {
+                "type": "number"
+              },
+              "balance": {
+                "type": "number"
+              },
+              "businessAmount": {
+                "type": "number"
+              },
+              "personalAmount": {
+                "type": "number"
+              },
+              "totalAmount": {
+                "type": "number"
+              },
+              "totalReturned": {
+                "type": "number"
+              },
+              "currencyCode": {
+                "type": "string",
+                "example": "EUR"
+              }
+            }
+          }
+        ]
+      },
+      "PersonalExpense": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Claim"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "companyPayCardAmount": {
+                "type": "number"
+              },
+              "cardHolderPayCardAmount": {
+                "type": "number"
+              },
+              "totalAmount": {
+                "type": "number"
+              }
+            }
+          }
+        ]
+      },
+      "StatementBasedCardExpense": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Claim"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "number"
+              },
+              "businessAmount": {
+                "type": "number"
+              },
+              "personalAmount": {
+                "type": "number"
+              },
+              "statementAmount": {
+                "type": "number"
+              }
+            }
+          }
+        ]
+      },
+      "TripExpense": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Claim"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "companyPayCardAmount": {
+                "type": "number"
+              },
+              "claimantPayCardAmount": {
+                "type": "number"
+              },
+              "totalAmount": {
+                "type": "number"
+              },
+              "totalCostOfTrip": {
+                "type": "number"
+              },
+              "travelTotal": {
+                "type": "number"
+              }
+            }
+          }
+        ]
+      },
+      "BasicClaimComponent": {
+        "type": "object",
+        "properties": {
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Attachment"
+            }
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "menuDescription": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "primaryCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Code"
+            }
+          },
+          "secondaryCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Code"
+            }
+          },
+          "homeAmount": {
+            "type": "number",
+            "example": 12.34
+          },
+          "homeCurrencyCode": {
+            "type": "string",
+            "example": "GBP"
+          },
+          "spendAmount": {
+            "type": "number",
+            "example": 34.56
+          },
+          "spendCurrencyCode": {
+            "type": "string",
+            "example": "USD"
+          },
+          "spendTaxAreaCode": {
+            "type": "string"
+          },
+          "noReceiptReason": {
+            "type": "string"
+          },
+          "receiptInPolicy": {
+            "type": "boolean"
+          },
+          "numberOfPeople": {
+            "type": "integer"
+          },
+          "peoplePresent": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AirfareClaimComponent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicClaimComponent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "airportFrom": {
+                "type": "string"
+              },
+              "airportTo": {
+                "type": "string"
+              },
+              "airportVia": {
+                "type": "string"
+              },
+              "cabinClass": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "AllowanceClaimComponent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicClaimComponent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "numDays": {
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      },
+      "HotelClaimComponent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicClaimComponent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hotelName": {
+                "type": "string"
+              },
+              "numNights": {
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      },
+      "JourneyClaimComponent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicClaimComponent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "distance": {
+                "type": "number"
+              },
+              "units": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "PerDiemClaimComponent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicClaimComponent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "string"
+              },
+              "fromDate": {
+                "type": "string",
+                "format": "date"
+              },
+              "toDate": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          }
+        ]
+      },
+      "RailFareClaimComponent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BasicClaimComponent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "cabinClass": {
+                "type": "string"
+              },
+              "fromStation": {
+                "type": "string"
+              },
+              "toStation": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Attachment": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "url",
+            "example": "https://escalus.expensys.com/ExpenSysWT/api/v3/{imageId}"
+          },
+          "description": {
+            "type": "string",
+            "example": "Airport parking receipt"
+          }
+        }
+      },
+      "Reason": {
+        "type": "string",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "No receipt attached"
+          }
+        }
+      },
+      "Code": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "allocationPercentage": {
+            "type": "number"
+          }
+        }
+      },
+      "Status": {
+        "type": "string",
+        "enum": [
+          "incomplete",
+          "awaiting_special_approval",
+          "awaiting_approval",
+          "approved",
+          "special_approval_approved",
+          "audited",
+          "processed",
+          "exported",
+          "cancelled",
+          "approved_queried"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "This API is used to create a new account for users.",
+    "version": "1.4.0",
+    "title": "Account Creation API",
+    "license": {
+      "name": "Git Repo",
+      "url": "https://github.com/cseteaching-unsw-edu-au/se2021-23t1-einvoicing-api-f12a-gobgobgoo-creation-api"
+    }
+  },
+  "servers": [
+    {
+      "description": "Invoice Creation API",
+      "url": "http://deploy-s2-4-env.eba-fxeq7rku.ap-southeast-2.elasticbeanstalk.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Invoice",
+      "description": "Everything about your Invoice",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Admins",
+      "description": "Everything about admin"
+    }
+  ],
+  "paths": {
+    "/create/account": {
+      "post": {
+        "tags": [
+          "Admins"
+        ],
+        "summary": "Given a file of an accepted file type, returns id of e-invoice.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 6,
+                    "maxLength": 20
+                  },
+                  "name_first": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 50
+                  },
+                  "name_last": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 50
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns authUserId and token if no error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "authUserId": {
+                      "type": "integer"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid Token."
+          },
+          "405": {
+            "description": "Email, password, first name, or last name is invalid."
+          }
+        }
+      }
+    }
+  },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

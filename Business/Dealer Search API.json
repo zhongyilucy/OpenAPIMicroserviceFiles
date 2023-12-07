@@ -1,0 +1,1227 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Dealer Search API",
+    "description": "Find Dealers based on given radius,latitude,longitude,features and orderType",
+    "termsOfService": "https://tbd.ford/terms/",
+    "contact": {
+      "name": "GEPSUPPT",
+      "email": "GEPSUPPT@ford.com"
+    },
+    "license": {
+      "name": "Ford restricted internal usage licences"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/MARHARYTAPANSKA/test-cc/1.0.0"
+    },
+    {
+      "url": "https://dealer-search-idysdcs-cc.n.***.app"
+    }
+  ],
+  "tags": [
+    {
+      "name": "DealerSearchV1",
+      "description": "Dealer Search V1 Operation"
+    },
+    {
+      "name": "DealerSearchWithCode",
+      "description": "Dealer Search With Code Operation"
+    },
+    {
+      "name": "DealerSearchV4",
+      "description": "Dealer Search V4 Operation"
+    },
+    {
+      "name": "DealerSearchV5",
+      "description": "Dealer Search V5 Operation"
+    }
+  ],
+  "paths": {
+    "/api/{baseSiteId}/dealers/search": {
+      "get": {
+        "tags": [
+          "DealerSearchV1"
+        ],
+        "description": "Dealer Search V1 Operation",
+        "summary": "To retrieve the dealer details based on product catalog Id and customer selected location (latitude,longitude & radius parameters) or dealer name or dealer code.",
+        "operationId": "getDealersInfoV1",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPageParam"
+          },
+          {
+            "$ref": "#/components/parameters/pageSizeParam1"
+          },
+          {
+            "$ref": "#/components/parameters/dealerSearchV1RequestParam"
+          },
+          {
+            "name": "baseSiteId",
+            "in": "path",
+            "description": "BaseSite Id of the market",
+            "required": true,
+            "x-constraints": "@BaseSiteValidation ",
+            "schema": {
+              "description": "BaseSite Id",
+              "type": "string",
+              "pattern": "^[a-zA-Z-]{3,11}$"
+            },
+            "example": "USA"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DealerSearchPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/Default"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/{baseSiteId}/dealers/searchWithCode": {
+      "get": {
+        "tags": [
+          "DealerSearchWithCode"
+        ],
+        "description": "Dealer Search With Code Operation",
+        "summary": "Search dealers for given DealerCode",
+        "operationId": "searchDealersForCRC",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPageParam"
+          },
+          {
+            "$ref": "#/components/parameters/pageSizeParam1"
+          },
+          {
+            "$ref": "#/components/parameters/dealerSearchWithCodeRequestParam"
+          },
+          {
+            "name": "baseSiteId",
+            "in": "path",
+            "description": "BaseSite Id of the market",
+            "required": true,
+            "x-constraints": "@BaseSiteValidation ",
+            "schema": {
+              "description": "BaseSite Id",
+              "type": "string",
+              "pattern": "^[a-zA-Z-]{3,11}$"
+            },
+            "example": "USA"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DealerSearchPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/Default"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/{baseSiteId}/dealers/search/v4": {
+      "get": {
+        "tags": [
+          "DealerSearchV4"
+        ],
+        "description": "Dealer Search V4 Operation",
+        "summary": "To retrieve the dealer details based on product catalogId or groupBy and customer selected location (latitude,longitude & radius parameters) or dealer name or dealer code and filter By isOrderEnrolled/isReservationEnrolled for IMG markets.",
+        "operationId": "getDealersInfoV4",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPageParam"
+          },
+          {
+            "$ref": "#/components/parameters/pageSizeParam2"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          },
+          {
+            "$ref": "#/components/parameters/dealerSearchV4RequestParam"
+          },
+          {
+            "name": "baseSiteId",
+            "in": "path",
+            "description": "BaseSite Id of the market",
+            "required": true,
+            "x-constraints": "@BaseSiteValidation ",
+            "schema": {
+              "description": "BaseSite Id",
+              "type": "string",
+              "pattern": "^[a-zA-Z-]{3,11}$"
+            },
+            "example": "USA"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DealerSearchPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/Default"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/{baseSiteId}/dealers/search/v5": {
+      "get": {
+        "tags": [
+          "DealerSearchV5"
+        ],
+        "description": "Dealer Search V5 Operation",
+        "summary": "Dealers Search V5 API. This search allows customer to search the dealers for the chosen config and delivery method.",
+        "operationId": "getDealersInfoV5",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPageParam"
+          },
+          {
+            "$ref": "#/components/parameters/pageSizeParam2"
+          },
+          {
+            "$ref": "#/components/parameters/sortParam"
+          },
+          {
+            "$ref": "#/components/parameters/dealerSearchV5RequestParam"
+          },
+          {
+            "name": "baseSiteId",
+            "in": "path",
+            "description": "BaseSite Id of the market",
+            "required": true,
+            "x-constraints": "@BaseSiteValidation ",
+            "schema": {
+              "description": "BaseSite Id",
+              "type": "string",
+              "pattern": "^[a-zA-Z-]{3,11}$"
+            },
+            "example": "USA"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DealerSearchPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Invalid"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "$ref": "#/components/responses/Default"
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "currentPageParam": {
+        "name": "currentPage",
+        "in": "query",
+        "description": "The current result page requested. The first page is number zero (0), the second page is number one (1), and so on",
+        "allowEmptyValue": false,
+        "schema": {
+          "type": "integer",
+          "description": "The current result page requested. The first page is number zero (0), the second page is number one (1), and so on",
+          "format": "int32",
+          "default": 0,
+          "maximum": 1000,
+          "minimum": 0,
+          "example": 5
+        }
+      },
+      "pageSizeParam1": {
+        "name": "pageSize",
+        "in": "query",
+        "description": "The number of results returned per page. A page may have actually less results than the predefined 'pageSize' in the last page, in case if there are less than a full page of results available. This is for Dealer search v1 and searchWithCode API.",
+        "allowEmptyValue": false,
+        "schema": {
+          "type": "integer",
+          "description": "The number of results returned per page. A page may have actually less results than the predefined 'pageSize' in the last page, in case if there are less than a full page of results available",
+          "format": "int32",
+          "default": 20,
+          "maximum": 500,
+          "minimum": 0,
+          "example": 24
+        }
+      },
+      "pageSizeParam2": {
+        "name": "pageSize",
+        "in": "query",
+        "description": "The number of results returned per page. A page may have actually less results than the predefined 'pageSize' in the last page, in case if there are less than a full page of results available. This is for Dealer search v4 and Dealer search v5 API.",
+        "allowEmptyValue": false,
+        "schema": {
+          "type": "integer",
+          "description": "The number of results returned per page. A page may have actually less results than the predefined 'pageSize' in the last page, in case if there are less than a full page of results available",
+          "format": "int32",
+          "default": 500,
+          "maximum": 500,
+          "minimum": 0,
+          "example": 24
+        }
+      },
+      "sortParam": {
+        "name": "sort",
+        "in": "query",
+        "description": "Sorting string for the result listing",
+        "allowEmptyValue": false,
+        "schema": {
+          "type": "string",
+          "description": "Sorting string for the result listing",
+          "maxLength": 40,
+          "pattern": "^[a-zA-Z]+,?$",
+          "example": "byDistance"
+        }
+      },
+      "dealerSearchWithCodeRequestParam": {
+        "name": "dealerSearchWithCodeRequestParam",
+        "in": "query",
+        "description": "dealer Search With Code Request Parameter",
+        "schema": {
+          "$ref": "#/components/schemas/dealerSearchWithCodeRequest"
+        }
+      },
+      "dealerSearchV1RequestParam": {
+        "name": "dealerSearchV1RequestParam",
+        "in": "query",
+        "description": "dealer Search V1 Request Parameter",
+        "schema": {
+          "$ref": "#/components/schemas/dealerSearchV1Request"
+        }
+      },
+      "dealerSearchV4RequestParam": {
+        "name": "dealerSearchV4RequestParam",
+        "in": "query",
+        "description": "dealer Search V4 Request Parameter",
+        "schema": {
+          "$ref": "#/components/schemas/dealerSearchV4Request"
+        }
+      },
+      "dealerSearchV5RequestParam": {
+        "name": "dealerSearchV5RequestParam",
+        "in": "query",
+        "description": "dealer Search V5 Request Parameter",
+        "schema": {
+          "$ref": "#/components/schemas/dealerSearchV5Request"
+        }
+      }
+    },
+    "schemas": {
+      "dealerSearchWithCodeRequest": {
+        "title": "dealerSearchWithCodeRequest",
+        "description": "dealer SearchWithCode Request Parameter",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "bevParticipatingOnly": {
+            "type": "boolean",
+            "description": "Dealer's eligibility flag"
+          },
+          "dealerCode": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Unique Code for the Dealer",
+            "pattern": "[a-zA-Z0-9\\-\\|]*"
+          },
+          "dealerName": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Name of the Dealer",
+            "pattern": "^.{1,200}$"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "description": "Latitude -  measures the distance north or south of the equator",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "description": "Longitude - measures distance east or west of the prime meridian",
+            "minimum": -180,
+            "maximum": 180
+          },
+          "radius": {
+            "type": "number",
+            "description": "Radius - distance between any two points",
+            "format": "double",
+            "maximum": 10000,
+            "minimum": 0
+          }
+        }
+      },
+      "dealerSearchV1Request": {
+        "title": "dealerSearchV1Request",
+        "description": "dealer Search V1 Request Parameter",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "bevParticipatingOnly": {
+            "type": "boolean",
+            "description": "Dealer's eligibility flag"
+          },
+          "catalogId": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Product Catalog Id",
+            "pattern": "[a-zA-Z0-9\\-\\_]+"
+          },
+          "dealerCode": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Unique Code for the dealer",
+            "pattern": "[a-zA-Z0-9\\-\\|]*"
+          },
+          "dealerName": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Name of the Dealer",
+            "pattern": "^.{1,200}$"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "description": "Latitude -  measures the distance north or south of the equator",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "description": "Longitude - measures distance east or west of the prime meridian",
+            "minimum": -180,
+            "maximum": 180
+          },
+          "radius": {
+            "type": "number",
+            "description": "Radius - distance between any two points",
+            "format": "double",
+            "maximum": 10000,
+            "minimum": 0
+          }
+        }
+      },
+      "dealerSearchV4Request": {
+        "title": "dealerSearchV4Request",
+        "description": "dealer Search V4 Request Parameter",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "bevParticipatingOnly": {
+            "type": "boolean",
+            "description": "Dealer's eligibility flag"
+          },
+          "catalogId": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Product Catalog Id",
+            "pattern": "[a-zA-Z0-9\\-\\_]+"
+          },
+          "dealerCode": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Unique Code for the Dealer",
+            "pattern": "[a-zA-Z0-9\\-\\|]*"
+          },
+          "dealerName": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Name of the Dealer",
+            "pattern": "^.{1,200}$"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "description": "Latitude -  measures the distance north or south of the equator",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "description": "Longitude - measures distance east or west of the prime meridian",
+            "minimum": -180,
+            "maximum": 180
+          },
+          "radius": {
+            "type": "number",
+            "description": "Radius - distance between any two points",
+            "format": "double",
+            "maximum": 10000,
+            "minimum": 0
+          },
+          "isOrderEnrolled": {
+            "type": "string",
+            "maxLength": 5,
+            "description": "Is Order Enrolled",
+            "pattern": "^[a-zA-Z]{0,5}$"
+          },
+          "isReservationEnrolled": {
+            "type": "boolean",
+            "description": "Is Reservation Enrolled"
+          }
+        }
+      },
+      "dealerSearchV5Request": {
+        "title": "dealerSearchV5Request",
+        "description": "dealer Search V5 Request Parameter",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "bevParticipatingOnly": {
+            "type": "boolean",
+            "description": "Dealer's eligibility flag"
+          },
+          "catalogId": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Product Catalog Id",
+            "pattern": "[a-zA-Z0-9\\-\\_]+"
+          },
+          "dealerCode": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Unique Code for the Dealer",
+            "pattern": "[a-zA-Z0-9\\-\\|]*"
+          },
+          "dealerName": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Name of the Dealer",
+            "pattern": "^.{1,200}$"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "description": "Latitude -  measures the distance north or south of the equator",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "description": "Longitude - measures distance east or west of the prime meridian",
+            "minimum": -180,
+            "maximum": 180
+          },
+          "radius": {
+            "type": "number",
+            "description": "Radius - distance between any two points",
+            "format": "double",
+            "maximum": 10000,
+            "minimum": 0
+          },
+          "isOrderEnrolled": {
+            "type": "string",
+            "maxLength": 5,
+            "description": "Is Order Enrolled",
+            "pattern": "^[a-zA-Z]{0,5}$"
+          },
+          "isReservationEnrolled": {
+            "type": "boolean",
+            "description": "Is Reservation Enrolled"
+          },
+          "hasInventory": {
+            "type": "boolean",
+            "description": "Flag to determine inventory/inventoryLess journey. Mandatory attribute in both the journeys"
+          },
+          "groupBy": {
+            "type": "string",
+            "maxLength": 1000,
+            "description": "Group By attribute",
+            "pattern": "^[a-zA-Z0-9,._-]{1,1000}$"
+          },
+          "additionalFilters": {
+            "type": "string",
+            "maxLength": 1000,
+            "description": "Addditional Filter attribute.",
+            "pattern": "^[a-zA-Z0-9,:._-]{1,1000}$",
+            "example": ":byDistance:groupBy:WAEGB-CGW-2021-CX727BEVSUVGBR202100,11LP8,ACMRJ_VS-LE,BS-SA,DR--H_EN-C2_HTHAE_TR-WA,PN4HZ-47450.0"
+          },
+          "deliveryMethod": {
+            "type": "string",
+            "maxLength": 20,
+            "description": "Delivery Method Type",
+            "pattern": "^[a-zA-Z]{1,20}$",
+            "x-field-extra-annotation": "@DeliveryMethodValidation ",
+            "example": "collection"
+          },
+          "isInternational": {
+            "type": "boolean",
+            "description": "This flag will be true if customer has chosen himself as international customer else false"
+          },
+          "isDeliveryMethodFixed": {
+            "type": "boolean",
+            "description": "This flag will be false if response should contain other results if there are no results with the delivery method chosen true if the results need to be filtered based on the delivery method chosen."
+          }
+        }
+      },
+      "Address": {
+        "title": "Address",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cellphone": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Cellphone number"
+          },
+          "companyName": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Name of the company"
+          },
+          "country": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "defaultAddress": {
+            "type": "boolean",
+            "description": "Boolean flag if address is default"
+          },
+          "district": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "District name"
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Email address"
+          },
+          "firstName": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "First name of the address person"
+          },
+          "formattedAddress": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Boolean flag if address is formatted"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Unique id value of the address which is optional while creating new address. While performing other address operations this value is the key"
+          },
+          "lastName": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Last name of the address person"
+          },
+          "line1": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "First line of the address"
+          },
+          "line2": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Second line of the address"
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Phone number"
+          },
+          "postalCode": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Postal code of the address"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "shippingAddress": {
+            "type": "boolean",
+            "description": "Boolean flag if address is for shipping"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Title of the address person"
+          },
+          "titleCode": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Code of the title"
+          },
+          "town": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Town, field required"
+          },
+          "visibleInAddressBook": {
+            "type": "boolean",
+            "description": "Boolean flag if address is visible in the Address Book"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "description": "Latitude -  measures the distance north or south of the equator"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "description": "Longitude - measures distance east or west of the prime meridian"
+          },
+          "street": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Street Name"
+          },
+          "city": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "City Name"
+          },
+          "state": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "State Name"
+          }
+        },
+        "description": "Request body fields required and optional to operate on address data. The DTO is in XML or .json format"
+      },
+      "Country": {
+        "title": "Country",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isocode": {
+            "type": "string",
+            "description": "Country code in iso format",
+            "maxLength": 2000
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the country",
+            "maxLength": 2000
+          }
+        },
+        "description": "Response body fields which will be returned while fetching the list of countries. The DTO is in XML or .json format"
+      },
+      "DealerSearchPage": {
+        "title": "DealerSearchPage",
+        "type": "object",
+        "description": "Dealer Search Page Schema",
+        "additionalProperties": false,
+        "properties": {
+          "dealerLeadTimeGroupMatched": {
+            "type": "boolean",
+            "description": "Boolean value based on dealer LeadTime GroupMatched"
+          },
+          "isInventoryLessOrder": {
+            "type": "boolean",
+            "description": "Boolean value based on wheather inventory or inventoryLess flow."
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/deprecatedPagination"
+          },
+          "vendors": {
+            "type": "array",
+            "description": "List of Vendors",
+            "items": {
+              "$ref": "#/components/schemas/Vendor"
+            },
+            "maxItems": 500
+          }
+        }
+      },
+      "deprecatedPagination": {
+        "title": "deprecatedPagination",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "currentPage": {
+            "type": "integer",
+            "description": "The current page number. The first page is number zero (0), the second page is number one (1), and so on",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "The number of results per page. A page may have less results if there are less than a full page of results, only on the last page in the results",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "string",
+            "description": "The selected sort code",
+            "maxLength": 2000
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "The total number of pages. This is the number of pages, each of pageSize, required to display the totalResults.",
+            "format": "int32"
+          },
+          "totalResults": {
+            "type": "integer",
+            "description": "The total number of matched results across all pages",
+            "format": "int64"
+          }
+        },
+        "description": "Representation of a search results pagination"
+      },
+      "Vendor": {
+        "title": "Vendor",
+        "type": "object",
+        "description": "Vendor Schema",
+        "additionalProperties": false,
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "aldFlag": {
+            "type": "boolean",
+            "description": "Boolean value based on aldflag"
+          },
+          "altLender": {
+            "type": "boolean",
+            "description": "Boolean value based on aldLender"
+          },
+          "bevNaEnrolledFlag": {
+            "type": "boolean",
+            "description": "Boolean value based on bev NA enrollment"
+          },
+          "cartCheckoutNaReadyFlag": {
+            "type": "boolean",
+            "description": "Boolean value based on cart checkout NA"
+          },
+          "chatProvider": {
+            "type": "boolean",
+            "description": "Boolean value based on chat Provider"
+          },
+          "code": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Vendor code"
+          },
+          "dealerPlanPriceOptin": {
+            "type": "boolean",
+            "description": "Boolean value based on dealer plan price option"
+          },
+          "dealerTradeNo": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Dealer Trade Number"
+          },
+          "dealerVATNo": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Dealer VAT number"
+          },
+          "dealerWallboxEnrolled": {
+            "type": "boolean",
+            "description": "Boolean value based on dealer wallbox enrolled"
+          },
+          "deliveryPreferredFlag": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Delivery Preferred Flag"
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Email of Vendor"
+          },
+          "evEuCertificationFlag": {
+            "type": "boolean",
+            "description": "Boolean value based on evEu Certification"
+          },
+          "cartCheckoutNaReadyFlagEV": {
+            "type": "boolean",
+            "description": "Boolean value based on cart checkout ready for ev"
+          },
+          "isDeactivatedNaFlag": {
+            "type": "boolean",
+            "description": "Boolean value based on deactivated Na"
+          },
+          "isDealerBEVEnrolled": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Dealer BEV enrollment"
+          },
+          "isDealerEcomEnrolled": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Dealer Ecomm Enrollment"
+          },
+          "isDealerOrderEnrolled": {
+            "type": "boolean",
+            "description": "Boolean value based on Dealer Order Enrollment"
+          },
+          "isDealerResvEnrolled": {
+            "type": "boolean",
+            "description": "Boolean value based on Dealer Resv Enrollment"
+          },
+          "isParticipating": {
+            "type": "boolean",
+            "description": "Boolean value based on Participation"
+          },
+          "marketArea": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Market Area of dealer"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Vendor Name"
+          },
+          "orderNaReadyFlag": {
+            "type": "boolean",
+            "description": "Boolean value based on order na ready"
+          },
+          "paCode": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Dealer Pa Code"
+          },
+          "productProvider": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Product Provider value"
+          },
+          "regionCode": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Dealer Region Code"
+          },
+          "remoteDeliveryNaFlag": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Remove delivery Na Flag"
+          },
+          "reservationNaReadyFlag": {
+            "type": "boolean",
+            "description": "Boolean value based on Reservation Na Ready"
+          },
+          "routeOneID": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Route one Id"
+          },
+          "salesCode": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Dealer Sales Code"
+          },
+          "transferedDate": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Transferred Date"
+          },
+          "ratings": {
+            "$ref": "#/components/schemas/Ratings"
+          },
+          "distance": {
+            "type": "number",
+            "format": "float",
+            "description": "Distance between any two points"
+          },
+          "dealerGroup": {
+            "type": "string",
+            "maxLength": 2000,
+            "pattern": "^[A-Za-z0-9]*$",
+            "description": "Group of the dealer"
+          },
+          "isDealerEMPEnrolled": {
+            "type": "boolean",
+            "description": "Boolean value based on Dealer Emp Enrollment"
+          },
+          "isDeliverySupported": {
+            "type": "boolean",
+            "description": "Boolean value based on Delivery Support"
+          },
+          "showroomEnabled": {
+            "type": "boolean",
+            "description": "Boolean value based on Showroom Support"
+          },
+          "reservationDeposit": {
+            "type": "number",
+            "format": "double",
+            "description": "Reservation Deposit Amount"
+          },
+          "orderDeposit": {
+            "type": "number",
+            "format": "double",
+            "description": "Order Deposit Amount"
+          },
+          "leadTime": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Lead Time value"
+          },
+          "outOfStock": {
+            "type": "boolean",
+            "description": "Boolean Value Based on Stock"
+          }
+        }
+      },
+      "Ratings": {
+        "title": "Ratings",
+        "type": "object",
+        "description": "Rating Schema",
+        "additionalProperties": false,
+        "properties": {
+          "total": {
+            "type": "number",
+            "format": "double",
+            "minimum": -1000,
+            "maximum": 1000,
+            "description": "Total Ratings"
+          },
+          "service": {
+            "type": "number",
+            "format": "double",
+            "minimum": -1000,
+            "maximum": 1000,
+            "description": "Service Ratings"
+          },
+          "sales": {
+            "type": "number",
+            "format": "double",
+            "minimum": -1000,
+            "maximum": 1000,
+            "description": "Sales Rating"
+          }
+        }
+      },
+      "Region": {
+        "title": "Region",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "countryIso": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Country code in iso format"
+          },
+          "isocode": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Country and Region code in iso format"
+          },
+          "isocodeShort": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Region code in short iso form"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Name of the region"
+          }
+        },
+        "description": "Response body fields which will be returned while fetching the list of country's regions."
+      },
+      "map": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "ErrorList": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "errors": {
+            "type": "array",
+            "description": "List of Errors",
+            "items": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "maxItems": 20
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Error Object Schema",
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "description": "HTTP Error Code",
+            "maxLength": 5,
+            "pattern": "^.{1,5}$",
+            "example": "400"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of Exception",
+            "maxLength": 200,
+            "pattern": "^.{1,200}$",
+            "example": "NullPointerException"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error/Exception message",
+            "maxLength": 2000,
+            "pattern": "^.{1,2000}$",
+            "example": "Sample exception message"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/map"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Invalid": {
+        "description": "HTTP 400. The request cannot be fulfilled because of incorrect syntax or input",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorList"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "HTTP 401. server is yet to receive an authentication or received incorrect authentication as in the case of Bad credentials, Authentication server issues",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorList"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "HTTP 403. The request has valid credentials but may not have enough privileges to perform an action on a resource",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorList"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "HTTP 404. The specified resource was not found and may or may not be available in future",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorList"
+            }
+          }
+        }
+      },
+      "Default": {
+        "description": "Default unsuccessful response model",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorList"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "DealerOAuth2": {
+        "type": "oauth2",
+        "description": "This API uses OAuth 2 with the implicit grant flow.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://login.microsoftonline.com/***********",
+            "scopes": {
+              "read": "read objects in your account"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "DealerOAuth2": [
+        "read"
+      ]
+    }
+  ]
+}

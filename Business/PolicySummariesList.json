@@ -1,0 +1,109 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "10.8.1",
+    "title": "PolicySummariesList",
+    "description": "Common PolicySummariesList API"
+  },
+  "paths": {
+    "/policy-summaries/": {
+      "get": {
+        "tags": [
+          "policy & benefits"
+        ],
+        "summary": "Get list of policySummaries associated with the member",
+        "description": "The policysummaries list API provides the list of policySummaries the member is associated with. \nThis API includes the group name and group information for a group member.\n",
+        "operationId": "policy_summaries_list",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/orderingParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageSizeParam"
+          },
+          {
+            "name": "member_id",
+            "in": "query",
+            "description": "member_id(s) to retrieve the list of policysummaries associated with the member(s). \nThis property can take one or more than one member_ids. \nEither member_id(s) or policy_id(s) are required.\n",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "policy_id",
+            "in": "query",
+            "description": "policy_id(s) to retrieve the list of policysummaries.\nThis property can take one or more than one policy_ids.\nEither member_id(s) or policy_id(s) are required.\n",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of Policy Summary Object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "count",
+                    "results"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Count representing the total number of objects available to be returned in the results array"
+                    },
+                    "next": {
+                      "type": "integer",
+                      "description": "query identifier defined by the api developer for getting the next set of records"
+                    },
+                    "previous": {
+                      "type": "integer",
+                      "description": "query identifier defined by the api developer for getting the previous set of records"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PolicySummaryModel/10.6.1#/components/schemas/PolicySummary"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

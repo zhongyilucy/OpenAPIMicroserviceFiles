@@ -1,0 +1,294 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ISBNdb Publishers API",
+    "description": "Getting publisher information from ISBN ",
+    "version": "1.0.1",
+    "x-apisguru-categories": [
+      "open_data"
+    ],
+    "x-logo": {
+      "url": "https://api.apis.guru/v2/cache/logo/https_isbndb.com_sites_default_files_ISBN-295x62_0.jpg"
+    },
+    "x-origin": [
+      {
+        "format": "swagger",
+        "url": "https://isbndb.com/modules/isbndb_api_docs/swagger.json",
+        "version": "2.0"
+      }
+    ],
+    "x-providerName": "isbndb.com"
+  },
+  "servers": [
+    {
+      "url": "https://api.isbndb.com/"
+    }
+  ],
+  "paths": {
+    "/publisher/{name}": {
+      "get": {
+        "tags": [
+          "Publisher"
+        ],
+        "summary": "Gets publisher details",
+        "description": "Returns details and a list of books by the publisher.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "The name of a publisher in the Publisher's database",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The number of page to retrieve, please note the API will not return more than 10,000 results no matter how you paginate them",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "How many items should be returned per page, maximum of 1,000",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The publisher name was found in the database",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS Header to allow different origin responses",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Publisher"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Publisher not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/publishers/{query}": {
+      "get": {
+        "tags": [
+          "Publisher"
+        ],
+        "summary": "Search publishers",
+        "description": "This returns a list of publishers that match the given query",
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "How many items should be returned per page, maximum of 1,000",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "in": "path",
+            "description": "A string to search for in the Publisher’s database",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The number of page to retrieve, please note the API will not return more than 10,000 results no matter how you paginate them",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The query string found results in the publisher's database",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "description": "CORS Header to allow different origin responses",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {}
+          },
+          "404": {
+            "description": "There are no results in the publisher's database for the given query",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Author": {
+        "type": "object",
+        "properties": {
+          "author": {
+            "type": "string"
+          },
+          "books": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Book"
+            }
+          }
+        },
+        "description": "Describes the name of an author and the books written by that author in the database"
+      },
+      "AuthorQueryResults": {
+        "type": "object",
+        "properties": {
+          "authors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "description": "Describes the results of a query in the author's database"
+      },
+      "Book": {
+        "type": "object",
+        "properties": {
+          "authors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "date_published": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dewey_decimal": {
+            "type": "string"
+          },
+          "dimensions": {
+            "type": "string"
+          },
+          "edition": {
+            "type": "string"
+          },
+          "excerpt": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string"
+          },
+          "isbn": {
+            "type": "string"
+          },
+          "isbn13": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "overview": {
+            "type": "string"
+          },
+          "pages": {
+            "type": "integer"
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "reviews": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subjects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "synopsys": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "title_long": {
+            "type": "string"
+          }
+        },
+        "description": "Describes a book in the book's database"
+      },
+      "Publisher": {
+        "type": "object",
+        "properties": {
+          "books": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "isbn": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Subject": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header"
+      }
+    }
+  }
+}

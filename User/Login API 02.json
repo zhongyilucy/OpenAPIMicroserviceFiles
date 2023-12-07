@@ -1,0 +1,82 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0-oas3",
+    "title": "Login API",
+    "description": "User Login"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/BORHAN96/file.management/1.0.0"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid."
+      }
+    }
+  },
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Login",
+        "description": "Authenticate and get a token",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username",
+                  "password"
+                ],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "anakin"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password"
+                  }
+                }
+              }
+            }
+          },
+          "description": "The username and password to authenticate",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmFraW4iLCJpYXQiOjE2Nzc2OTg5NjAsImV4cCI6MTY3NzczNDk2MH0",
+                      "description": "The token to use for subsequent requests"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    }
+  }
+}

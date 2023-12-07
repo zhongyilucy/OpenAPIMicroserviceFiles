@@ -1,0 +1,2138 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Payment Management",
+    "description": "This is the Swagger specification for Payment Management",
+    "version": "1.8"
+  },
+  "tags": [
+    {
+      "name": "payment"
+    }
+  ],
+  "paths": {
+    "/payment": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "List or find Payment objects",
+        "description": "This operation list or find Payment entities.",
+        "operationId": "listPayment",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "To retrieve payments from a specified customer. Searchingg for all payments that are associated to the customer. SV_MAPPING: PAYMENT_TRE_V.CUSTOMER_NODE_ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "To retrieve the payment received date is on/after the start date. SV_MAPPING: PAYMENT_TRE_V.PAYMENT_RECEIVED_DATE. Format: yyyy-mm-ddThh:nn:ss. If startDate is not provided it is defaulted to MIN_DATE. Default to beginning of current day. This can not be provided if customerId in not provided.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "To retrieve the payment received date is on/before the end date. SV_MAPPING: PAYMENT_TRE_V.PAYMENT_RECEIVED_DATE. Format: yyyy-mm-ddThh:nn:ss. If endDate is not provided it is defaulted to MAX_DATE. Default to end of current day. This can not be provided if customerId in not provided.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "paymentType",
+            "in": "query",
+            "description": "To retrieve payments by payment type. Mandatory in case of paymentSubType provided. SV_MAPPING: PAYMENT_TRE_V.PAYMENT_TYPE_DISPLAY_NAME",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paymentSubType",
+            "in": "query",
+            "description": "To retrieve payments based on payment sub method/type of paymentType. SV_MAPPING: DA perestapi.dPaymentTypeFilterDefn->Reference Type.Abbreviation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "description": "To retrieve payments by payment status. SV_MAPPING: PAYMENT_TRE_V.PAYMENT_STATUS_CODE, Payment Status RT. This can not be provided if customerId in not provided.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "billNo",
+            "in": "query",
+            "description": "Identifier of the bill no. SV_MAPPING: INVOICE_TRE_V.CUSTOMER_INVOICE_STR",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "description": "Identifier of the Order. SV_MAPPING: PAYMENT_TRE_V.GENERAL_10",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountName",
+            "in": "query",
+            "description": "Identifier of the Account Name. SV_MAPPING: PAYMENT_TRE_V.TO_ACCOUNT_NAME",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "Identifier of the Account ID. SV_MAPPING: PAYMENT_TRE_V.TO_ACCOUNT_ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortKey",
+            "in": "query",
+            "description": "To sort the response based on sortKey. Possible values - paymentDate, accountName. These values are retrieved from RT perestapi.imp.payment.SORT_KEY",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "description": "To sort the response based on sort order. Possible value ascending, descending. Default to descending if sortKey is provided.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Requested index for start of resources to be provided in response. Default to 0",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Requested number of resources to be provided in response. Default to configuration item API_CONFIGURATION1.DEFAULT_MAX_ROWS",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "scn",
+            "in": "query",
+            "description": "Oracle system change number used for data read consistency. Default to emtpy string if configuration item API_CONFIGURATION1.USE_FLASHBACK is not ON",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to provide in response. Example: paymentType, paymentStatus, etc.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Total-Count": {
+                "description": "Total number of items matching criteria",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "X-Result-Count": {
+                "description": "Actual number of items returned in the response body",
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            },
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Payment_List"
+                  }
+                },
+                "examples": {
+                  "Sample Response 1": {
+                    "value": {
+                      "payment": [
+                        {
+                          "totalAmount": {
+                            "value": 100,
+                            "unit": "JMD"
+                          },
+                          "channel": {
+                            "name": "LOADER"
+                          },
+                          "paymentMethod": {
+                            "name": "Prepaid Payment",
+                            "@type": "Prepaid Payment",
+                            "id": 239000
+                          },
+                          "href": "http://$HOST:30140/perest/api/v1/payment/P_topup_0000101093",
+                          "id": "P_topup_0000101093",
+                          "paymentDate": "2022-09-30T10:59:29",
+                          "paymentDocument": [
+                            {
+                              "id": "P_topup_0000101093",
+                              "mimeType": "html",
+                              "attachmentType": "payment",
+                              "content": "PGh0bWwgjwvaHRtbD4NCg=="
+                            }
+                          ],
+                          "account": {
+                            "name": "001000000101610",
+                            "accountType": "Prepaid (JMD)",
+                            "accountTypeDisplayName": "Prepaid",
+                            "href": "http://$HOST:30140/perest/api/v1/billingAccount/101610",
+                            "id": 101610
+                          },
+                          "characteristic": [
+                            {
+                              "name": "ReceiptRef",
+                              "value": "P_topup_0000101093"
+                            },
+                            {
+                              "name": "EntryDate",
+                              "value": "2022-09-30T10:59:29"
+                            },
+                            {
+                              "name": "CreatedBy",
+                              "value": "Jeyashree Krishnan"
+                            },
+                            {
+                              "name": "CustomerReceiptNumber",
+                              "value": "P_topup_0000101093"
+                            }
+                          ],
+                          "status": "Applied"
+                        },
+                        {
+                          "totalAmount": {
+                            "value": 100,
+                            "unit": "JMD"
+                          },
+                          "channel": {
+                            "name": "eshop"
+                          },
+                          "paymentMethod": {
+                            "name": "Prepaid Payment",
+                            "@type": "Prepaid Payment",
+                            "id": 239000
+                          },
+                          "href": "http://$HOST:30140/perest/api/v1/payment/P_topup_0000101065",
+                          "id": "P_topup_0000101065",
+                          "paymentDate": "2022-09-29T07:08:15",
+                          "paymentDocument": [
+                            {
+                              "id": "P_topup_0000101065",
+                              "mimeType": "html",
+                              "attachmentType": "payment",
+                              "content": "PGh0bWwgeG1sbnM6dwvaHRtbD4NCg=="
+                            }
+                          ],
+                          "account": {
+                            "name": "001000000101610",
+                            "accountType": "Prepaid (JMD)",
+                            "accountTypeDisplayName": "Prepaid",
+                            "href": "http://$HOST:30140/perest/api/v1/billingAccount/101610",
+                            "id": 101610
+                          },
+                          "characteristic": [
+                            {
+                              "name": "ReceiptRef",
+                              "value": "P_topup_0000101065"
+                            },
+                            {
+                              "name": "EntryDate",
+                              "value": "2022-09-29T07:08:14"
+                            },
+                            {
+                              "name": "CreatedBy",
+                              "value": "Singleview System Administrator"
+                            },
+                            {
+                              "name": "CustomerReceiptNumber",
+                              "value": "P_topup_0000101065"
+                            }
+                          ],
+                          "status": "Applied"
+                        }
+                      ],
+                      "pagination": {
+                        "limit": 2,
+                        "totalRecords": 2,
+                        "offset": 0,
+                        "remainingRecords": 0,
+                        "scn": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will include information about error code and short description of error. The error in the response will be indicative of the first occurrence of the problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Unitel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| Error Code | Error Message | Error Cause | Error Action |\n|------------|---------------|-------------|--------------|\n| E83559 | <E83559> The value <1:Entity> of fields provided is invalid. | Invalid value was passed for the field element. The corresponding value must be in accordance to Swagger specification file. | Provide a correct field value for the '<1:Entity>' field. Please refer to respective Swagger specification file accordingly. |\n| E84106 | <E84106> Missing '<1:Element>' element in the request. | Element mentioned in the error message is missing from the request | Specify element value specified in the error message. |\n| E83513 | <E83513> An error is encountered for Input Access Key '<1:InputAccessKey>' when deriving the value from reference type '<2:RTName>' with error <3:ErrMsg>. | Missing value in reference type. | Add the missing value. |\n| E05495 | <E05495> No reference code with an abbreviation of '<1:CodeAbbreviation>' exists for reference type '<2:Abbreviation>'. | An invalid reference code abbreviation was specified to the ReferenceCode&() function. | Specify a valid reference code abbreviation for this reference type. |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "Creates a Payment",
+        "description": "This operation creates a Payment entity.",
+        "operationId": "createPayment",
+        "requestBody": {
+          "description": "The Payment to be created",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/Payment_Create"
+              },
+              "examples": {
+                "Sample Request Credit Card": {
+                  "value": {
+                    "account": {
+                      "id": "104543"
+                    },
+                    "totalAmount": {
+                      "value": "100.00",
+                      "unit": "JMD"
+                    },
+                    "characteristic": [
+                      {
+                        "name": "OperatorId",
+                        "value": "msinha"
+                      },
+                      {
+                        "name": "VATType",
+                        "value": "Personal"
+                      }
+                    ],
+                    "channel": {
+                      "name": "CSR"
+                    },
+                    "paymentMethod": {
+                      "name": "Credit Card",
+                      "details": {
+                        "brand": "Bankcard",
+                        "cardNumber": "5555555555554444"
+                      },
+                      "@type": "Credit Card"
+                    }
+                  }
+                },
+                "Sample Request Cash": {
+                  "value": {
+                    "account": {
+                      "id": "104543"
+                    },
+                    "characteristic": [
+                      {
+                        "name": "OperatorId",
+                        "value": "msinha"
+                      },
+                      {
+                        "name": "VATType",
+                        "value": "Personal"
+                      }
+                    ],
+                    "channel": {
+                      "name": "CSR"
+                    },
+                    "paymentMethod": {
+                      "@type": "Cash"
+                    },
+                    "totalAmount": {
+                      "unit": "JMD",
+                      "value": 10
+                    }
+                  }
+                },
+                "Sample Request Debit": {
+                  "value": {
+                    "account": {
+                      "id": "104543"
+                    },
+                    "totalAmount": {
+                      "value": "100.00",
+                      "unit": "JMD"
+                    },
+                    "characteristic": [
+                      {
+                        "name": "OperatorId",
+                        "value": "msinha"
+                      },
+                      {
+                        "name": "VATType",
+                        "value": "Personal"
+                      }
+                    ],
+                    "channel": {
+                      "name": "CSR"
+                    },
+                    "paymentMethod": {
+                      "name": "Debit Card",
+                      "details": {
+                        "brand": "Bankcard",
+                        "cardNumber": "5555555555554444"
+                      },
+                      "@type": "Debit Card"
+                    }
+                  }
+                },
+                "Sample Request Voucher (Voms)": {
+                  "value": {
+                    "totalAmount": {
+                      "value": "100.00",
+                      "unit": "JMD"
+                    },
+                    "account": {
+                      "id": "104543"
+                    },
+                    "paymentMethod": {
+                      "paymentMethod": "Voms",
+                      "paymentLocation": "CSR",
+                      "@type": "Voms"
+                    }
+                  }
+                },
+                "Sample Request Money Order": {
+                  "value": {
+                    "totalAmount": {
+                      "value": "100.00",
+                      "unit": "JMD"
+                    },
+                    "account": {
+                      "id": "116547"
+                    },
+                    "paymentMethod": {
+                      "paymentMethod": "Money Order",
+                      "paymentLocation": "CSR",
+                      "@type": "Money Order",
+                      "details": {
+                        "moneyOrderNo": "0100116557"
+                      }
+                    }
+                  }
+                },
+                "Sample Request Cheque": {
+                  "value": {
+                    "totalAmount": {
+                      "value": "100.00",
+                      "unit": "JMD"
+                    },
+                    "account": {
+                      "id": "104543"
+                    },
+                    "paymentMethod": {
+                      "paymentMethod": "Cheque",
+                      "paymentLocation": "CSR",
+                      "@type": "Cheque",
+                      "details": {
+                        "checkID": "23456717",
+                        "bankAccountNumber": "0100116547"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                },
+                "examples": {
+                  "Sample Response Credit Card": {
+                    "value": {
+                      "totalAmount": {
+                        "value": "100.00",
+                        "unit": "JMD"
+                      },
+                      "channel": {
+                        "name": "Sydney HQ"
+                      },
+                      "paymentMethod": {
+                        "name": "Credit Card",
+                        "details": {
+                          "brand": "Bankcard",
+                          "cardNumber": "4444"
+                        },
+                        "id": 190002,
+                        "@type": "Credit Card"
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/P00001686732",
+                      "id": "P00001686732",
+                      "paymentDate": "2023-04-27T18:18:57",
+                      "account": {
+                        "name": "Unidentified Payments - JMD",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/135632",
+                        "id": 135632
+                      },
+                      "case": {
+                        "name": "C51000",
+                        "href": "https://$HOST:30140/perest/api/v1/case/51000",
+                        "id": "51000",
+                        "status": "New"
+                      },
+                      "characteristic": [
+                        {
+                          "name": "AutoAllocate",
+                          "value": "TRUE"
+                        },
+                        {
+                          "name": "VATType",
+                          "value": "Personal"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2023-04-27T18:18:58"
+                        },
+                        {
+                          "name": "CreatedBy",
+                          "value": "Diego Cadena"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "Not applicable"
+                        },
+                        {
+                          "name": "ExternalReferenceNumber",
+                          "value": "PayRequest"
+                        },
+                        {
+                          "name": "InvoiceAccountId",
+                          "value": "135632"
+                        },
+                        {
+                          "name": "InvoiceCustomerNodeId",
+                          "value": "126911"
+                        }
+                      ],
+                      "status": "Applied"
+                    }
+                  },
+                  "Sample Response Cash": {
+                    "value": {
+                      "totalAmount": {
+                        "value": "10.00",
+                        "unit": "JMD"
+                      },
+                      "channel": {
+                        "name": "Sydney HQ"
+                      },
+                      "paymentMethod": {
+                        "name": "Cash",
+                        "@type": "Cash",
+                        "id": 190001
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/P00001686740",
+                      "id": "P00001686740",
+                      "paymentDate": "2023-04-27T18:22:56",
+                      "account": {
+                        "name": "Unidentified Payments - JMD",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/135632",
+                        "id": 135632
+                      },
+                      "case": {
+                        "name": "C51001",
+                        "href": "https://$HOST:30140/perest/api/v1/case/51001",
+                        "id": "51001",
+                        "status": "New"
+                      },
+                      "characteristic": [
+                        {
+                          "name": "AutoAllocate",
+                          "value": "TRUE"
+                        },
+                        {
+                          "name": "VATType",
+                          "value": "Personal"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2023-04-27T18:22:57"
+                        },
+                        {
+                          "name": "CreatedBy",
+                          "value": "Diego Cadena"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "Not applicable"
+                        },
+                        {
+                          "name": "ExternalReferenceNumber",
+                          "value": "PayRequest"
+                        },
+                        {
+                          "name": "InvoiceAccountId",
+                          "value": "135632"
+                        },
+                        {
+                          "name": "InvoiceCustomerNodeId",
+                          "value": "126911"
+                        }
+                      ],
+                      "status": "Applied"
+                    }
+                  },
+                  "Sample Response Debit": {
+                    "value": {
+                      "totalAmount": {
+                        "value": "100.00",
+                        "unit": "JMD"
+                      },
+                      "channel": {
+                        "name": "Sydney HQ"
+                      },
+                      "paymentMethod": {
+                        "name": "Debit Card",
+                        "details": null,
+                        "id": 2000001,
+                        "@type": "Debit Card"
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/P00001686757",
+                      "id": "P00001686757",
+                      "paymentDate": "2023-04-27T18:26:10",
+                      "account": {
+                        "name": "Unidentified Payments - JMD",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/135632",
+                        "id": 135632
+                      },
+                      "case": {
+                        "name": "C51002",
+                        "href": "https://$HOST:30140/perest/api/v1/case/51002",
+                        "id": "51002",
+                        "status": "New"
+                      },
+                      "characteristic": [
+                        {
+                          "name": "AutoAllocate",
+                          "value": "TRUE"
+                        },
+                        {
+                          "name": "VATType",
+                          "value": "Personal"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2023-04-27T18:26:10"
+                        },
+                        {
+                          "name": "CreatedBy",
+                          "value": "Diego Cadena"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "Not applicable"
+                        },
+                        {
+                          "name": "ExternalReferenceNumber",
+                          "value": "PayRequest"
+                        },
+                        {
+                          "name": "InvoiceAccountId",
+                          "value": "135632"
+                        },
+                        {
+                          "name": "InvoiceCustomerNodeId",
+                          "value": "126911"
+                        }
+                      ],
+                      "status": "Applied"
+                    }
+                  },
+                  "Sample Response Voucher (Voms)": {
+                    "value": {
+                      "totalAmount": {
+                        "value": "100.00",
+                        "unit": "JMD"
+                      },
+                      "channel": {
+                        "name": "Bank"
+                      },
+                      "paymentMethod": {
+                        "name": "Voucher",
+                        "@type": "Voms",
+                        "id": 31000020
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/VOMS_TopUp0000168676",
+                      "id": "VOMS_TopUp0000168676",
+                      "paymentDate": "2023-04-27T18:29:44",
+                      "account": {
+                        "name": "Unidentified Payments - JMD",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/135632",
+                        "id": 135632
+                      },
+                      "case": {
+                        "name": "C51003",
+                        "href": "https://$HOST:30140/perest/api/v1/case/51003",
+                        "id": "51003",
+                        "status": "New"
+                      },
+                      "characteristic": [
+                        {
+                          "name": "AutoAllocate",
+                          "value": "TRUE"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2023-04-27T18:29:44"
+                        },
+                        {
+                          "name": "CreatedBy",
+                          "value": "Diego Cadena"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "Not applicable"
+                        },
+                        {
+                          "name": "ExternalReferenceNumber",
+                          "value": "PayRequest"
+                        },
+                        {
+                          "name": "InvoiceAccountId",
+                          "value": "135632"
+                        },
+                        {
+                          "name": "InvoiceCustomerNodeId",
+                          "value": "126911"
+                        }
+                      ],
+                      "status": "Applied"
+                    }
+                  },
+                  "Sample Response Money Order": {
+                    "value": {
+                      "totalAmount": {
+                        "value": "100.00",
+                        "unit": "JMD"
+                      },
+                      "channel": {
+                        "name": "Bank"
+                      },
+                      "paymentMethod": {
+                        "name": "Money Order",
+                        "@type": "Money Order",
+                        "id": 190003
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/P00001686815",
+                      "id": "P00001686815",
+                      "paymentDate": "2023-04-27T18:33:27",
+                      "account": {
+                        "name": "Unidentified Payments - JMD",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/135632",
+                        "id": 135632
+                      },
+                      "case": {
+                        "name": "C51004",
+                        "href": "https://$HOST:30140/perest/api/v1/case/51004",
+                        "id": "51004",
+                        "status": "New"
+                      },
+                      "characteristic": [
+                        {
+                          "name": "AutoAllocate",
+                          "value": "TRUE"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2023-04-27T18:33:28"
+                        },
+                        {
+                          "name": "CreatedBy",
+                          "value": "Diego Cadena"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "Not applicable"
+                        },
+                        {
+                          "name": "ExternalReferenceNumber",
+                          "value": "PayRequest"
+                        },
+                        {
+                          "name": "InvoiceAccountId",
+                          "value": "135632"
+                        },
+                        {
+                          "name": "InvoiceCustomerNodeId",
+                          "value": "126911"
+                        }
+                      ],
+                      "status": "Applied"
+                    }
+                  },
+                  "Sample Response Cheque": {
+                    "value": {
+                      "totalAmount": {
+                        "value": "100.00",
+                        "unit": "JMD"
+                      },
+                      "channel": {
+                        "name": "Bank"
+                      },
+                      "paymentMethod": {
+                        "name": "Cheque",
+                        "@type": "Cheque",
+                        "id": 190000
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/P00001686823",
+                      "id": "P00001686823",
+                      "paymentDate": "2023-04-27T18:36:20",
+                      "account": {
+                        "name": "Unidentified Payments - JMD",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/135632",
+                        "id": 135632
+                      },
+                      "case": {
+                        "name": "C51006",
+                        "href": "https://$HOST:30140/perest/api/v1/case/51006",
+                        "id": "51006",
+                        "status": "New"
+                      },
+                      "characteristic": [
+                        {
+                          "name": "AutoAllocate",
+                          "value": "TRUE"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2023-04-27T18:36:20"
+                        },
+                        {
+                          "name": "CreatedBy",
+                          "value": "Diego Cadena"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "Not applicable"
+                        },
+                        {
+                          "name": "ExternalReferenceNumber",
+                          "value": "PayRequest"
+                        },
+                        {
+                          "name": "InvoiceAccountId",
+                          "value": "135632"
+                        },
+                        {
+                          "name": "InvoiceCustomerNodeId",
+                          "value": "126911"
+                        }
+                      ],
+                      "status": "Applied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will include information about error code and short description of error. The error in the response will be indicative of the first occurrence of the problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Unitel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| Error Code | Error Message | Error Cause | Error Action |\n|------------|---------------|-------------|--------------|\n| E84106 | <E84106> Missing '<1:Element>' element in the request. | Account->id mentioned in the error message is missing from the request. | Specify Account Id specified in the error message. |\n| E84107 | <E84107> The <1:Entity> provided is invalid. | The value provided for Payment Method is not valid. | Provide the valid value for the Payment Method |\n| E01601 | <E01601> Currency <1:CurrencyName> does not exist at <2:DATE>. | There are no record matching the criteria mentioned in the error message. | Specify correct value. |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "payment"
+      },
+      "patch": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "Creates multiple payments",
+        "description": "This operation create one or more payment entity. As per TMF guidelines, PATCH operation is used to create multiple resources (Ex: Payment)",
+        "operationId": "patchPayment",
+        "requestBody": {
+          "description": "The list of payments to be created",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Payment_Update"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Created multiple payments",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "payment"
+      }
+    },
+    "/payment/{id}": {
+      "get": {
+        "tags": [
+          "payment"
+        ],
+        "summary": "Retrieves a Payment by ID",
+        "description": "This operation retrieves a Payment entity. Attribute selection is enabled for all first level attributes.",
+        "operationId": "retrievePayment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifier of the Payment. SV_MAPPING: PayReqst.PayRecNo_X",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to provide in response. Example: paymentMethod, channel, etc.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                },
+                "examples": {
+                  "Sample Response Credit Card (Applied)": {
+                    "value": {
+                      "totalAmount": {
+                        "value": "100.00",
+                        "unit": "JMD"
+                      },
+                      "channel": {
+                        "name": "CSR By Phone"
+                      },
+                      "paymentMethod": {
+                        "name": "Credit Card",
+                        "details": {
+                          "brand": "Bankcard"
+                        },
+                        "id": 190002,
+                        "@type": "Credit Card"
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/P00001235571",
+                      "id": "P00001235571",
+                      "paymentDate": "2022-11-22T07:02:04",
+                      "paymentDocument": [
+                        {
+                          "id": "P00001235571",
+                          "mimeType": "html",
+                          "attachmentType": "payment",
+                          "content": "PGh0bWwgeG1sbnM6dj0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTp=="
+                        }
+                      ],
+                      "account": {
+                        "name": "0100116405",
+                        "accountType": "Debtor (JMD)",
+                        "accountTypeDisplayName": "Debtor",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/116405",
+                        "id": 116405
+                      },
+                      "case": {
+                        "name": "C12320",
+                        "href": "https://$HOST:30140/perest/api/v1/case/C12320",
+                        "id": "12320",
+                        "status": "Closed"
+                      },
+                      "characteristic": [
+                        {
+                          "name": "AutoAllocate",
+                          "value": "TRUE"
+                        },
+                        {
+                          "name": "InvoiceAccountId",
+                          "value": "116405"
+                        },
+                        {
+                          "name": "InvoiceCustomerNodeId",
+                          "value": "113963"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2022-11-22T07:02:04"
+                        },
+                        {
+                          "name": "CreatedBy",
+                          "value": "Abinaya Baskaran"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "Not applicable"
+                        },
+                        {
+                          "name": "ExternalReferenceNumber",
+                          "value": "PayRequest"
+                        }
+                      ],
+                      "status": "Applied"
+                    }
+                  },
+                  "Sample Response Cash (Rejected)": {
+                    "value": {
+                      "totalAmount": {
+                        "value": 500,
+                        "unit": "JMD"
+                      },
+                      "channel": {
+                        "name": "eshop"
+                      },
+                      "paymentMethod": {
+                        "name": "Cash",
+                        "@type": "Cash",
+                        "id": 190001
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/P00001236769",
+                      "id": "P00001236769",
+                      "paymentDate": "2022-11-22T08:01:31",
+                      "paymentDocument": [
+                        {
+                          "id": "P00001236769",
+                          "mimeType": "html",
+                          "attachmentType": "payment",
+                          "content": "PGh0bWwgeG1sbnM6dj0idXJuOnNjaGVtYg=="
+                        }
+                      ],
+                      "account": {
+                        "name": "0100116405",
+                        "accountType": "Debtor (JMD)",
+                        "accountTypeDisplayName": "Debtor",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/116405",
+                        "id": 116405
+                      },
+                      "characteristic": [
+                        {
+                          "name": "ReceiptRef",
+                          "value": "P00001236769"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2022-11-22T08:01:31"
+                        },
+                        {
+                          "name": "RejectedBy",
+                          "value": "Abinaya Baskaran"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "P00001236769"
+                        },
+                        {
+                          "name": "RejectionDate",
+                          "value": "2022-11-22T08:10:24"
+                        },
+                        {
+                          "name": "RejectionReason",
+                          "value": "Inadequate funds"
+                        },
+                        {
+                          "name": "RejectedBy",
+                          "value": "[ Abinaya Baskaran ]"
+                        }
+                      ],
+                      "status": "Rejected"
+                    }
+                  },
+                  "Sample Response Cheque (Applied)": {
+                    "value": {
+                      "totalAmount": {
+                        "value": 500,
+                        "unit": "JMD"
+                      },
+                      "channel": {
+                        "name": "CSR"
+                      },
+                      "paymentMethod": {
+                        "name": "Cheque",
+                        "@type": "Cheque",
+                        "id": 190000
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/P00001237163",
+                      "id": "P00001237163",
+                      "paymentDate": "2022-11-22T08:23:05",
+                      "paymentDocument": [
+                        {
+                          "id": "P00001237163",
+                          "mimeType": "html",
+                          "attachmentType": "payment",
+                          "content": "PGh0bWwgeG1sbnM6dj0idXJuOnNjCg=="
+                        }
+                      ],
+                      "account": {
+                        "name": "0100116405",
+                        "accountType": "Debtor (JMD)",
+                        "accountTypeDisplayName": "Debtor",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/116405",
+                        "id": 116405
+                      },
+                      "characteristic": [
+                        {
+                          "name": "ReceiptRef",
+                          "value": "P00001237163"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2022-11-22T08:23:05"
+                        },
+                        {
+                          "name": "CreatedBy",
+                          "value": "Abinaya Baskaran"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "P00001237163"
+                        }
+                      ],
+                      "status": "Applied"
+                    }
+                  },
+                  "Sample Response Prepaid Payment (Applied)": {
+                    "value": {
+                      "totalAmount": {
+                        "value": 209,
+                        "unit": "JMD"
+                      },
+                      "channel": {
+                        "name": "CSR"
+                      },
+                      "paymentMethod": {
+                        "name": "Prepaid Payment",
+                        "@type": "Prepaid Payment",
+                        "id": 239000
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/P_topup_0000123856",
+                      "id": "P_topup_0000123856",
+                      "paymentDate": "2022-11-22T09:57:06",
+                      "paymentDocument": [
+                        {
+                          "id": "P_topup_0000123856",
+                          "mimeType": "html",
+                          "attachmentType": "payment",
+                          "content": "PGh0bWwgeG1sbnM6dj0idXJuOnNCg=="
+                        }
+                      ],
+                      "account": {
+                        "name": "0100116406",
+                        "accountType": "Prepaid (JMD)",
+                        "accountTypeDisplayName": "Prepaid",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/116406",
+                        "id": 116406
+                      },
+                      "characteristic": [
+                        {
+                          "name": "ReceiptRef",
+                          "value": "P_topup_0000123856"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2022-11-22T09:57:06"
+                        },
+                        {
+                          "name": "CreatedBy",
+                          "value": "Abinaya Baskaran"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "P_topup_0000123856"
+                        }
+                      ],
+                      "status": "Applied"
+                    }
+                  },
+                  "Sample Response Adjustment (Applied)": {
+                    "value": {
+                      "totalAmount": {
+                        "value": 400,
+                        "unit": "AUD"
+                      },
+                      "paymentItem": [
+                        {
+                          "totalAmount": {
+                            "value": -1000,
+                            "unit": "AUD"
+                          },
+                          "item": {
+                            "date": "2022-07-26T05:21:59",
+                            "name": "BTR00001005420",
+                            "@referredType": "adjustment",
+                            "id": 100542,
+                            "status": "Applied"
+                          }
+                        }
+                      ],
+                      "channel": {
+                        "name": "LOADER"
+                      },
+                      "paymentMethod": {
+                        "name": "Prepaid Payment",
+                        "@type": "Prepaid Payment",
+                        "id": 239000
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/payment/P_topup_0000101723",
+                      "id": "P_topup_0000101723",
+                      "paymentDate": "2022-08-04T14:35:42",
+                      "paymentDocument": [
+                        {
+                          "id": "P_topup_0000101723",
+                          "mimeType": "html",
+                          "attachmentType": "payment",
+                          "content": "PGh0bWwgeG1sbnM6dj4NCg=="
+                        }
+                      ],
+                      "account": {
+                        "name": "900100402",
+                        "accountType": "Prepaid (JMD)",
+                        "accountTypeDisplayName": "Prepaid",
+                        "href": "https://$HOST:30140/perest/api/v1/billingAccount/100402",
+                        "id": 100402
+                      },
+                      "characteristic": [
+                        {
+                          "name": "ReceiptRef",
+                          "value": "P_topup_0000101723"
+                        },
+                        {
+                          "name": "EntryDate",
+                          "value": "2022-08-04T14:35:42"
+                        },
+                        {
+                          "name": "CreatedBy",
+                          "value": "Meenakshi Nair"
+                        },
+                        {
+                          "name": "CustomerReceiptNumber",
+                          "value": "P_topup_0000101723"
+                        }
+                      ],
+                      "status": "Applied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will include information about error code and short description of error. The error in the response will be indicative of the first occurrence of the problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Unitel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| Error Code | Error Message | Error Cause | Error Action |\n|------------|---------------|-------------|--------------|\n| E83501 | NULL value is provided for '<1:Param>' field. | Null value was passed for the field specified. | Provide a value for the '<1:Param>' field. |\n| E84108 | '<1:Field>' '<2:Value>' does not exist in the System or the user does not have security access to record that match the search criteria for '<3:Action>' of '<4:Entity>'. | Either entity not found in the system or User does not have access to the search entity. |Specify correct entity value or get the access to the entity. |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the account. SV_MAPPING: PayReqst.ToCustAcctNumID_I or SV_MAPPING: for Payment -> PAYMENT_TRE_V.TO_ACCOUNT_ID, for Refund -> Issue.AdjToAcctNum_X "
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the account. SV_MAPPING: PayReqst.ToCustAcctNum_X or SV_MAPPING: PAYMENT_TRE_V.TO_ACCOUNT_NAME"
+          },
+          "accountType": {
+            "type": "string",
+            "description": "Complete account type name. Example: \"Prepaid (JMD)\". SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_TYPE_DISPLAY_NAME"
+          },
+          "accountTypeDisplayName": {
+            "type": "string",
+            "description": "Truncated account tyoe name. Example: \"Prepaid\""
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the account - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<billingAccount PEREST URL>/PayReqst.ToCustAcctNumID_I or <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<billingAccount PEREST URL>/PAYMENT_TRE_V.TO_ACCOUNT_ID>"
+          }
+        },
+        "description": "Account reference. A account may be a party account or a financial account."
+      },
+      "BankCardType": {
+        "required": [
+          "cardNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Card type. SV_MAPPING: PayReqst.CardType_R or SV_MAPPING: PAYMENT_TRE_V.GENERAL_4",
+            "x-refdata-source": "RT-Card Type"
+          },
+          "cardNumber": {
+            "type": "string",
+            "description": "Card number. SV_MAPPING: PayReqst.CreditCardLastNo_X or SV_MAPPING: PAYMENT_TRE_V.GENERAL_5"
+          },
+          "expirationDate": {
+            "type": "string",
+            "description": "Expiry Date. SV_MAPPING: PayReqst.CardExpyDate_X or SV_MAPPING: PAYMENT_TRE_V.GENERAL_6",
+            "format": "date-time"
+          },
+          "nameOnCard": {
+            "type": "string",
+            "description": "Name on Card. SV_MAPPING: PayReqst.UI_CreditCardHolderName_X"
+          }
+        },
+        "description": "Details of Credit Card"
+      },
+      "LoyaltyPointsType": {
+        "required": [
+          "loyaltyPointsConsumed",
+          "loyaltyPointsConversionFactor"
+        ],
+        "type": "object",
+        "properties": {
+          "loyaltyPointsConsumed": {
+            "type": "string",
+            "description": "loyalty Points Consumed. SV_MAPPING: PayReqst.UI_LoyaltyPointsConsumed_I"
+          },
+          "loyaltyPointsConversionFactor": {
+            "type": "string",
+            "description": "loyalty Points Conversion Factor. SV_MAPPING: PayReqst.UI_LoyaltyPointsConvFactor_C"
+          }
+        },
+        "description": "Details of Loyalty Points"
+      },
+      "GenericType": {
+        "required": [
+          "details",
+          "method",
+          "uniqueReference"
+        ],
+        "type": "object",
+        "properties": {
+          "method": {
+            "type": "string",
+            "description": "Payment method of the Generic payment type. SV_MAPPING: PayReqst.PayMethod_R",
+            "x-refdata-source": "RT-PAYMENT_METHOD_GENERIC"
+          },
+          "details": {
+            "type": "string",
+            "description": "Payment details. The field list display is depending on the selected method. SV_MAPPING: PayReqst.PayDetails_R"
+          },
+          "uniqueReference": {
+            "type": "string",
+            "description": "Method type unique reference. SV_MAPPING: PayReqst.PayExtRefNum_X"
+          },
+          "description": {
+            "type": "string",
+            "description": "Method type description. SV_MAPPING: PayReqst.PayDesc_X"
+          }
+        },
+        "description": "Details of Generic payment type"
+      },
+      "CaseRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the case"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the case"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of case"
+          },
+          "status": {
+            "type": "string",
+            "description": "The Status of case. Possible Values New|Open|Closed"
+          }
+        },
+        "description": "The Case data structure"
+      },
+      "ChannelRef": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Payment Location. Mandatory for request from third party systems. If not provided It will be the default payment location CSR belongs to. It's reference data whose value should be based on abbreviation from reference type 'perestapi.imp.SALES_CHANNEL'. Example: CSR, eshop, DigiLoan, etc. SV_MAPPING: PayReqst.PayLoc_R or SV_MAPPING: for Payment -> PAYMENT_TRE_V.PAYMENT_LOCATION_CODE, for Refund (Debit Note adjustment) -> Issue.RefundChannel_R",
+            "x-refdata-source": "RT-Payment Location"
+          }
+        },
+        "description": "The channel to which the resource reference to. e.g. location from where the payment is made (Source System)."
+      },
+      "Characteristic": {
+        "required": [
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the characteristic."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the characteristic"
+          }
+        },
+        "description": "Describes a given characteristic of an object or entity through a name/value pair."
+      },
+      "EntityRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of a related entity (Invoice ID, Adjustment ID, etc.). SV_MAPPING: INVOICE_TRE_V.INVOICE_ID | ADJUSTMENT_TRE_V.ADJUSTMENT_ID. For @referredType as productOfferingPrice, it is productOfferingPrice Id. For @referredType as productOrder, it is ProductOrder Id"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the related entity (Account Number-Invoice ID, Adjustment Name, etc.). SV_MAPPING: INVOICE_TRE_V.CUSTOMER_INVOICE_STR | ADJUSTMENT_TRE_V.ADJUSTMENT_NR. For @referredType as productOfferingPrice, it is name of the productOfferingPrice"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance when needed for disambiguation. Possible Values invoice | adjustment | productOfferingPrice | etc."
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name. For @referredType as productOfferingPrice, it is the priceType from perestapi.PRICE_TYPE RT"
+          },
+          "date": {
+            "type": "string",
+            "description": "Invoice generated date or Adjustment applied date. SV_MAPPING: INVOICE_TRE_V.EFFECTIVE_DATE | ADJUSTMENT_TRE_V.ADJUSTMENT_RECEIVED_DATE. Format: yyyy-mm-ddThh:nn:ss",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of a related entity (Invoice Status, Adjustment Status, etc.). SV_MAPPING: Abbreviation from RT perestapi.CUSTOMER_BILL_STATE for Invoice status | ADJUSTMENT_TRE_V.ADJUSTMENT_STATUS_CODE.",
+            "x-refdata-source": "RT-perestapi.CUSTOMER_BILL_STATE|RT-ADJUSTMENT_STATUS"
+          }
+        },
+        "description": "Entity reference schema to be use for all entityRef class."
+      },
+      "Money": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "Currency (ISO4217 norm uses 3 letters to define the currency). SV_MAPPING: PayReqst.PayCurrency_R | PayReqst.ToAcctCur_R"
+          },
+          "value": {
+            "type": "number",
+            "description": "A positive floating point number. SV_MAPPING: PayReqst.TotalPayAmt_C | PAYMENT_INVOICE.AMOUNT",
+            "format": "float"
+          }
+        },
+        "description": "A base / value business entity used to represent money"
+      },
+      "AttachmentRefOrValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this particular attachment. SV_MAPPING: PAYMENT_TRE_V.RECEIPT_NR"
+          },
+          "attachmentType": {
+            "type": "string",
+            "description": "Default to value 'payment'"
+          },
+          "content": {
+            "type": "string",
+            "description": "The actual contents of the attachment object, if embedded, encoded as base64"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "Attachment mime type such as extension file for video, picture and document. Default to html. SV MAPPING: RT perestapi.imp.MIME_TYPE"
+          }
+        },
+        "description": "An attachment by value or by reference."
+      },
+      "Payment": {
+        "required": [
+          "account",
+          "paymentMethod"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of Payment. SV_MAPPING: PayReqst.PayRecNo_X or SV_MAPPING: PAYMENT_TRE_V.RECEIPT_NR"
+          },
+          "href": {
+            "type": "string",
+            "description": "Hypertext Reference of the Payment - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<Payment PEREST URL>/<PayReqst.PayRecNo_X> or <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<Payment PEREST URL>/<PAYMENT_TRE_V.PAYMENT_ID>"
+          },
+          "paymentDate": {
+            "type": "string",
+            "description": "Date when the payment was performed. SV_MAPPING: PayReqst.PayRecDate_T or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_RECEIVED_DATE.  Format: yyyy-mm-ddThh:nn:ss",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the payment. SV_MAPPING: PayReqst.CBPayStatus_R or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_STATUS_CODE",
+            "x-refdata-source": "RT-Payment Status"
+          },
+          "account": {
+            "$ref": "#/components/schemas/AccountRef"
+          },
+          "case": {
+            "$ref": "#/components/schemas/CaseRef"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/ChannelRef"
+          },
+          "paymentItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentItem"
+            }
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethodRefOrValue"
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "paymentDocument": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttachmentRefOrValue"
+            }
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Characteristic name supported: AutoAllocate | ReceiptRef | EntryDate | CreatedBy | RejectionDate | RejectionReason | CustomerReceiptNumber | ExternalReferenceNumber | BatchNumber | RejectedBy | VATType | VATId | Memo | InvoiceAccountId | InvoiceCustomerNodeId| orderCreationPending | MSISDN, Characteristic value supported: AutoAllocate -> SV_MAPPING: PayReqst.UI_AutoAllocate_B | ReceiptRef -> SV_MAPPING: <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<document PEREST URL>/<documentId> | EntryDate -> SV_MAPPING: PayReqst.PayEntryDate_T or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_DATE | CreatedBy -> SV_MAPPING: PayReqst.CreatedBy_X or SV_MAPPING: PAYMENT_TRE_V.OPERATOR_ID | RejectionDate -> SV_MAPPING: PayReqst.RejectDate_T or SV_MAPPING: PAYMENT_TRE_V.REJECTED_DATE | RejectionReason -> SV_MAPPING: PayReqst.RejectReason_R or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_REJECTED_CODE | CustomerReceiptNumber -> SV_MAPPING: PayReqst.PayCustRecNum_X or SV_MAPPING: PAYMENT_TRE_V.RECEIPT_NR | ExternalReferenceNumber -> SV_MAPPING: PayReqst.PayExtRefNum_X | BatchNumber -> SV_MAPPING: PAYMENT_BATCH.PAYMENT_BATCH_NR | RejectedBy -> SV_MAPPING: PayReqst.RejectOperator_R | VATType -> SV_MAPPING: PayReqst.VATType_R | VATId -> SV_MAPPING: PayReqst.VATId_X | Memo -> SV_MAPPING: PayReqst.UI_Memo_X | InvoiceAccountId -> SV_MAPPING: PayReqst.ToAccount_R | InvoiceCustomerNodeId -> SV_MAPPING: PayReqst.ToCustAcctName_R | MSISDN -> SV_MAPPING: PayReqst.MSISDN_X | orderCreationPending -> SV_MAPPING: Used by Customer Connect; No implementation in baseline; Can be used by project to identify where order creation is not done yet.",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            },
+            "x-refdata-source": "RT-BOOLEAN|||||CM-Payment_Rejection_Reason||||CM-User|||||"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          },
+          "taxAmount": {
+            "$ref": "#/components/schemas/Money"
+          }
+        },
+        "description": "The Payment resource represents a performed payment. It contains both information about the payment and the payment method used to perform it. Payment information will be derived from PE Class Payreqst first, if there is no value found, it will check PAYMENT_TRE_V table"
+      },
+      "Payment_Create": {
+        "required": [
+          "account",
+          "paymentMethod",
+          "totalAmount"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of Payment. SV_MAPPING: PayReqst.PayRecNo_X"
+          },
+          "paymentDate": {
+            "type": "string",
+            "description": "Date when the payment was performed. SV_MAPPING: PayReqst.PayRecDate_T",
+            "format": "date-time"
+          },
+          "account": {
+            "$ref": "#/components/schemas/AccountRef"
+          },
+          "case": {
+            "$ref": "#/components/schemas/CaseRef"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/ChannelRef"
+          },
+          "paymentItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentItem"
+            }
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethodRefOrValue"
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Characteristic name supported: ReceiptRef | BatchNumber | CreatedBy | CustomerReceiptNumber | EntryDate | ExternalReferenceNumber | RejectionDate | RejectedBy | RejectionReason | AutoAllocate | VATType | VATId | Memo | InvoiceAccountId | InvoiceCustomerNodeId | orderCreationPending, Characteristic value supported: ReceiptRef -> SV_MAPPING: <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<document PEREST URL>/<documentId | BatchNumber -> SV_MAPPING: PAYMENT_BATCH.PAYMENT_BATCH_NR | CreatedBy -> SV_MAPPING: PayReqst.CreatedBy_X or SV_MAPPING: PAYMENT_TRE_V.OPERATOR_ID | CustomerReceiptNumber -> SV_MAPPING: PayReqst.PayCustRecNum_X or SV_MAPPING: PAYMENT_TRE_V.RECEIPT_NR | EntryDate -> SV_MAPPING: PayReqst.PayEntryDate_T or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_DATE | ExternalReferenceNumber -> SV_MAPPING: PayReqst.PayExtRefNum_X | RejectionDate -> SV_MAPPING: PayReqst.RejectDate_T or SV_MAPPING: PAYMENT_TRE_V.REJECTED_DATE | RejectedBy -> SV_MAPPING: PayReqst.RejectOperator_R | RejectionReason -> SV_MAPPING: PayReqst.RejectReason_R or SV_MAPPING: PAYMENT_TRE_V.PAYMENT_REJECTED_CODE | AutoAllocate -> SV_MAPPING: PayReqst.UI_AutoAllocate_B | VATType -> SV_MAPPING: PayReqst.VATType_R | VATId -> SV_MAPPING: PayReqst.VATId_X | Memo -> SV_MAPPING: PayReqst.UI_Memo_X | InvoiceAccountId -> SV_MAPPING: PayReqst.ToAccount_R | InvoiceCustomerNodeId -> SV_MAPPING: PayReqst.ToCustAcctName_R | orderCreationPending -> SV_MAPPING: Used by Customer Connect; No implementation in baseline; Can be used by project to identify where order creation is not done yet",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            },
+            "x-refdata-source": "RT-BOOLEAN|||||"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          }
+        },
+        "description": "The Payment resource represents a performed payment. It contains both information about the payment and the payment method used to perform it.\nSkipped properties: id,href,status,statusDate,paymentDate"
+      },
+      "Payment_List": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationRef"
+          },
+          "payment": {
+            "type": "array",
+            "description": "Describes the list of payments with details",
+            "items": {
+              "$ref": "#/components/schemas/Payment"
+            }
+          }
+        },
+        "description": "Payment List"
+      },
+      "Payment_Update": {
+        "required": [
+          "op",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "Represents the operation to be performed. Possible value: add, SV_MAPPING: perestapi.OPERATION->Abbreviation"
+          },
+          "path": {
+            "type": "string",
+            "description": "Path of the operation to be performed."
+          },
+          "value": {
+            "$ref": "#/components/schemas/Payment_Create"
+          }
+        },
+        "description": "The list of Payment resource to be created."
+      },
+      "PaymentItem": {
+        "required": [
+          "item"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "item": {
+            "$ref": "#/components/schemas/EntityRef"
+          },
+          "taxAmount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/Money"
+          }
+        },
+        "description": "The paymentItem is the result of lettering process. It enables to assign automatically or manually part of incoming payment amount to a bill"
+      },
+      "PaymentMethodRefOrValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the payment method. SV_MAPPING: Payment_Type.ObjKey",
+            "x-refdata-source": "CM-Payment_Type"
+          },
+          "Name": {
+            "type": "string",
+            "description": "Friendly name assigned to the payment method. SV_MAPPING: Payment_Type.DisplayName_X"
+          },
+          "details": {
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BankCardType"
+              },
+              {
+                "$ref": "#/components/schemas/LoyaltyPointsType"
+              },
+              {
+                "$ref": "#/components/schemas/GenericType"
+              }
+            ],
+            "properties": {},
+            "description": "Details of the payment method. This object's type depends on the value of the @type field. Credit Card -> BankCardType, perestapi.sample.LoyaltyPoints -> LoyaltyPointsType, GenericPayment -> GenericType"
+          },
+          "@type": {
+            "type": "string",
+            "description": "For Payment: when sub-classing, this defines the sub-class entity name. Possible Values Cash | Credit Card | perestapi.sample.LoyaltyPoints | GenericPayment | paymtd.PaymentMethod (must be used only in combination with paymentMethodId property), SV_MAPPING: Payment_Type.Name; For Refund: see Description",
+            "x-refdata-source": "CM-Payment_Type"
+          },
+          "paymentMethodId": {
+            "type": "string",
+            "description": "Unique identifier of the payment method. Used only when @type is Payment Method. FORMAT: <Customer Node id>|<Customer Node DA Id>|<perestapi.dPaymentMethod.name>. SV_MAPPING: Payment_Type.PaymentMethodId_X (PAYMENT_TRE_V.GENERAL_1). If payment cannot be found in perestapi.dPaymentMethod for particular customer, than error will be raised."
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the paymentMethod. Populated only if paymentMethod is defined in PAYMENT_TRE_V.GENERAL_1 (i.e. derived via perestapi.dPaymentMethod Customer Node DA) <http://<HOSTNAME>:<PORT>/<paymentMethod URL>/<Customer Node Id|perestapi.dPaymentMethod DA Id|Payment Method Name >"
+          }
+        },
+        "description": "Two types of payment method definitions are possible. The first is used for compatibility on environments without 'paytmd' code pack is installed. The second is intended to support 'paymtd' code pack. 1) Link to the resource that holds information about the payment mean used to complete the operation. Note for Refund, values are stored in Issue.AdjGeneral03_X in delimited format: @type:<value>|details:<field1=value1>,<field2=value2> etc..., e.g @type:bankCard|details:brand=MasterCard,cardNumber=00000000000000000 etc. 2) Defines link to specific method of payment (e.g. direct debit with all details associated). Payment Method is stored in Customer Node DA list perestapi.dPaymentMethod. Data is stored in Customer Node DA list paymtd.dCustomerPaymentMethodDetail. Each payment methods attributes are mapped to the columns in paymtd.dCustomerPaymentMethodDetail by means of DA paymtd.dCustomerPaymentMethodSchemaType (see apiPaymentMethod.json for more details). Payment Method must be first created with POST Payment API"
+      },
+      "PaymentRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of Payment. SV_MAPPING: for Reject - PayReqst.PayRecNo_X, for Refund - Issue.BI_Adj_PaymentRefNum_X"
+          },
+          "href": {
+            "type": "string",
+            "description": "Hypertext Reference of the Payment - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<Payment PEREST URL>/<PayReqst.PayRecNo_X>"
+          }
+        },
+        "description": "If an immediate payment has been done at the product order submission, the payment information are captured and stored (as a reference) in the order."
+      },
+      "RelatedParty": {
+        "required": [
+          "@referredType",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "SV_MAPPING: CUSTOMER_NODE_TRE_V.CUSTOMER_NODE_ID"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the related entity - <http://<HOSTNAME>:<PORT>/<Customer URL>/<SV_MAPPING: CUSTOMER_NODE_TRE_V.CUSTOMER_NODE_ID>"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance. Default: customer"
+          }
+        },
+        "description": "RelatedParty reference. A related party defines party or party role linked to a specific entity."
+      },
+      "Comment": {
+        "required": [
+          "action"
+        ],
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "description": "Operation performed on comment. Possible value add. SV_MAPPING: perestapi.OPERATION",
+            "x-refdata-source": "RT-perestapi.OPERATION"
+          },
+          "id": {
+            "type": "string",
+            "description": "Comment id. SV_MAPPING:Comment.ObjectKey"
+          },
+          "name": {
+            "type": "string",
+            "description": "Comment name. SV_MAPPING:Comment.Name"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comment text. SV_MAPPING:Comment.CommentFull_M"
+          }
+        },
+        "description": "Defines the Comment object"
+      },
+      "PaginationRef": {
+        "required": [
+          "limit",
+          "offset",
+          "remainingRecords",
+          "scn",
+          "totalRecords"
+        ],
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "description": "Requested index for start of items to be provided in response",
+            "format": "int64"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Requested number of items to be provided in response",
+            "format": "int64"
+          },
+          "remainingRecords": {
+            "type": "integer",
+            "description": "Remaining number of items to be fetched",
+            "format": "int64"
+          },
+          "totalRecords": {
+            "type": "integer",
+            "description": "Total number of items matching criteria",
+            "format": "int64"
+          },
+          "scn": {
+            "type": "string",
+            "description": "Oracle system change number for read consistency"
+          }
+        },
+        "description": "Query results and paging details."
+      },
+      "Error": {
+        "required": [
+          "code",
+          "reason"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Application relevant detail, defined in the API or a common list."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Explanation of the reason for the error which can be shown to a client user."
+          },
+          "message": {
+            "type": "string",
+            "description": "Details information related to the error which can be shown to a client user."
+          },
+          "action": {
+            "type": "string",
+            "description": "Corrective actions for the error which can be shown to a client user."
+          },
+          "status": {
+            "type": "string",
+            "description": "HTTP Error code extension"
+          },
+          "referenceError": {
+            "type": "string",
+            "description": "URI of documentation describing the error.",
+            "format": "uri"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub - classing, this defines the super - class."
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON - Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub - classing, this defines the sub - class entity name."
+          }
+        },
+        "description": "Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)"
+      }
+    }
+  }
+}

@@ -1,0 +1,668 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/ASHRAFZAID/JobManagement/1.0.0"
+    }
+  ],
+  "info": {
+    "description": "This is the API for the job management module that finds, manages, updates, and creates jobs in the system.",
+    "version": "1.0.0",
+    "title": "Job Management API",
+    "contact": {
+      "email": "you@your-company.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Jobs",
+      "description": "Operations available to manage jobs"
+    },
+    {
+      "name": "Job Groups",
+      "description": "Operations available to manage job groups"
+    }
+  ],
+  "paths": {
+    "/jobs": {
+      "get": {
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "returns list of jobs",
+        "operationId": "getJobs",
+        "description": "By passing in the appropriate options, you can search for\navailable jobs in the system\n",
+        "responses": {
+          "200": {
+            "description": "search results matching criteria"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "add a new job to the system",
+        "operationId": "addJob",
+        "description": "Add a new job to the system and return the newly created job.\n",
+        "responses": {
+          "201": {
+            "description": "item created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/AlreadyExists"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobCDTO"
+              }
+            }
+          },
+          "description": "Job item to add"
+        }
+      }
+    },
+    "/jobs/{jobId}": {
+      "get": {
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "returns one job by its id",
+        "operationId": "getJob",
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request, invalid input, object invalid"
+          },
+          "401": {
+            "description": "Unauthorized to perform this operation"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "replace one job by its id",
+        "operationId": "replaceJob",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobCDTO"
+              }
+            }
+          },
+          "description": "Job item to replace"
+        },
+        "responses": {
+          "200": {
+            "description": "job replaced successfuly. Return the modified job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "update one job by its id",
+        "description": "applicable only on the 'active' attribute",
+        "operationId": "updateJob",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActiveDTO"
+              }
+            }
+          },
+          "description": "Job item to replace"
+        },
+        "responses": {
+          "200": {
+            "description": "job updated successfuly. Return the modified job.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "delete one job by its id",
+        "operationId": "deleteJob",
+        "responses": {
+          "200": {
+            "description": "job deleted successfuly."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/execute": {
+      "post": {
+        "tags": [
+          "Jobs"
+        ],
+        "summary": "execute one job by its id",
+        "operationId": "executeJob",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "exclusiveMaxMinutes",
+            "description": "any value greater than zero specify if the job should be executed exclusively and how long to wait before a previous job is assumed completed\n",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "args",
+            "description": "command arguments to use to launch the job",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobCDTO"
+              }
+            }
+          },
+          "description": "Job item to replace"
+        },
+        "responses": {
+          "200": {
+            "description": "job started successfuly.",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "example": "/executions/A9455AB2-1B8D-4A79-8BCC-F42E03458316"
+                },
+                "description": "URI for the execution."
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/jobGroups": {
+      "get": {
+        "tags": [
+          "Job Groups"
+        ],
+        "summary": "returns list of job groups",
+        "operationId": "getJobGroups",
+        "description": "By passing in the appropriate options, you can search for\navailable job groups in the system\n",
+        "responses": {
+          "200": {
+            "description": "search results matching criteria"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Job Groups"
+        ],
+        "summary": "add a new job group to the system",
+        "operationId": "addJobGroup",
+        "description": "Add a new job group to the system and return the newly created job group.\n",
+        "responses": {
+          "201": {
+            "description": "item created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobGroupDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "409": {
+            "$ref": "#/components/responses/AlreadyExists"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobGroupCDTO"
+              }
+            }
+          },
+          "description": "Job Group resource to add"
+        }
+      }
+    },
+    "/jobGroups/{jobGroupId}": {
+      "get": {
+        "tags": [
+          "Job Groups"
+        ],
+        "summary": "returns one job group by its id",
+        "operationId": "getJobGroup",
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobGroupDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request, invalid input, object invalid"
+          },
+          "401": {
+            "description": "Unauthorized to perform this operation"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Job Groups"
+        ],
+        "summary": "replace one job by its id",
+        "operationId": "replaceJobGroup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobGroupCDTO"
+              }
+            }
+          },
+          "description": "Job group resource to replace"
+        },
+        "responses": {
+          "200": {
+            "description": "job group replaced successfuly. Return the modified job group.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobGroupDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Job Groups"
+        ],
+        "summary": "update one job group by its id",
+        "description": "applicable only on the 'active' attribute. will modify the jobs active state if they are not disabled.",
+        "operationId": "updateJobGroup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActiveDTO"
+              }
+            }
+          },
+          "description": "Job item to replace"
+        },
+        "responses": {
+          "200": {
+            "description": "jobs updated successfuly."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Job Groups"
+        ],
+        "summary": "delete one job by its id",
+        "operationId": "deleteJobGroup",
+        "responses": {
+          "200": {
+            "description": "job group deleted successfuly."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/jobGroups/{jobGroupId}/execute": {
+      "post": {
+        "tags": [
+          "Job Groups"
+        ],
+        "summary": "execute all jobs in a job group",
+        "operationId": "executeJobGroup",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "executionType",
+            "description": "execute the jobs within the job group immediately.\n",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sequential",
+                "parallel"
+              ],
+              "example": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JobGroupExecuteDTO"
+              }
+            }
+          },
+          "description": "Job item to replace"
+        },
+        "responses": {
+          "200": {
+            "description": "job started successfuly.",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "example": "/executions/A9455AB2-1B8D-4A79-8BCC-F42E03458316"
+                },
+                "description": "URI for the execution."
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "NotFound": {
+        "description": "The specified resource was not found"
+      },
+      "Unauthorized": {
+        "description": "Unauthorized"
+      },
+      "BadRequest": {
+        "description": "bad request, invalid input, object invalid"
+      },
+      "AlreadyExists": {
+        "description": "The specified resource already exists"
+      }
+    },
+    "schemas": {
+      "PagingResult": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "example": 10
+          },
+          "offset": {
+            "type": "integer",
+            "example": 0
+          }
+        }
+      },
+      "JobDTO": null,
+      "JobCDTO": {
+        "type": "object",
+        "required": [
+          "label",
+          "type",
+          "commandType"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "example": "CCM Illegibility Import"
+          },
+          "type": {
+            "type": "string",
+            "example": "Imports"
+          },
+          "systemLevel": null,
+          "commandType": {
+            "type": "integer",
+            "description": "0: shell command, 1: REST API",
+            "enum": [
+              0,
+              1
+            ],
+            "example": 0
+          },
+          "command": {
+            "type": "string",
+            "example": "name of shell script to run including any arguments"
+          },
+          "commandArguments": {
+            "type": "string",
+            "example": "orgUnitId={orgUnitId}"
+          },
+          "active": {
+            "type": "integer",
+            "description": "0: inactive, 1: active, 2: disabled",
+            "enum": [
+              0,
+              1,
+              2
+            ],
+            "example": 1
+          }
+        }
+      },
+      "JobGroupDTO": null,
+      "JobGroupCDTO": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "example": "CCM All Imports"
+          },
+          "systemLevel": null,
+          "jobs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sequenceNo": {
+                  "type": "integer",
+                  "description": "unique order of the job within the group",
+                  "example": 1
+                },
+                "jobId": {
+                  "type": "string",
+                  "description": "unique id of the job",
+                  "format": "uuid",
+                  "example": "F982102A-63A2-45E5-801E-43B98CAD28B8"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ActiveDTO": {
+        "type": "object",
+        "required": [
+          "active"
+        ],
+        "properties": {
+          "active": {
+            "type": "integer",
+            "description": "0: inactive, 1: active",
+            "enum": [
+              0,
+              1
+            ],
+            "example": 1
+          }
+        }
+      },
+      "JobGroupExecuteDTO": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "jobId": {
+              "type": "string",
+              "description": "unique id of the job",
+              "format": "uuid",
+              "example": "F982102A-63A2-45E5-801E-43B98CAD28B8"
+            },
+            "exclusiveMaxMinutes": {
+              "type": "integer",
+              "description": "A value greater than zero will execute the job exclusively and will represent the number of minutes to wait for any similar job to finish since it’s start.\n",
+              "example": 100
+            },
+            "commandArgumets": {
+              "type": "string",
+              "description": "The arguments to use to start the job",
+              "example": "orgUnitId=DEFAULT_ORG_UNIT"
+            }
+          }
+        }
+      }
+    }
+  }
+}

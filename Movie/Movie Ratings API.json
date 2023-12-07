@@ -1,0 +1,207 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Retrieves ratings of movies in the databased",
+    "version": "1.0.1",
+    "title": "Movie Ratings API",
+    "contact": {
+      "email": "joeylgutierrez@gmail.com",
+      "name": "Joseph Gutierrez"
+    }
+  },
+  "paths": {
+    "/movies/{id}/ratings": {
+      "get": {
+        "summary": "retrieve movie ratings",
+        "operationId": "getRatings",
+        "description": "Returns a list of movie ratings\n",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Ratings"
+        ],
+        "responses": {
+          "200": {
+            "description": "movie ratings results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Rating"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Movie": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "title",
+              "imdbId",
+              "releaseDate",
+              "budget",
+              "genres",
+              "overview",
+              "productionCompanies",
+              "revenue",
+              "runtime",
+              "language",
+              "status",
+              "omdbRatings"
+            ],
+            "properties": {
+              "overview": {
+                "type": "string",
+                "example": "It's Ted the Bellhop's first night on the job...and the hotel's very unusual guests are about to place him in some outrageous predicaments. It seems that this evening's room service is serving up one unbelievable happening after another."
+              },
+              "productionCompanies": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": 14,
+                    "name": "Miramax Films"
+                  },
+                  {
+                    "id": 59,
+                    "name": "A Band Apart"
+                  }
+                ]
+              },
+              "revenue": {
+                "type": "integer",
+                "format": "int32",
+                "example": 4300000
+              },
+              "runtime": {
+                "type": "integer",
+                "format": "int32",
+                "example": 98
+              },
+              "language": {
+                "type": "string",
+                "nullable": true,
+                "example": null
+              },
+              "status": {
+                "type": "string",
+                "example": "Released"
+              },
+              "omdbRatings": {
+                "type": "object",
+                "properties": {
+                  "imdb": {
+                    "type": "string",
+                    "example": 6.8
+                  },
+                  "metascore": {
+                    "type": "string",
+                    "example": "N/A"
+                  }
+                }
+              },
+              "ratings": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Rating"
+                },
+                "example": [
+                  {
+                    "id": 965,
+                    "userId": 15,
+                    "movieId": 5,
+                    "rating": 4.5,
+                    "timestamp": 1093070098
+                  },
+                  {
+                    "id": 3055,
+                    "userId": 18,
+                    "movieId": 5,
+                    "rating": 3,
+                    "timestamp": 856006982
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Rating": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "example": 965
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 15
+          },
+          "movieId": {
+            "type": "integer",
+            "format": "int32",
+            "example": 5
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32",
+            "example": 4.5
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int32",
+            "example": 856006982
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "description": "paths to get movie information",
+      "name": "Movies"
+    },
+    {
+      "description": "paths for movie ratings",
+      "name": "Ratings"
+    }
+  ]
+}

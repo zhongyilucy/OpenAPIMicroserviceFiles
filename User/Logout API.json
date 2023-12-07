@@ -1,0 +1,54 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/Z5313062/F10A_PIKACHU/1.0.0"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "Logout API",
+    "description": "The API for user logout"
+  },
+  "tags": [
+    {
+      "name": "User",
+      "description": "Operations on user"
+    }
+  ],
+  "paths": {
+    "/logout": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Logs out the current logged in user",
+        "operationId": "Logout",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

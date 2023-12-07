@@ -1,0 +1,183 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BankAssist Statements API Specification",
+    "description": "This is the Specification to get bank statement.",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:8080/smt"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Statements",
+      "description": "Fetch Statement"
+    }
+  ],
+  "paths": {
+    "/GetStatement": {
+      "post": {
+        "tags": [
+          "Statements"
+        ],
+        "summary": "GetStatement",
+        "description": "Get statement",
+        "operationId": "GetStatement",
+        "parameters": [
+          {
+            "name": "koreUserId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "botId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CORRELATION-ID",
+            "in": "header",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/statementbody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/statementResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Authorisation failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/err"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/err"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "err": {
+        "type": "object",
+        "properties": {
+          "err": {
+            "$ref": "#/components/schemas/err_err"
+          }
+        }
+      },
+      "statementbody": {
+        "required": [
+          "accountNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "1042345"
+            }
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          }
+        }
+      },
+      "statementResponse": {
+        "type": "object",
+        "properties": {
+          "statementLink": {
+            "type": "string",
+            "example": "https://google.com"
+          }
+        }
+      },
+      "err_err": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

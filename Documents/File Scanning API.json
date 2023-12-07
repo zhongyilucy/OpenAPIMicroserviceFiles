@@ -1,0 +1,56 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "File Scanning API",
+    "description": "The API scans the input files"
+  },
+  
+  "paths": {
+    "/scan": {
+      "post": {
+        "summary": "Accept source file for scanning and save the scanned data into the database.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "description": "Source file contents."
+                  },
+                  "filename": {
+                    "type": "string",
+                    "description": "Name of the source file."
+                  },
+                  "service": {
+                    "type": "string",
+                    "description": "Name of the service responsible for the source file."
+                  }
+                },
+                "required": [
+                  "file",
+                  "filename",
+                  "service"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully saved the scanned data into the database."
+          },
+          "400": {
+            "description": "Bad request. The request is missing required parameters or has invalid data."
+          },
+          "500": {
+            "description": "Internal server error. Something went wrong on the server."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,361 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "TaskCreation",
+    "description": "A tool to create, retrieve, and manage tasks that need to be done."
+  },
+  "paths": {
+    "/tasks": {
+      "get": {
+        "summary": "Get all tasks currently planned and their details",
+        "description": "Gets all tasks from Tasks Table",
+        "parameters": [
+          {
+            "name": "account",
+            "in": "query",
+            "description": "account name to filter tasks",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns array of Tasks (if the query parameter is present, returned tasks are filtered by account)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Task"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Request lacks valid authentication"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Account not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new task",
+        "description": "Add a new task to the Task Table",
+        "requestBody": {
+          "description": "Information required to create a Task (account, homeCluster, sourceCluster, destinationCluster, dataSize, priority)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTask"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created. Task added to the Task Table",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized. Request lacks valid authentication"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Content."
+          }
+        }
+      }
+    },
+    "/tasks/{taskID}": {
+      "get": {
+        "summary": "Find task by taskID",
+        "description": "Get the details of Task with taskID {taskID}",
+        "parameters": [
+          {
+            "name": "taskID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Request lacks valid authentication"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Task not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Updates task",
+        "description": "Updates Task with taskID {taskID}",
+        "parameters": [
+          {
+            "name": "taskID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PatchTask",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PatchTask"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Task has been updated. Successful patch"
+          },
+          "400": {
+            "description": "Bad Request. Invalid Patch"
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "409": {
+            "description": "Conflict. Task can not be updated at the moment"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes task by taskID",
+        "description": "Deletes Task from Task Table. Reverts data movement if the Task is running.",
+        "parameters": [
+          {
+            "name": "taskID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "204": {
+            "description": "Task deleted. Successful operation"
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "409": {
+            "description": "Conflict. Task can not be deleted"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/TPECAMARGO/TaskCreation/1.0"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Task": {
+        "type": "object",
+        "properties": {
+          "planId": {
+            "type": "string",
+            "example": "PLANID GUID"
+          },
+          "taskID": {
+            "type": "string",
+            "example": "TASKID GUID"
+          },
+          "accountName": {
+            "type": "string",
+            "example": "testaccount1"
+          },
+          "taskType": {
+            "type": "string",
+            "example": "DRICorrection",
+            "enum": [
+              "None",
+              "NewVirtualization",
+              "DataDriftCorrection",
+              "DRITriggered"
+            ]
+          },
+          "taskState": {
+            "type": "string",
+            "example": "pending",
+            "enum": [
+              "unknown",
+              "pending",
+              "dispatched",
+              "running",
+              "paused",
+              "completing",
+              "done",
+              "aborted",
+              "failed"
+            ]
+          },
+          "taskDetail": {
+            "type": "object",
+            "properties": {
+              "homeClusterName": {
+                "type": "string",
+                "example": "ms-cbn09prdstr02a"
+              },
+              "sourceClusterName": {
+                "type": "string",
+                "example": "ms-cbn09prdstr02a"
+              },
+              "destinationClusterName": {
+                "type": "string",
+                "example": "ms-cbn04prdstr01b"
+              },
+              "sizeDataToMoveMB": {
+                "type": "integer",
+                "format": "int64",
+                "example": 20
+              },
+              "priority": {
+                "type": "integer",
+                "format": "int64",
+                "example": 2,
+                "minimum": 0,
+                "maximum": 5
+              }
+            }
+          },
+          "taskPercentageProgress": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      },
+      "CreateTask": {
+        "type": "object",
+        "description": "Contains minimum data necessary to create a task (account, homeCluster, sourceCluster, destinationCluster, dataSize)",
+        "properties": {
+          "accountName": {
+            "type": "string",
+            "example": "testaccount1"
+          },
+          "homeClusterName": {
+            "type": "string",
+            "example": "ms-cbn09prdstr02a"
+          },
+          "sourceClusterName": {
+            "type": "string",
+            "example": "ms-cbn09prdstr02a"
+          },
+          "destinationClusterName": {
+            "type": "string",
+            "example": "ms-cbn04prdstr01b"
+          },
+          "sizeDataToMoveMB": {
+            "type": "integer",
+            "format": "integer64",
+            "example": 20
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "deadline": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accountName",
+          "homeClusterName",
+          "sourceClusterName",
+          "destinationClusterName",
+          "sizeDataToMove"
+        ]
+      },
+      "PatchTask": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string"
+          },
+          "value": {
+            "type": "object",
+            "description": "Contains Task properties that could be changed via PATCH",
+            "properties": {
+              "sourceCluster": {
+                "type": "string"
+              },
+              "destinationCluster": {
+                "type": "string"
+              },
+              "sizeDataToMoveMB": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "priority": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "deadline": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

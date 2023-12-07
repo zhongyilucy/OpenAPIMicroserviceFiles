@@ -1,0 +1,542 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Document Storage Service",
+    "description": "Upload, retrieve, and manage documents."
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/ELIZABETHGEIL/DocumentService/1.0.0"
+    }
+  ],
+  "paths": {
+    "/uploadDocument": {
+      "post": {
+        "description": "Upload a new document",
+        "tags": [
+          "Configuration"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/newDocument"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/statusInfoWithId"
+                },
+                "examples": {
+                  "Success": {
+                    "value": {
+                      "statusInfo": {
+                        "success": true,
+                        "errorMessages": [],
+                        "id": "25e7136a-69cc-484e-8781-221a22cdcc12"
+                      }
+                    }
+                  },
+                  "Failure": {
+                    "value": {
+                      "statusInfo": {
+                        "success": false,
+                        "errorMessages": [
+                          "Document could not be uploaded."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deleteDocument/{id}": {
+      "delete": {
+        "description": "Delete an existing document",
+        "tags": [
+          "Configuration"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique document Id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/statusInfo"
+                },
+                "examples": {
+                  "Success": {
+                    "value": {
+                      "statusInfo": {
+                        "success": true,
+                        "errorMessages": []
+                      }
+                    }
+                  },
+                  "Failure": {
+                    "value": {
+                      "statusInfo": {
+                        "success": false,
+                        "errorMessages": [
+                          "Document not found."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getDocument/{id}": {
+      "get": {
+        "description": "Get an existing document",
+        "tags": [
+          "Informational"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique document Id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/documentGetResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/addTag/{id}": {
+      "put": {
+        "description": "Add a tag to an existing document",
+        "tags": [
+          "Configuration"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique document Id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "description": "The tag to be added"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/statusInfo"
+                },
+                "examples": {
+                  "Success": {
+                    "value": {
+                      "statusInfo": {
+                        "success": true,
+                        "errorMessages": []
+                      }
+                    }
+                  },
+                  "Failure": {
+                    "value": {
+                      "statusInfo": {
+                        "success": false,
+                        "errorMessages": [
+                          "Error adding tag to document."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deleteTag/{id}": {
+      "put": {
+        "description": "Delete a tag from an existing document",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique document id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Configuration"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "description": "The tag to be deleted"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/statusInfo"
+                },
+                "examples": {
+                  "Success": {
+                    "value": {
+                      "statusInfo": {
+                        "success": true,
+                        "errorMessages": []
+                      }
+                    }
+                  },
+                  "Failure": {
+                    "value": {
+                      "statusInfo": {
+                        "success": false,
+                        "errorMessages": [
+                          "Error deleting tag from document."
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/searchDocuments": {
+      "post": {
+        "description": "Search for documents",
+        "tags": [
+          "Informational"
+        ],
+        "requestBody": {
+          "description": "Document search criteria and pagination settings",
+          "required": true,
+          "content": {
+            "appplication/json": {
+              "schema": {
+                "$ref": "#/components/schemas/documentSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/documentSearchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "statusInfo": {
+        "type": "object",
+        "description": "Status info included in API responses",
+        "properties": {
+          "success": {
+            "description": "was the request successfully processed?",
+            "type": "boolean"
+          },
+          "errorMessages": {
+            "type": "array",
+            "description": "list of error messages explaining why the request was not successfully processed.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "success",
+          "errorMessages"
+        ]
+      },
+      "statusInfoWithId": {
+        "type": "object",
+        "description": "Status info with new ID, included in API responses",
+        "properties": {
+          "statusInfo": {
+            "$ref": "#/components/schemas/statusInfo"
+          },
+          "id": {
+            "description": "The ID of the new object if operation was successful.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "errorMessages"
+        ]
+      },
+      "newDocument": {
+        "type": "object",
+        "description": "A document to be uploaded along with associated metadata.",
+        "properties": {
+          "document": {
+            "description": "The document to upload",
+            "type": "string",
+            "format": "binary"
+          },
+          "name": {
+            "description": "A descriptive title for the document",
+            "type": "string"
+          },
+          "tags": {
+            "description": "List of tags associated with the document",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "document",
+          "name"
+        ]
+      },
+      "documentGetResponse": {
+        "type": "object",
+        "properties": {
+          "statusInfo": {
+            "$ref": "#/components/schemas/statusInfo"
+          },
+          "document": {
+            "$ref": "#/components/schemas/document"
+          }
+        },
+        "description": "Result of the getDocument request"
+      },
+      "document": {
+        "type": "object",
+        "properties": {
+          "document": {
+            "description": "The requested document",
+            "type": "string",
+            "format": "binary"
+          },
+          "tags": {
+            "description": "A list of tags associated with the document",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "filename": {
+            "description": "The filename and extension of the document",
+            "type": "string"
+          },
+          "name": {
+            "description": "The descriptive title of the document",
+            "type": "string"
+          }
+        },
+        "description": "A document and its associated metadata"
+      },
+      "documentSearchResponse": {
+        "type": "object",
+        "properties": {
+          "statusInfo": {
+            "$ref": "#/components/schemas/statusInfo"
+          },
+          "paginationSettings": {
+            "$ref": "#/components/schemas/paginationInfo"
+          },
+          "searchResults": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/document"
+            }
+          }
+        },
+        "description": "Results of the searchDocuments request"
+      },
+      "paginationInfo": {
+        "type": "object",
+        "description": "Pagination info included in API responses",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of records per page",
+            "minimum": 1,
+            "maximum": 1000,
+            "example": 20
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "The page number being returned"
+          },
+          "totalResultCount": {
+            "type": "integer",
+            "description": "Total number of records that meet the criteria. Note: this field will not be populated unless paginationSettings.returnRowAndPageCountTotals = true in the request.",
+            "minimum": 0,
+            "example": 123
+          },
+          "totalPageCount": {
+            "type": "integer",
+            "description": "Total number of pages of records that meet the criteria. Note: this field will not be populated unless paginationSettings.returnRowAndPageCountTotals = true in the request.",
+            "minimum": 0,
+            "example": 6
+          }
+        }
+      },
+      "paginationSettings": {
+        "type": "object",
+        "description": "Pagination settings to include in API requests",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "Maximum number of records to be returned per page in the response (1-1000).",
+            "minimum": 1,
+            "maximum": 1000,
+            "example": 20
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Which page of the result set should be returned in the response (1-n).",
+            "minimum": 1,
+            "example": 1
+          },
+          "returnRowAndPageCountTotals": {
+            "type": "boolean",
+            "description": "Should the response include total number of rows and pages that met the criteria?  Returning totals imposes a slight performance penalty.",
+            "default": false
+          }
+        },
+        "required": [
+          "pageSize",
+          "pageNumber"
+        ]
+      },
+      "documentSearchRequest": {
+        "type": "object",
+        "properties": {
+          "documentSearch": {
+            "$ref": "#/components/schemas/documentSearch"
+          },
+          "paginationSettings": {
+            "$ref": "#/components/schemas/paginationSettings"
+          }
+        },
+        "required": [
+          "documentSearch",
+          "paginationSettings"
+        ],
+        "description": "A request to search documents"
+      },
+      "documentSearch": {
+        "type": "object",
+        "properties": {
+          "nameContains": {
+            "description": "If provided, will filter to only documents with this text in the name",
+            "type": "string",
+            "maxLength": 255
+          },
+          "hasTags": {
+            "description": "If provided, will filter to only documents with matching tags",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 255
+            }
+          },
+          "createdBefore": {
+            "description": "If provided, will filter to only documents generated before this datetime. Format is yyyy-MM-ddTHH:mm:ss.fffZ",
+            "type": "string",
+            "format": "date-time",
+            "maxLength": 24
+          },
+          "createdAfter": {
+            "description": "If provided, will filter to only documents generated on or after this datetime. Format is yyyy-MM-ddTHH:mm:ss.fffZ",
+            "type": "string",
+            "format": "date-time",
+            "maxLength": 24
+          },
+          "fileFormat": {
+            "description": "If provided, will filter to only documents with matching file formats",
+            "type": "string",
+            "maxLength": 255
+          }
+        },
+        "description": "Document search criteria"
+      }
+    }
+  }
+}

@@ -1,0 +1,329 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Checkout API",
+    "description": "The system that retrieves, creates, and manages checkouts in the library system.",
+    "version": "0.1"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000"
+    }
+  ],
+  "paths": {
+    "/api/checkouts": {
+      "get": {
+        "tags": [
+          "Checkouts"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "Get all checkouts",
+        "description": "Get all checkouts",
+        "responses": {
+          "200": {
+            "description": "Checkouts retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "checkouts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "checkout_id": {
+                            "type": "integer",
+                            "description": "ID of the checkout"
+                          },
+                          "book_id": {
+                            "type": "integer",
+                            "description": "ID of the book being checked out"
+                          },
+                          "user_id": {
+                            "type": "integer",
+                            "description": "ID of the user checking out the book"
+                          },
+                          "user_name": {
+                            "type": "string",
+                            "description": "Name of the user checking out the book"
+                          },
+                          "checkout_date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Date and time of checkout"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "0": {
+                    "value": "{\n  \"checkouts\": [\n    {\n      \"book_id\": 1,\n      \"checkout_date\": \"Mon, 13 Feb 2023 00:00:00 GMT\",\n      \"checkout_id\": 1,\n      \"user_id\": 4,\n      \"user_name\": \"Joni Levy\"\n    }\n  ]\n}\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://127.0.0.1:5000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://127.0.0.1:5000"
+        }
+      ]
+    },
+    "/api/checkouts/{book_id}": {
+      "put": {
+        "tags": [
+          "Checkouts"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "Return a book from a user",
+        "description": "Return a book from a user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "book_id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "ID of the book being returned"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "book_id": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "0": {
+                  "value": "{\n\"book_id\": \"5\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book returned successfully",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {}
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "servers": [
+          {
+            "url": "http://127.0.0.1:5000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://127.0.0.1:5000"
+        }
+      ]
+    },
+    "/api/checkouts/me": {
+      "get": {
+        "tags": [
+          "Checkouts"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "Checkout a book for a user",
+        "description": "Auto generated using Swagger Inspector",
+        "responses": {
+          "200": {
+            "description": "Auto generated using Swagger Inspector",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "checkouts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "checkout_id": {
+                            "type": "integer"
+                          },
+                          "user_id": {
+                            "type": "integer"
+                          },
+                          "user_name": {
+                            "type": "string"
+                          },
+                          "book_id": {
+                            "type": "integer"
+                          },
+                          "checkout_date": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "0": {
+                    "value": "{\n  \"checkouts\": [\n    {\n      \"book_id\": 1,\n      \"checkout_date\": \"Mon, 13 Feb 2023 00:00:00 GMT\",\n      \"checkout_id\": 1,\n      \"user_id\": 4,\n      \"user_name\": \"Joni Levy\"\n    }\n  ]\n}\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://127.0.0.1:5000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://127.0.0.1:5000"
+        }
+      ]
+    },
+    "/api/checkout": {
+      "post": {
+        "tags": [
+          "Checkouts"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "summary": "Checkout a book for a user",
+        "description": "Checkout a book for a user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "book_id": {
+                    "type": "string",
+                    "description": "ID of the book being checked out"
+                  }
+                }
+              },
+              "examples": {
+                "0": {
+                  "value": "{\n\"book_id\": \"5\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Book checked out successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "ID of the checkout"
+                    },
+                    "user_id": {
+                      "type": "integer",
+                      "description": "ID of the user checking out the book"
+                    },
+                    "book_id": {
+                      "type": "integer",
+                      "description": "ID of the book being checked out"
+                    },
+                    "checkout_date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Date and time of checkout"
+                    }
+                  }
+                },
+                "examples": {
+                  "0": {
+                    "value": "{\n  \"book_id\": \"5\",\n  \"checkout_date\": \"Mon, 13 Feb 2023 00:00:00 GMT\",\n  \"id\": 3,\n  \"user_id\": 8\n}\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://127.0.0.1:5000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://127.0.0.1:5000"
+        }
+      ]
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basic": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

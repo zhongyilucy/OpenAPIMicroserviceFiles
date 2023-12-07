@@ -1,0 +1,2870 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Customer Management",
+    "description": "This is Swagger specification for Customer Management.",
+    "version": "1.0"
+  },
+  "tags": [
+    {
+      "name": "customer"
+    }
+  ],
+  "paths": {
+    "/customer": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "List or find Customer objects",
+        "description": "This operation list or find Customer entities",
+        "operationId": "listCustomer",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to be provided in response.The field names should be from the first level of property names as defined in Customer schema. E.g.: name, status, validFor, engagedParty, characteristic, relatedParty, account, creditProfile, paymentMethod, contactMedium, dunningScenario.\nNote: There is a validation check on the input fields. An error will be prompted if an invalid input field provided.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "market",
+            "in": "query",
+            "description": "market of the customers to be retrieved",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "csrId",
+            "in": "query",
+            "description": "It is logged in csr id and it is mandatory when List of VIP and Enterprise is fetched.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortKey",
+            "in": "query",
+            "description": "To sort the response based on sortkeys. Possible values name. Values will be retrieved from RT perestapi.imp.cust.SORT_KEY",
+            "schema": {
+              "type": "string",
+              "x-refdata-source": "RT-perestapi.imp.cust.SORT_KEY"
+            },
+            "x-refdata-source": "RT-perestapi.imp.cust.SORT_KEY"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "description": "To sort the response based on sort order. Possible value ascending, descending",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "retrievalType",
+            "in": "query",
+            "description": "Type of retrieval of data. 1 -> retrieves the list of all object keys along with the number of object details mentioned in retrievalLimit, 2 -> retrieves the list of all object keys, 3 -> retrieves object details for the keys mentioned in objKeys",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "retrievalLimit",
+            "in": "query",
+            "description": "Limit to the number of objects retrieved. Mandatory when retrievalType is 1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "objKeys",
+            "in": "query",
+            "description": "Comma-separated object keys for which details to be retrieved. Mandatory when retrievalType is 3",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerType",
+            "in": "query",
+            "description": "To retrieve the customers by type - SV_MAPPING:Cust_Acct_Type.DisplayName_X - Consumer|Corporate|Unregistered|Unidentified Payments of respective market",
+            "schema": {
+              "type": "string",
+              "x-refdata-source": "RT-api.imp.CUSTOMER_TYPE"
+            },
+            "x-refdata-source": "RT-api.imp.CUSTOMER_TYPE"
+          },
+          {
+            "name": "customerRank",
+            "in": "query",
+            "description": "It tells if VIP list of customers are needed to be retrieved. Possible Value: VIP",
+            "schema": {
+              "type": "integer",
+              "x-refdata-source": "RT-accl.cust.CUSTOMER_RANK"
+            },
+            "x-refdata-source": "RT-accl.cust.CUSTOMER_RANK"
+          },
+          {
+            "name": "listEntCustFlag",
+            "in": "query",
+            "description": "It tells if list of enterprise customers are needed to be retrieved. Possible Value: 1",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "searchKey",
+            "in": "query",
+            "description": "Search Keys on which data needs to be filtered. Valid Values: Name | MSISDN | IMSI | National ID | Account Number | MarketId. These values will be retrieved from RT perestapi.imp.cust.GlobalSrchFilters",
+            "schema": {
+              "type": "string",
+              "x-refdata-source": "RT-perestapi.imp.cust.GlobalSrchFilters"
+            },
+            "x-refdata-source": "RT-perestapi.imp.cust.GlobalSrchFilters"
+          },
+          {
+            "name": "searchValue",
+            "in": "query",
+            "description": "Value of the searchKey passed.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rootNodeId",
+            "in": "query",
+            "description": "To retrieve the customers by root customer node id - SV_MAPPING: Cust_Acct.RootCustAcct_R.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parentNodeId",
+            "in": "query",
+            "description": "To retrieve the customers by parent customer node id - SV_MAPPING: Cust_Acct.ParentCustAcct_R.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "individualId",
+            "in": "query",
+            "description": "To retrieve customer by Individual Id - SV_MAPPING:CustAcct_Contact.Contact.XSID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer_List"
+                },
+                "examples": {
+                  "Sample Response 1": {
+                    "value": {
+                      "allObjKeys": [
+                        149922,
+                        30015960,
+                        104544,
+                        102105,
+                        135107,
+                        40006860,
+                        115044,
+                        115584,
+                        115005,
+                        114357
+                      ],
+                      "totalObjects": 1000,
+                      "warningMessage": "Search result exceeds the configured limit. Only first 1000 are returned.",
+                      "customers": [
+                        {
+                          "taxExemptionCertificate": [],
+                          "contactMedium": [
+                            {
+                              "mediumType": "PostalAddress",
+                              "characteristic": {
+                                "country": "Jamaica",
+                                "suburb": "Old Harbour Suburb",
+                                "postCode": "12548",
+                                "stateOrProvince": "St Catherine",
+                                "city": "Old Harbour"
+                              }
+                            },
+                            {
+                              "mediumType": "SiteAddress",
+                              "characteristic": {
+                                "country": "Jamaica",
+                                "suburb": "Old Harbour Suburb",
+                                "postCode": "15242",
+                                "stateOrProvince": "St Catherine",
+                                "city": "Old Harbour"
+                              }
+                            }
+                          ],
+                          "creditProfile": {
+                            "creditCheckAuthorization": "FALSE",
+                            "creditLimitCurrency": "JMD",
+                            "creditRiskRating": "Low Risk"
+                          },
+                          "validFor": {
+                            "endDateTime": "9999-12-30T23:59:59",
+                            "startDateTime": "2023-06-06T10:56:26"
+                          },
+                          "taxRegistration": [],
+                          "characteristic": [
+                            {
+                              "name": "CustomerType",
+                              "value": "Consumer",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OpenCasesCount",
+                              "value": "1",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OpenOrderCases",
+                              "value": "0",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OpenSalesOrders",
+                              "value": "0",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PrimaryAccount",
+                              "value": "0100017608",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "CreationDate",
+                              "value": "2023-06-06T10:56:26",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "ChangeDate",
+                              "value": "2023-06-06T10:56:29",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "ActivationDate",
+                              "value": "2023-06-06T10:56:26",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "InsideCUG",
+                              "value": "No",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "CustomerRank",
+                              "value": "High Importance",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "VATExempt",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OfficialLetterRequired",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PaysForSelf",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PaysBySalary",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "SalesRepresentative",
+                              "value": "Jennifer Ariza (JARIZA)",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PrepaidWithoutStatement",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "SecutityGroup",
+                              "value": "IMP_JAMAICA",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "TotalPurchasedServices",
+                              "value": "1",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PlanName",
+                              "value": "PRIME 1D OFFER JAM301",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "ServiceName",
+                              "value": "18765704548",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "ServiceStatus",
+                              "value": "Pending Activation",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "VoucherTopUpStatus",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "TimeZone",
+                              "value": "America/Jamaica",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "BalanceTransferStatus",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "AdminNumber",
+                              "value": "3102532100",
+                              "valueType": "string"
+                            }
+                          ],
+                          "defaultDisplayAccount": "174707",
+                          "market": "Jamaica",
+                          "name": " cust malefica  dueña del mal ",
+                          "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/customer/149922",
+                          "id": "149922",
+                          "account": [
+                            {
+                              "accountDisplayName": "01-0001-7608",
+                              "availableCredit": "0",
+                              "accountType": "Debtor (JMD)",
+                              "accountTypeDisplayName": "Debtor",
+                              "billStructure": {
+                                "format": [
+                                  {
+                                    "name": "invxml.INV_FORMAT",
+                                    "presentationMedia": {
+                                      "name": "Post"
+                                    },
+                                    "characteristic": [
+                                      {
+                                        "name": "sendInvoiceTo",
+                                        "value": "malefica dueña del mal",
+                                        "valueType": "string"
+                                      },
+                                      {
+                                        "name": "addressChoice",
+                                        "value": "Customer's postal address",
+                                        "valueType": "string"
+                                      },
+                                      {
+                                        "name": "itemized",
+                                        "value": "true",
+                                        "valueType": "string"
+                                      },
+                                      {
+                                        "name": "seqnr",
+                                        "value": "1",
+                                        "valueType": "string"
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "cycleSpecification": {
+                                  "name": "Geeth_Test_30",
+                                  "suppressBilling": "FALSE",
+                                  "reportLevel": "Invoice",
+                                  "preferredCurrency": "JMD"
+                                }
+                              },
+                              "creditLimit": "0",
+                              "id": "174707",
+                              "accountBalance": 0,
+                              "accountNumber": "0100017608"
+                            },
+                            {
+                              "accountDisplayName": "01-0001-7609",
+                              "id": "174708",
+                              "accountBalance": 522.5,
+                              "accountNumber": "0100017609",
+                              "accountType": "Prepaid (JMD)",
+                              "accountTypeDisplayName": "Prepaid"
+                            },
+                            {
+                              "accountDisplayName": "01-0001-7610",
+                              "id": "174709",
+                              "accountBalance": 0,
+                              "accountNumber": "0100017610",
+                              "accountType": "Prepaid (JMD)",
+                              "accountTypeDisplayName": "Prepaid"
+                            }
+                          ],
+                          "engagedParty": [
+                            {
+                              "name": "malefica dueña del mal",
+                              "@referredType": "individual",
+                              "contactMedium": [
+                                {
+                                  "mediumType": "HomeNumber",
+                                  "characteristic": null
+                                },
+                                {
+                                  "mediumType": "WorkNumber",
+                                  "characteristic": null
+                                },
+                                {
+                                  "mediumType": "MobileNumber",
+                                  "characteristic": {
+                                    "phoneNumber": "3102532100"
+                                  }
+                                },
+                                {
+                                  "mediumType": "DefaultEmailAddress",
+                                  "characteristic": null
+                                }
+                              ],
+                              "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/individual/141865",
+                              "id": "141865",
+                              "role": "Primary"
+                            }
+                          ],
+                          "treatmentExemption": {
+                            "exemption": "False",
+                            "id": "194003"
+                          },
+                          "status": "Active"
+                        },
+                        {
+                          "taxExemptionCertificate": [],
+                          "contactMedium": [
+                            {
+                              "mediumType": "PostalAddress",
+                              "characteristic": {
+                                "country": "Unknown"
+                              }
+                            },
+                            {
+                              "mediumType": "SiteAddress",
+                              "characteristic": {
+                                "country": "Jamaica",
+                                "postCode": "123",
+                                "street1": "123",
+                                "street2": "3434",
+                                "stateOrProvince": "St Catherine",
+                                "city": "Old Harbour"
+                              }
+                            }
+                          ],
+                          "creditProfile": {
+                            "creditCheckAuthorization": "FALSE",
+                            "creditLimitCurrency": "JMD",
+                            "creditRiskRating": "Low Risk"
+                          },
+                          "validFor": {
+                            "endDateTime": "9999-12-30T23:59:59",
+                            "startDateTime": "2023-05-24T05:49:28"
+                          },
+                          "taxRegistration": [],
+                          "characteristic": [
+                            {
+                              "name": "CustomerType",
+                              "value": "Consumer",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OpenCasesCount",
+                              "value": "1",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OpenOrderCases",
+                              "value": "0",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OpenSalesOrders",
+                              "value": "0",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PrimaryAccount",
+                              "value": "0100014922",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "CreationDate",
+                              "value": "2023-05-24T05:49:28",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "ChangeDate",
+                              "value": "2023-05-24T05:49:46",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "ActivationDate",
+                              "value": "2023-05-24T05:49:28",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "InsideCUG",
+                              "value": "No",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "CustomerRank",
+                              "value": "High Importance",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "VATExempt",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OfficialLetterRequired",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PaysForSelf",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PaysBySalary",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "SalesRepresentative",
+                              "value": "selva subramanian",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PrepaidWithoutStatement",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "SecutityGroup",
+                              "value": "IMP_JAMAICA",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "VoucherTopUpStatus",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "TimeZone",
+                              "value": "America/New_York",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "BalanceTransferStatus",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "AdminNumber",
+                              "value": "123456",
+                              "valueType": "string"
+                            }
+                          ],
+                          "defaultDisplayAccount": "30020308",
+                          "market": "Jamaica",
+                          "name": "%Selva1% ",
+                          "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/customer/30015960",
+                          "id": "30015960",
+                          "account": [
+                            {
+                              "accountDisplayName": "01-0001-4922",
+                              "availableCredit": "0",
+                              "accountType": "Dealer Debtor (JMD)",
+                              "accountTypeDisplayName": "Dealer Debtor",
+                              "billStructure": {
+                                "format": [
+                                  {
+                                    "name": "invxml.INV_FORMAT",
+                                    "presentationMedia": {
+                                      "name": "Post"
+                                    },
+                                    "characteristic": [
+                                      {
+                                        "name": "sendInvoiceTo",
+                                        "value": "%Selva1% ss",
+                                        "valueType": "string"
+                                      },
+                                      {
+                                        "name": "addressChoice",
+                                        "value": "Customer's postal address",
+                                        "valueType": "string"
+                                      },
+                                      {
+                                        "name": "itemized",
+                                        "value": "true",
+                                        "valueType": "string"
+                                      },
+                                      {
+                                        "name": "seqnr",
+                                        "value": "1",
+                                        "valueType": "string"
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "cycleSpecification": {
+                                  "name": "Geeth_Test_30",
+                                  "suppressBilling": "FALSE",
+                                  "reportLevel": "Invoice",
+                                  "preferredCurrency": "JMD"
+                                }
+                              },
+                              "creditLimit": "0",
+                              "id": "30020308",
+                              "accountBalance": 0,
+                              "accountNumber": "0100014922"
+                            },
+                            {
+                              "accountDisplayName": "01-0001-4923",
+                              "id": "30020309",
+                              "accountBalance": 0,
+                              "accountNumber": "0100014923",
+                              "accountType": "Prepaid (JMD)",
+                              "accountTypeDisplayName": "Prepaid"
+                            }
+                          ],
+                          "engagedParty": [
+                            {
+                              "name": "%Selva1% ss",
+                              "@referredType": "individual",
+                              "contactMedium": [
+                                {
+                                  "mediumType": "HomeNumber",
+                                  "characteristic": {
+                                    "phoneNumber": "1234"
+                                  }
+                                },
+                                {
+                                  "mediumType": "WorkNumber",
+                                  "characteristic": {
+                                    "phoneNumber": "12345"
+                                  }
+                                },
+                                {
+                                  "mediumType": "MobileNumber",
+                                  "characteristic": {
+                                    "phoneNumber": "123456"
+                                  }
+                                },
+                                {
+                                  "mediumType": "DefaultEmailAddress",
+                                  "characteristic": null
+                                }
+                              ],
+                              "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/individual/30014341",
+                              "id": "30014341",
+                              "role": "Primary"
+                            }
+                          ],
+                          "treatmentExemption": {
+                            "exemption": "False",
+                            "id": "194003"
+                          },
+                          "status": "Active"
+                        },
+                        {
+                          "taxExemptionCertificate": [],
+                          "contactMedium": [
+                            {
+                              "mediumType": "PostalAddress",
+                              "characteristic": {
+                                "country": "Cayman Islands",
+                                "postCode": "19013",
+                                "street1": "156, Ardsheal Drive",
+                                "street2": "PG 05, Paget"
+                              }
+                            },
+                            {
+                              "mediumType": "SiteAddress",
+                              "characteristic": {
+                                "country": "Barbados",
+                                "postCode": "19013",
+                                "street1": "156, Ardsheal Drive",
+                                "street2": "PG 05, Paget"
+                              }
+                            }
+                          ],
+                          "creditProfile": {
+                            "creditLimitCurrency": "Dum",
+                            "creditRiskRating": "Low Risk"
+                          },
+                          "validFor": {
+                            "endDateTime": "9999-12-30T23:59:59",
+                            "startDateTime": "2022-08-05T09:41:43"
+                          },
+                          "taxRegistration": [],
+                          "characteristic": [
+                            {
+                              "name": "CustomerType",
+                              "value": "Consumer",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OpenCasesCount",
+                              "value": "0",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OpenOrderCases",
+                              "value": "0",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "OpenSalesOrders",
+                              "value": "0",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PrimaryAccount",
+                              "value": "000105931",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "CreationDate",
+                              "value": "2022-08-02T00:00:00",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "ChangeDate",
+                              "value": "2022-08-05T16:44:27",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "ActivationDate",
+                              "value": "2022-08-02T00:00:00",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "SalesRepresentative",
+                              "value": "Sukhdev Patil (SPATIL)",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PrepaidWithoutStatement",
+                              "value": "FALSE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "SecutityGroup",
+                              "value": "IMP_BARBADOS",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "TotalPurchasedServices",
+                              "value": "1",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "PlanName",
+                              "value": "PAYGO 100 Cayman Sprint 1",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "ServiceName",
+                              "value": "8767899358",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "ServiceStatus",
+                              "value": "Provisioning Required",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "VoucherTopUpStatus",
+                              "value": "TRUE",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "TimeZone",
+                              "value": "Africa/Gaborone",
+                              "valueType": "string"
+                            },
+                            {
+                              "name": "BalanceTransferStatus",
+                              "value": "TRUE",
+                              "valueType": "string"
+                            }
+                          ],
+                          "defaultDisplayAccount": "105931",
+                          "market": "Cayman",
+                          "name": "01_2532 SP",
+                          "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/customer/104544",
+                          "id": "104544",
+                          "account": [
+                            {
+                              "accountDisplayName": "00-0105-931",
+                              "id": "105931",
+                              "accountBalance": 0,
+                              "accountNumber": "000105931",
+                              "accountType": "Debtor (BMD)",
+                              "accountTypeDisplayName": "Debtor",
+                              "billStructure": {
+                                "format": [
+                                  {
+                                    "name": "invxml.INV_FORMAT",
+                                    "presentationMedia": {
+                                      "name": "Post"
+                                    },
+                                    "characteristic": [
+                                      {
+                                        "name": "sendInvoiceTo",
+                                        "value": "01_2532 SP",
+                                        "valueType": "string"
+                                      },
+                                      {
+                                        "name": "addressChoice",
+                                        "value": "Customer's postal address",
+                                        "valueType": "string"
+                                      },
+                                      {
+                                        "name": "itemized",
+                                        "value": "true",
+                                        "valueType": "string"
+                                      },
+                                      {
+                                        "name": "seqnr",
+                                        "value": "1",
+                                        "valueType": "string"
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "cycleSpecification": {
+                                  "name": "PK_Test",
+                                  "suppressBilling": "FALSE",
+                                  "reportLevel": "Invoice",
+                                  "preferredCurrency": "Dum"
+                                }
+                              }
+                            },
+                            {
+                              "accountDisplayName": "90-0105-930",
+                              "id": "105930",
+                              "accountBalance": 0,
+                              "accountNumber": "900105930",
+                              "accountType": "Prepaid (KYD)",
+                              "accountTypeDisplayName": "Prepaid"
+                            },
+                            {
+                              "accountDisplayName": "PP-_000-106749",
+                              "id": "106749",
+                              "accountBalance": 0,
+                              "accountNumber": "PP_000106749",
+                              "accountType": "Prepaid (KYD)",
+                              "accountTypeDisplayName": "Prepaid"
+                            }
+                          ],
+                          "engagedParty": [
+                            {
+                              "partyCharacteristic": [
+                                {
+                                  "name": "PersonalVatNumber",
+                                  "value": "25",
+                                  "valueType": "string"
+                                }
+                              ],
+                              "@referredType": "individual",
+                              "contactMedium": [
+                                {
+                                  "mediumType": "HomeNumber",
+                                  "characteristic": {
+                                    "phoneNumber": "9970627030"
+                                  }
+                                },
+                                {
+                                  "mediumType": "WorkNumber",
+                                  "characteristic": null
+                                },
+                                {
+                                  "mediumType": "MobileNumber",
+                                  "characteristic": null
+                                },
+                                {
+                                  "mediumType": "DefaultEmailAddress",
+                                  "characteristic": null
+                                }
+                              ],
+                              "role": "Primary",
+                              "name": "01_2532 SP",
+                              "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/individual/105142",
+                              "id": "105142"
+                            }
+                          ],
+                          "treatmentExemption": {
+                            "exemption": "False",
+                            "id": "194003"
+                          },
+                          "status": "Active"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will be included information about error code and short description of error. The error in the response will be indicative of the first occurrence of problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Digicel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| S. No. | Error Code | Error Message | Purpose |\n|--------|------------|---------------|---------|\n| 1 | E84106 | PERESTAPI_ELEMENT_MISSING | To check mandatory element is passed or not |\n| 2 | E83562 | CBAPI_INVALID_FIELD_NAME | To validate the passed input parameters |\n| 3 | E83559 | CBAPI_FIELDS_INVALID_VALUE | To validate the passed attributes in fields parameter |\n| 4 | E84105 | PERESTAPI_INVALID_VALUE_FOR_CONVERSION | To validate the date being passed in format yyyy-mm-dd\"T\"hh:nn:ss | \n| 5 | E84108 | PERESTAPI_ENTITY_NOT_FOUND_OR_NO_ACCESS &nbsp;| To validate the User's access privileges and/or the record does not exists in system |\n| 6 | E84104 | PERESTAPI_NULL_VALUE_PASSED | NULL value is provided for 'Param' field | \\\n| 7 | E84107 | PERESTAPI_INVALID_VALUE | To validate the input value |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "Creates a Customer",
+        "operationId": "createCustomer",
+        "requestBody": {
+          "description": "The Customer to be created",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/Customer_Create"
+              },
+              "examples": {
+                "Create Customer: Customer Type Consumer": {
+                  "value": {
+                    "name": "LP_API_UT_10",
+                    "engagedParty": [
+                      {
+                        "id": "105188",
+                        "role": "Primary"
+                      }
+                    ],
+                    "validFor": {
+                      "startDateTime": "2022-10-01T00:00:00"
+                    },
+                    "characteristic": [
+                      {
+                        "name": "CustomerType",
+                        "value": "Consumer"
+                      },
+                      {
+                        "name": "SalesRepresentative",
+                        "value": "Naveen Ganesan"
+                      },
+                      {
+                        "name": "CompanyNumber",
+                        "value": "12345",
+                        "valueType": "string"
+                      },
+                      {
+                        "name": "IndustryType",
+                        "value": "Hotel",
+                        "valueType": "string"
+                      },
+                      {
+                        "name": "CustomerRank",
+                        "value": "High Importance",
+                        "valueType": "string"
+                      }
+                    ],
+                    "account": [
+                      {
+                        "billStructure": {
+                          "cycleSpecification": {
+                            "name": "PK_Test",
+                            "prefferedCurrency": "JMD",
+                            "reportLevel": "Invoice",
+                            "suppressBilling": "1",
+                            "suppressCycles": "2"
+                          }
+                        },
+                        "paymentPlan": {
+                          "paymentMethod": "Debit Card",
+                          "autoPay": "No"
+                        }
+                      }
+                    ],
+                    "creditProfile": {
+                      "creditLimit": "4000",
+                      "creditLimitCurrency": "JMD",
+                      "creditRiskRating": "Low Risk",
+                      "expectedRevenue": "100",
+                      "expRevCurrency": "JMD",
+                      "creditComments": "test",
+                      "taxClass": "Tax Exempt"
+                    },
+                    "contactMedium": [
+                      {
+                        "mediumType": "SiteAddress",
+                        "characteristic": {
+                          "street1": "PS18123",
+                          "street2": "PS18123",
+                          "city": "Delhi",
+                          "postCode": "PCode8123",
+                          "country": "Bermuda",
+                          "poBox": "123456",
+                          "geocode": "7892",
+                          "secondaryNo": "2242",
+                          "suburb": "Test",
+                          "stateOrProvince": "Test User"
+                        }
+                      }
+                    ],
+                    "paymentMethod": [
+                      {
+                        "@type": "bankCard",
+                        "details": {
+                          "brand": "Mastercard",
+                          "cardNumber": "5113157939615994",
+                          "expirationDate": "0525",
+                          "nameOnCard": "Test Card",
+                          "cvv": "123",
+                          "cardToken": "ZYXU9876"
+                        }
+                      }
+                    ],
+                    "status": "Active",
+                    "market": "BVI",
+                    "customerSubtype": "Healthcare",
+                    "taxJurisdiction": "AA"
+                  }
+                },
+                "Create Customer: Customer Type Corporate": {
+                  "value": {
+                    "name": "LP_API_UT_11",
+                    "engagedParty": [
+                      {
+                        "id": "105188",
+                        "role": "Primary"
+                      }
+                    ],
+                    "validFor": {
+                      "startDateTime": "2022-10-01T00:00:00"
+                    },
+                    "characteristic": [
+                      {
+                        "name": "CustomerType",
+                        "value": "Corporate"
+                      },
+                      {
+                        "name": "SalesRepresentative",
+                        "value": "Naveen Ganesan"
+                      },
+                      {
+                        "name": "CompanyNumber",
+                        "value": "12345",
+                        "valueType": "string"
+                      },
+                      {
+                        "name": "IndustryType",
+                        "value": "Hotel",
+                        "valueType": "string"
+                      },
+                      {
+                        "name": "CustomerRank",
+                        "value": "High Importance",
+                        "valueType": "string"
+                      }
+                    ],
+                    "account": [
+                      {
+                        "billStructure": {
+                          "cycleSpecification": {
+                            "name": "PK_Test",
+                            "prefferedCurrency": "JMD",
+                            "reportLevel": "Invoice",
+                            "suppressBilling": "1",
+                            "suppressCycles": "2"
+                          }
+                        },
+                        "paymentPlan": {
+                          "paymentMethod": "Debit Card",
+                          "autoPay": "No"
+                        }
+                      }
+                    ],
+                    "creditProfile": {
+                      "creditLimit": "4000",
+                      "creditLimitCurrency": "JMD",
+                      "creditRiskRating": "Low Risk",
+                      "expectedRevenue": "100",
+                      "expRevCurrency": "JMD",
+                      "creditComments": "test",
+                      "taxClass": "Tax Exempt"
+                    },
+                    "contactMedium": [
+                      {
+                        "mediumType": "SiteAddress",
+                        "characteristic": {
+                          "street1": "PS18123",
+                          "street2": "PS18123",
+                          "city": "Delhi",
+                          "postCode": "PCode8123",
+                          "country": "Bermuda",
+                          "poBox": "123456",
+                          "geocode": "7892",
+                          "secondaryNo": "2242",
+                          "suburb": "Test",
+                          "stateOrProvince": "Test User"
+                        }
+                      }
+                    ],
+                    "paymentMethod": [
+                      {
+                        "@type": "bankCard",
+                        "details": {
+                          "brand": "Mastercard",
+                          "cardNumber": "5113157939615994",
+                          "expirationDate": "0525",
+                          "nameOnCard": "Test Card",
+                          "cvv": "123",
+                          "cardToken": "ZYXU9876"
+                        }
+                      }
+                    ],
+                    "status": "Active",
+                    "market": "BVI",
+                    "customerSubtype": "Healthcare",
+                    "taxJurisdiction": "AA"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                },
+                "examples": {
+                  "Cunsumer Customer Created": {
+                    "value": {
+                      "href": "https://$HOST:30140/perest/api/v1/customer/115684",
+                      "id": "115684",
+                      "case": {
+                        "name": "C8484",
+                        "href": "http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/case/8484",
+                        "id": "8484",
+                        "status": "New"
+                      }
+                    }
+                  },
+                  "Corporate Customer Created": {
+                    "value": {
+                      "href": "https://$HOST:30140/perest/api/v1/customer/115686",
+                      "id": "115686",
+                      "case": {
+                        "name": "C8487",
+                        "href": "http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/case/8487",
+                        "id": "8487",
+                        "status": "New"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request \n\nIf the processing is not successful, the response will be included information about error code and short description of error. The error in the response will be indicative of the first occurrence of problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Digicel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| Error Code | Error Message | Error Cause | Action |\n|--------|------------|---------------|---------|\n| E83522 | <1:Number> Primary contacts were specified. Only one Primary contact can be specified for a customer. | More than one Primary contact was specified for the customer, but only one Primary contact is allowed. | Change one of the Primary contacts to be Secondary contact if the customer requires more than one contact. |\n| E83525 | Primary Person detail is not provided in API request. | Primary person detail is mandatory if it is required to update person. | Specify complete list of Person as required for the customer update (both Primary and Secondary). |\n| E83526 | The Person with Primary Identifier '<1:Identifer>' is in '<2:Status>' status for the Effective date specified (<3:EffectiveDate>). &nbsp;| Person Status is not valid for assignment to Customer. | Specify Primary Contact with 'Active' Status for |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "customer"
+      }
+    },
+    "/customer/{id}": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "Retrieves a Customer by customer node id",
+        "operationId": "retrieveCustomer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Customer Node Id/MSISDN (if MSISDN flag is Yes) of the customer, SV_MAPPING: Cust_Acct.XSID_I",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to provide in response.The field names should be from the first level of property names as defined in Customer schema.\nE.g.: name, status, validFor, engagedParty, characteristic, relatedParty, account, creditProfile, paymentMethod and contactMedium. If no field is provided, then all party attributes will be returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "effectiveDate",
+            "in": "query",
+            "description": "To search a specific customer history record details based on a given effective date value - Format: yyyy-mm-ddThh:nn:ss ",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "msisdn",
+            "in": "query",
+            "description": "Populate the value with 'Yes' if provided id is msisdn",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "market",
+            "in": "query",
+            "description": " Market of the Digicel customer",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                },
+                "examples": {
+                  "Sample Response 1": {
+                    "value": {
+                      "taxExemptionCertificate": [],
+                      "contactMedium": [
+                        {
+                          "mediumType": "PostalAddress",
+                          "characteristic": {
+                            "country": "Barbados",
+                            "street1": "q"
+                          }
+                        },
+                        {
+                          "mediumType": "SiteAddress",
+                          "characteristic": {
+                            "country": "Barbados",
+                            "street1": "1"
+                          }
+                        }
+                      ],
+                      "creditProfile": {
+                        "creditLimitCurrency": "Dum",
+                        "creditRiskRating": "Low Risk"
+                      },
+                      "validFor": {
+                        "endDateTime": "9999-12-30T23:59:59",
+                        "startDateTime": "2023-05-30T17:36:17"
+                      },
+                      "taxRegistration": [],
+                      "characteristic": [
+                        {
+                          "name": "CustomerType",
+                          "value": "Consumer",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "OpenCasesCount",
+                          "value": "0",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "OpenOrderCases",
+                          "value": "0",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "OpenSalesOrders",
+                          "value": "0",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "PrimaryAccount",
+                          "value": "000102825",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "CreationDate",
+                          "value": "2022-07-27T00:00:00",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "ChangeDate",
+                          "value": "2023-05-30T17:36:17",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "ActivationDate",
+                          "value": "2022-07-27T00:00:00",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "VATExempt",
+                          "value": "FALSE",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "OfficialLetterRequired",
+                          "value": "FALSE",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "PaysForSelf",
+                          "value": "FALSE",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "PaysBySalary",
+                          "value": "FALSE",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "SalesRepresentative",
+                          "value": "(SCHAKRABARTY)",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "PrepaidWithoutStatement",
+                          "value": "FALSE",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "SecutityGroup",
+                          "value": "CHECKOUT",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "VoucherTopUpStatus",
+                          "value": "FALSE",
+                          "valueType": "string"
+                        },
+                        {
+                          "name": "TimeZone",
+                          "value": "America/Toronto",
+                          "valueType": "string"
+                        }
+                      ],
+                      "defaultDisplayAccount": "102825",
+                      "market": "Barbados",
+                      "name": "1 test",
+                      "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/customer/102105",
+                      "id": "102105",
+                      "account": [
+                        {
+                          "accountDisplayName": "00-0102-825",
+                          "id": "102825",
+                          "accountBalance": 0,
+                          "accountNumber": "000102825",
+                          "accountType": "Debtor (BBD)",
+                          "accountTypeDisplayName": "Debtor",
+                          "billStructure": {
+                            "format": [
+                              {
+                                "name": "invxml.INV_FORMAT",
+                                "presentationMedia": {
+                                  "name": "Post"
+                                },
+                                "characteristic": [
+                                  {
+                                    "name": "sendInvoiceTo",
+                                    "value": " ConsumerNew 1",
+                                    "valueType": "string"
+                                  },
+                                  {
+                                    "name": "addressChoice",
+                                    "value": "Customer's postal address",
+                                    "valueType": "string"
+                                  },
+                                  {
+                                    "name": "itemized",
+                                    "value": "true",
+                                    "valueType": "string"
+                                  },
+                                  {
+                                    "name": "seqnr",
+                                    "value": "1",
+                                    "valueType": "string"
+                                  }
+                                ]
+                              }
+                            ],
+                            "cycleSpecification": {
+                              "name": "PK_Test",
+                              "suppressBilling": "FALSE",
+                              "reportLevel": "Invoice",
+                              "preferredCurrency": "Dum"
+                            }
+                          }
+                        },
+                        {
+                          "accountDisplayName": "90-0102-824",
+                          "id": "102824",
+                          "accountBalance": 0,
+                          "accountNumber": "900102824",
+                          "accountType": "Debtor (BBD)",
+                          "accountTypeDisplayName": "Debtor"
+                        }
+                      ],
+                      "engagedParty": [
+                        {
+                          "name": " ConsumerNew 1",
+                          "@referredType": "individual",
+                          "contactMedium": [
+                            {
+                              "mediumType": "HomeNumber",
+                              "characteristic": {
+                                "phoneNumber": "1"
+                              }
+                            },
+                            {
+                              "mediumType": "WorkNumber",
+                              "characteristic": null
+                            },
+                            {
+                              "mediumType": "MobileNumber",
+                              "characteristic": null
+                            },
+                            {
+                              "mediumType": "DefaultEmailAddress",
+                              "characteristic": null
+                            }
+                          ],
+                          "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/individual/102822",
+                          "id": "102822",
+                          "role": "Primary"
+                        },
+                        {
+                          "name": "GS1 MY",
+                          "@referredType": "individual",
+                          "contactMedium": [
+                            {
+                              "mediumType": "HomeNumber",
+                              "characteristic": {
+                                "phoneNumber": "9988776655"
+                              }
+                            },
+                            {
+                              "mediumType": "WorkNumber",
+                              "characteristic": {
+                                "phoneNumber": "9988776655"
+                              }
+                            },
+                            {
+                              "mediumType": "MobileNumber",
+                              "characteristic": {
+                                "phoneNumber": "9988776655"
+                              }
+                            },
+                            {
+                              "mediumType": "DefaultEmailAddress",
+                              "characteristic": null
+                            }
+                          ],
+                          "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/individual/40004723",
+                          "id": "40004723",
+                          "role": "Secondary"
+                        }
+                      ],
+                      "treatmentExemption": {
+                        "exemption": "False",
+                        "id": "194003"
+                      },
+                      "status": "Active"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will be included information about error code and short description of error. The error in the response will be indicative of the first occurrence of problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Digicel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| S. No. | Error Code | Error Message | Purpose |\n|--------|------------|---------------|---------|\n| 1 | E84106 | PERESTAPI_ELEMENT_MISSING | To check mandatory element is passed or not |\n| 2 | E83562 | CBAPI_INVALID_FIELD_NAME | To validate the passed input parameters |\n| 3 | E83559 | CBAPI_FIELDS_INVALID_VALUE | To validate the passed attributes in fields parameter |\n| 4 | E84105 | PERESTAPI_INVALID_VALUE_FOR_CONVERSION | To validate the date being passed in format yyyy-mm-dd\"T\"hh:nn:ss |\n| 5 | E84108 | PERESTAPI_ENTITY_NOT_FOUND_OR_NO_ACCESS &nbsp;| To validate the User's access privileges and/or the record does not exists in system |\n| 6 | E84113 | PERESTAPI_ELEMENT_MISMATCH | To validate elements passed in input are matching or not. |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "Update a customer by customer node id.",
+        "operationId": "patchCustomer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Customer node id, SV_MAPPING: Cust_Acct.XSID_I",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The Customer to be updated",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/Customer_Update"
+              },
+              "examples": {
+                "Update Contact for Customer": {
+                  "value": {
+                    "name": "SS_API_Create_011",
+                    "engagedParty": [
+                      {
+                        "name": "11289597956",
+                        "id": 109522,
+                        "op": "add",
+                        "role": "Secondary"
+                      },
+                      {
+                        "name": "1878700457",
+                        "id": 109523,
+                        "op": "add",
+                        "role": "Primary"
+                      }
+                    ]
+                  }
+                },
+                "Update Address for Customer": {
+                  "value": {
+                    "name": "SS_API_Create_01",
+                    "contactMedium": [
+                      {
+                        "mediumType": "PostalAddress",
+                        "characteristic": {
+                          "street1": "PLine1",
+                          "street2": "PLine2",
+                          "suburb": "Postalsuburb",
+                          "city": "PostalVizag",
+                          "stateorProvince": "Bangalore",
+                          "conutry": "Jamaica",
+                          "postCode": 888777
+                        }
+                      },
+                      {
+                        "mediumType": "SiteAddress",
+                        "characteristic": {
+                          "street1": "SLLine1",
+                          "street2": "SLLine2",
+                          "suburb": "Site Suburb",
+                          "city": "Site Jamaica",
+                          "stateorProvince": "Site Delhi",
+                          "postCode": 222555
+                        }
+                      }
+                    ]
+                  }
+                },
+                "Remove Contact for Customer": {
+                  "value": {
+                    "name": "SS_API_Create_011",
+                    "engagedParty": [
+                      {
+                        "name": "1878700457",
+                        "id": 109523,
+                        "op": "remove",
+                        "role": "Secondary"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated. Note: Only id, href and case will be outputted.",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                },
+                "examples": {
+                  "Sample Response: Updated Contact": {
+                    "value": "{\n    \"case\": {\n        \"name\": \"C49103\",\n        \"href\": \"https://$HOST:30140/perest/api/v1/case/49103\",\n        \"id\": \"49103\",\n        \"status\": \"New\"\n    },\n    \"href\": \"https://$HOST:30140/perest/api/v1/customer/112431\",\n    \"id\": \"112431\"\n}"
+                  },
+                  "Sample Response: Updated Address": {
+                    "value": {
+                      "case": {
+                        "name": "C49124",
+                        "href": "https://$HOST:30140/perest/api/v1/case/49124",
+                        "id": "49124",
+                        "status": "New"
+                      },
+                      "href": "https://$HOST:30140/perest/api/v1/customer/112431",
+                      "id": "112431"
+                    }
+                  },
+                  "Sample Response: Removed Contact": {
+                    "value": {
+                      "case": {
+                        "name": "C6210",
+                        "href": "http://ja-bss-sv-dev-app-01:30139/trerest_in/api/v1/case/6210",
+                        "id": "6210",
+                        "status": "New"
+                      },
+                      "href": "https://ja-bss-sv-dev-app-01:30140/perest/api/v1/customer/112431",
+                      "id": "112431"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will be included information about error code and short description of error. The error in the response will be indicative of the first occurrence of problem seen in the flow of processing. The processing stops at the first occurrence of the error. System errors will need to be investigated by Operations team. For the error scenarios caused by incorrect data, the sender may send the request again with correct data.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customised for Digicel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\n| Error Code | Error Message | Error Cause | Action |\n|--------|------------|---------------|---------|\n| E83522 | <1:Number> Primary contacts were specified. Only one Primary contact can be specified for a customer. | More than one Primary contact was specified for the customer, but only one Primary contact is allowed. | Change one of the Primary contacts to be Secondary contact if the customer requires more than one contact. |\n| E83525 | Primary Person detail is not provided in API request. | Primary person detail is mandatory if it is required to update person. | Specify complete list of Person as required for the customer update (both Primary and Secondary). |\n| E83526 | The Person with Primary Identifier '<1:Identifer>' is in '<2:Status>' status for the Effective date specified (<3:EffectiveDate>). &nbsp;| Person Status is not valid for assignment to Customer. | Specify Primary Contact with 'Active' Status for |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "customer"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Customer": {
+        "required": [
+          "href",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Customer id, SV_MAPPING:CustAcct.ObjectKey"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the customer - <http://<PEREST_HOSTNAME>:<PEREST_PORT>/<customer PEREST URL>/<CustAcct.ObjectKey>"
+          },
+          "case": {
+            "$ref": "#/components/schemas/CaseRef"
+          },
+          "name": {
+            "type": "string",
+            "description": "Customer Name, SV_MAPPING:Cust_Acct.CustAcctName_X"
+          },
+          "status": {
+            "type": "string",
+            "description": "Customer Status, SV_MAPPING:Cust_Acct.CustStatus_R",
+            "x-refdata-source": "RT-CUSTOMER_NODE_STATUS"
+          },
+          "defaultDisplayAccount": {
+            "type": "string",
+            "description": "Default Account Id. SV_MAPPING:Cust_Acct.PrimaryAcctID_I or Account.AcctID_I"
+          },
+          "customerSubType": {
+            "type": "string",
+            "description": "Digicel Customer subtype.\nSubtypes for Customer Type -> Corporate(Financial Services): Financial Services - Other -> CT_005 | FS Merchant -> CT_135 | FS partners -> CT_136 | FS agents -> CT_137.\nSubtypes for Cutomer Type -> Corporate (Government, Healthcare and Public Services): Government -> CT_108 | Healthcare -> CT_109 | Public Services -> CT_110 | Other Government -> CT_111.\nSubtypes for Customer Type -> Consumer: Mobile Consumer -> CT_014 | Residential Consumer -> CT_023 | Other Consumer -> CT_030.\nSubtypes for Customer Type -> Corporate: Corporate-Other -> CT_028 | Tourisim and Hospitality -> CT_102 | Energy, Oil and Gas -> CT_103 | Financial and Professional Services -> CT_104 | FMCG and Manufacturing -> CT_105 | Construction and Logistics -> CT_106 | ICT -> CT_107 | SOHO -> CT_112 | SMB -> CT_113.\n Subtype \"No Customer Subtype -> CT_016\" is available for all Customer Types."
+          },
+          "market": {
+            "type": "string",
+            "description": "Market of Digicel customer",
+            "x-refdata-source": "RT-perestapi.imp.MARKET_SEGMENT"
+          },
+          "validFor": {
+            "$ref": "#/components/schemas/TimePeriod"
+          },
+          "engagedParty": {
+            "type": "array",
+            "description": "Describes people who are contacts for a customer. Note: phoneNumber will only be shown in the contactMedium. 'op' attribute will not be returned by GET customer. Multiple containers can be present, to support multiple Secondary Contacts and a single Primary Contact. Each contact as its own hash to support their corresponding field values",
+            "items": {
+              "$ref": "#/components/schemas/PartyRef"
+            }
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Characteristic name supported: ReasonforLeaving | AdminNumber | CustomerName | EncouragementDiscountPlan | CreationDate | ActivationDate | CustomerType | PrimaryAccount | IndustryType | CustomerVatNumber | SalesRepresentative | CompanyNumer | PrepaidWithoutStatement | DepositAccountNumber | OpenCasesCount | PlanName | TotalPurchasedServices | CompanyType | CompanyRegistrationNumber | CUGId | EmployeeCount | FoundedDate | CustomerRank | VATType | VATExempt | OfficialLetterRequired | SpecialistCSR | PaysForSelf | PaysBySalary | PaymentDueDateOffset | PaymentDueDatePreference | TotalChildCustomers | VoucherTopUpStatus | OpenOrderCases | OpenSalesOrders | ChangeDate | SecurityGroup | TimeZone | BalanceTransferStatus. Characteristic value supported: AdminNumber -> SV_MAPPING:Cust_Acct.AdminNumber_X | CustomerName -> SV_MAPPING:Cust_Acct.CustAcctName_X | EncouragementDiscountPlan -> SV_MAPPING:Cust_Acct.DiscountPlan_R | ReasonforLeaving -> SV_MAPPING:Cust_Acct.IMP_ReasonForLeaving_R | CreationDate -> SV_MAPPING:Cust_Acct.CreatedDate_T | ActivationDate -> SV_MAPPING:Cust_Acct.ActiveDate_T | CustomerType -> SV_MAPPING:Cust_Acct.Type_R | PrimaryAccount -> SV_MAPPING:Cust_Acct.PrimaryAcctNum_X | IndustryType -> SV_MAPPING:Cust_Acct.Industry_R | CustomerVatNumber -> SV_MAPPING:Cust_Acct.UI_CustomerVATNumber_X | SalesRepresentative -> SV_MAPPING:Cust_Acct.SalesRepresentative_R | CompanyNumer -> SV_MAPPING:Cust_Acct.CompanyNum_X | PrepaidWithoutStatement -> SV_MAPPING:Cust_Acct.PrepaidWithoutStatement_B | DepositAccountNumber -> SV_MAPPING:Cust_Acct.DepositAcctNum_X | OpenCasesCount -> SV_MAPPING:Cust_Acct.CustOpenCases_I | PlanName -> SV_MAPPING:PurchasedProduct.Offer_R | TotalPurchasedServices -> SV_MAPPING:Cust_Acct.CountActiveBaseProducts_I | CompanyType -> SV_MAPPING:Cust_Acct.CompanyType_R | CompanyRegistrationNumber -> SV_MAPPING:Cust_Acct.CompanyRegNum_X | CUGId -> SV_MAPPING:Cust_Acct.CorporateIdentifier_X | EmployeeCount -> SV_MAPPING:Cust_Acct.Employee_Count_I | FoundedDate -> SV_MAPPING:Cust_Acct.Founded_Date_T | CustomerRank -> SV_MAPPING:Cust_Acct.CustomerRank_R | VATType -> SV_MAPPING:Cust_Acct.VatType_R | VATExempt -> SV_MAPPING:Cust_Acct.VatExempt_B | OfficialLetterRequired -> SV_MAPPING:Cust_Acct.OfficialLetterReq_B | SpecialistCSR -> SV_MAPPING:Cust_Acct.SpecialistCSR_R | PaysForSelf -> SV_MAPPING:Cust_Acct.PaysForSelf_B | PaysBySalary -> SV_MAPPING:Cust_Acct.PaysBySalary_B | PaymentDueDateOffset -> SV_MAPPING:Cust_Acct.PaymentOffsetDays_I | PaymentDueDatePreference -> SV_MAPPING:Cust_Acct.PaymentDuePref_R | TotalChildCustomers -> Derived | VoucherTopUpStatus -> SV_MAPPING:Cust_Acct.VoucherTopUpStatus_B. Characteristic value type supported: string | SecutityGroup -> SV_MAPPING:Cust_Acct.Security_Group. Characteristic value type supported: string",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            },
+            "x-refdata-source": "||RT-api.imp.CUSTOMER_TYPE||CM-Industry|||||||||RT-COMPANY_TYPE|||||RT-accl.cust.CUSTOMER_RANK|RT-VAT_TYPE|RT-BOOLEAN|RT-BOOLEAN||RT-BOOLEAN|RT-BOOLEAN||RT-PAYMENT_DAY_PREFERENCE||RT-BOOLEAN"
+          },
+          "relatedParty": {
+            "type": "array",
+            "description": "Describes the parent / child customer details. Note: Attributes to be displayed are id, role, href and @referredType only.",
+            "items": {
+              "$ref": "#/components/schemas/PartyRef"
+            }
+          },
+          "account": {
+            "type": "array",
+            "description": "Describes the customer primary account details.",
+            "items": {
+              "$ref": "#/components/schemas/AccountRef"
+            }
+          },
+          "creditProfile": {
+            "$ref": "#/components/schemas/CreditProfile"
+          },
+          "contactMedium": {
+            "type": "array",
+            "description": "Describes the customer contact medium details. Note: phoneNumber will not be returned by GET customer.",
+            "items": {
+              "$ref": "#/components/schemas/ContactMedium"
+            }
+          },
+          "paymentMethod": {
+            "type": "array",
+            "description": "Describes the customer payment methods.",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodRef"
+            }
+          },
+          "treatmentExemption": {
+            "$ref": "#/components/schemas/TreatmentExemption"
+          },
+          "taxExemptionCertificate": {
+            "type": "array",
+            "description": "Describes the customer tax exemptions.",
+            "items": {
+              "$ref": "#/components/schemas/TaxExemptionCertificate"
+            }
+          },
+          "taxRegistration": {
+            "type": "array",
+            "description": "Describes the customer tax registration numbers.",
+            "items": {
+              "$ref": "#/components/schemas/TaxRegistration"
+            }
+          }
+        },
+        "description": "Customer details"
+      },
+      "Customer_List": {
+        "type": "object",
+        "properties": {
+          "allObjKeys": {
+            "type": "array",
+            "description": "All object keys which met search criteria. This information is used for pagination.",
+            "items": {
+              "$ref": "#/components/schemas/ObjectKey"
+            }
+          },
+          "totalObjects": {
+            "type": "integer",
+            "description": "Total number of items matching criteria"
+          },
+          "warningMessage": {
+            "type": "string",
+            "description": "Warning Message Details"
+          },
+          "customers": {
+            "type": "array",
+            "description": "Describes the list of customers with details",
+            "items": {
+              "$ref": "#/components/schemas/Customer"
+            }
+          }
+        },
+        "description": "Customer List"
+      },
+      "Customer_Create": {
+        "required": [
+          "characteristic",
+          "engagedParty",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Customer Name, SV_MAPPING:Cust_Acct.CustAcctName_X"
+          },
+          "status": {
+            "type": "string",
+            "description": "Customer status, SV_MAPPING:Cust_Acct.CustStatus_R",
+            "x-refdata-source": "RT-CUSTOMER_NODE_STATUS"
+          },
+          "customerSubtype": {
+            "type": "string",
+            "description": "Digicel Customer subtype.\nSubtypes for Customer Type -> Corporate(Financial Services): Financial Services - Other -> CT_005 | FS Merchant -> CT_135 | FS partners -> CT_136 | FS agents -> CT_137.\nSubtypes for Cutomer Type -> Corporate (Government, Healthcare and Public Services): Government -> CT_108 | Healthcare -> CT_109 | Public Services -> CT_110 | Other Government -> CT_111.\nSubtypes for Customer Type -> Consumer: Mobile Consumer -> CT_014 | Residential Consumer -> CT_023 | Other Consumer -> CT_030.\nSubtypes for Customer Type -> Corporate: Corporate-Other -> CT_028 | Tourisim and Hospitality -> CT_102 | Energy, Oil and Gas -> CT_103 | Financial and Professional Services -> CT_104 | FMCG and Manufacturing -> CT_105 | Construction and Logistics -> CT_106 | ICT -> CT_107 | SOHO -> CT_112 | SMB -> CT_113.\n Subtype \"No Customer Subtype -> CT_016\" is available for all Customer Types."
+          },
+          "legalEntity": {
+            "type": "string",
+            "description": "Digicel Customer Legal Entity."
+          },
+          "taxJurisdiction": {
+            "type": "string",
+            "description": "Tax Jurisdiction of the customer"
+          },
+          "market": {
+            "type": "string",
+            "description": "Market of Digicel customer",
+            "x-refdata-source": "RT-perestapi.imp.MARKET_SEGMENT"
+          },
+          "validFor": {
+            "$ref": "#/components/schemas/TimePeriod"
+          },
+          "engagedParty": {
+            "type": "array",
+            "description": "Describes people who are contacts for a customer. Multiple containers can be present, to support multiple Secondary Contacts and a single Primary Contact. Each contact as its own hash to support their corresponding field values",
+            "items": {
+              "$ref": "#/components/schemas/PartyRef"
+            }
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Characteristic name supported: CustomerType | IndustryType | CustomerVatNumber | SalesRepresentative | CompanyNumber | CompanyType | CompanyRegistrationNumber | CUGId | EmployeeCount | FoundedDate | CustomerRank | VATType | VATExempt | OfficialLetterRequired | SpecialistCSR | PaysForSelf | PaysBySalary | PaymentDueDateOffset | PaymentDueDatePreference. Characteristic value supported: SV_MAPPING:Cust_Acct.Type_R, SV_MAPPING:Cust_Acct.Industry_R, SV_MAPPING:Cust_Acct.UI_CustomerVATNumber_X, SV_MAPPING:Cust_Acct.SalesRepresentative_R, SV_MAPPING:Cust_Acct.CompanyNum_X, SV_MAPPING:Cust_Acct.CompanyType_R, SV_MAPPING:Cust_Acct.CompanyRegNum_X, SV_MAPPING:Cust_Acct.CorporateIdentifier_X, SV_MAPPING:Cust_Acct.Employee_Count_I, SV_MAPPING:Cust_Acct.Founded_Date_T, SV_MAPPING:Cust_Acct.CustomerRank_R, SV_MAPPING:Cust_Acct.VatType_R, SV_MAPPING:Cust_Acct.VatExempt_B, SV_MAPPING:Cust_Acct.OfficialLetterReq_B, SV_MAPPING:Cust_Acct.SpecialistCSR_R, SV_MAPPING:Cust_Acct.PaysForSelf_B, SV_MAPPING:Cust_Acct.PaysBySalary_B, SV_MAPPING:Cust_Acct.PaymentOffsetDays_I, SV_MAPPING:Cust_Acct.PaymentDuePref_R. Characteristic value type supported: string",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            },
+            "x-refdata-source": "RT-api.imp.CUSTOMER_TYPE|CM-Industry|||RT-COMPANY_TYPE|||||RT-accl.cust.CUSTOMER_RANK|RT-VAT_TYPE|RT-BOOLEAN|RT-BOOLEAN||RT-BOOLEAN|RT-BOOLEAN||RT-PAYMENT_DAY_PREFERENCE"
+          },
+          "relatedParty": {
+            "type": "array",
+            "description": "Describes the parent account of a customer.",
+            "items": {
+              "$ref": "#/components/schemas/PartyRef"
+            }
+          },
+          "account": {
+            "type": "array",
+            "description": "Describes the customer primary account details.",
+            "items": {
+              "$ref": "#/components/schemas/AccountRef"
+            }
+          },
+          "creditProfile": {
+            "$ref": "#/components/schemas/CreditProfile"
+          },
+          "contactMedium": {
+            "type": "array",
+            "description": "Describes the customer contact medium details. Note: phoneNumber will not be used by POST customer.",
+            "items": {
+              "$ref": "#/components/schemas/ContactMedium"
+            }
+          },
+          "paymentMethod": {
+            "type": "array",
+            "description": "Describes the customer payment methods.",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodRef"
+            }
+          },
+          "case": {
+            "$ref": "#/components/schemas/CaseRef"
+          }
+        },
+        "description": "Skipped properties: id, href"
+      },
+      "Customer_Update": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Customer Name, SV_MAPPING:Cust_Acct.CustAcctName_X"
+          },
+          "status": {
+            "type": "string",
+            "description": "Customer status, SV_MAPPING:Cust_Acct.CustStatus_R",
+            "x-refdata-source": "RT-CUSTOMER_NODE_STATUS"
+          },
+          "customerSubtype": {
+            "type": "string",
+            "description": "Digicel Customer subtype.\nSubtypes for Customer Type -> Corporate(Financial Services): Financial Services - Other -> CT_005 | FS Merchant -> CT_135 | FS partners -> CT_136 | FS agents -> CT_137.\nSubtypes for Cutomer Type -> Corporate (Government, Healthcare and Public Services): Government -> CT_108 | Healthcare -> CT_109 | Public Services -> CT_110 | Other Government -> CT_111.\nSubtypes for Customer Type -> Consumer: Mobile Consumer -> CT_014 | Residential Consumer -> CT_023 | Other Consumer -> CT_030.\nSubtypes for Customer Type -> Corporate: Corporate-Other -> CT_028 | Tourisim and Hospitality -> CT_102 | Energy, Oil and Gas -> CT_103 | Financial and Professional Services -> CT_104 | FMCG and Manufacturing -> CT_105 | Construction and Logistics -> CT_106 | ICT -> CT_107 | SOHO -> CT_112 | SMB -> CT_113.\n Subtype \"No Customer Subtype -> CT_016\" is available for all Customer Types."
+          },
+          "taxJurisdiction": {
+            "type": "string",
+            "description": "Tax Jurisdiction of the customer"
+          },
+          "market": {
+            "type": "string",
+            "description": "Market of Digicel customer",
+            "x-refdata-source": "RT-perestapi.imp.MARKET_SEGMENT"
+          },
+          "legalEntity": {
+            "type": "string",
+            "description": "Digicel Customer Legal Entity."
+          },
+          "validFor": {
+            "$ref": "#/components/schemas/TimePeriod"
+          },
+          "engagedParty": {
+            "type": "array",
+            "description": "Describes people who are contacts for a customer. Note: Only id, role and op are supported. Multiple containers can be present, to support multiple Secondary Contacts and a single Primary Contact. Each contact as its own hash to support their corresponding field values",
+            "items": {
+              "$ref": "#/components/schemas/PartyRef"
+            }
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Characteristic name supported: CustomerName | EncouragementDiscountPlan | ReasonforLeaving | CustomerType | IndustryType | CustomerVatNumber | SalesRepresentative | CompanyNumber | CompanyType | CompanyRegistrationNumber | CUGId | EmployeeCount | FoundedDate | CustomerRank | VATType | VATExempt | OfficialLetterRequired | SpecialistCSR | PaysForSelf | PaysBySalary | PaymentDueDateOffset | PaymentDueDatePreference | VoucherTopUpStatus. Characteristic value supported: SV_MAPPING:Cust_Acct.CustAcctName_X, SV_MAPPING: Cust_Acct.DiscountPlan_R, SV_MAPPING:Cust_Acct.IMP_ReasonForLeaving_R, SV_MAPPING:Cust_Acct.Type_R, SV_MAPPING:Cust_Acct.Industry_R, SV_MAPPING:Cust_Acct.UI_CustomerVATNumber_X, SV_MAPPING:Cust_Acct.SalesRepresentative_R, SV_MAPPING:Cust_Acct.CompanyNum_X, SV_MAPPING:Cust_Acct.CompanyType_R, SV_MAPPING:Cust_Acct.CompanyRegNum_X, SV_MAPPING:Cust_Acct.CorporateIdentifier_X, SV_MAPPING:Cust_Acct.Employee_Count_I, SV_MAPPING:Cust_Acct.Founded_Date_T, SV_MAPPING:Cust_Acct.CustomerRank_R, SV_MAPPING:Cust_Acct.VatType_R, SV_MAPPING:Cust_Acct.VatExempt_B, SV_MAPPING:Cust_Acct.OfficialLetterReq_B, SV_MAPPING:Cust_Acct.SpecialistCSR_R, SV_MAPPING:Cust_Acct.PaysForSelf_B, SV_MAPPING:Cust_Acct.PaysBySalary_B, SV_MAPPING:Cust_Acct.PaymentOffsetDays_I, SV_MAPPING:Cust_Acct.PaymentDuePref_R, SV_MAPPING:Cust_Acct.VoucherTopUpStatus_B. Characteristic value type supported: string",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            },
+            "x-refdata-source": "RT-api.imp.CUSTOMER_TYPE|CM-Industry|||RT-COMPANY_TYPE||||||||RT-accl.cust.CUSTOMER_RANK|RT-VAT_TYPE|RT-BOOLEAN|RT-BOOLEAN||RT-BOOLEAN|RT-BOOLEAN||RT-PAYMENT_DAY_PREFERENCE|RT-BOOLEAN"
+          },
+          "relatedParty": {
+            "type": "array",
+            "description": "Describes the parent account of a customer. Note: Only id and role are supported.",
+            "items": {
+              "$ref": "#/components/schemas/PartyRef"
+            }
+          },
+          "account": {
+            "type": "array",
+            "description": "Describes the customer primary account details. Note: Only billStructure and paymentPlan are support.",
+            "items": {
+              "$ref": "#/components/schemas/AccountRef"
+            }
+          },
+          "creditProfile": {
+            "$ref": "#/components/schemas/CreditProfile"
+          },
+          "paymentMethod": {
+            "type": "array",
+            "description": "Describes the customer payment methods. Note: status is not supported.",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodRef"
+            }
+          },
+          "contactMedium": {
+            "type": "array",
+            "description": "Describes the customer contact medium details. Note: phoneNumber is not supported.",
+            "items": {
+              "$ref": "#/components/schemas/ContactMedium"
+            }
+          },
+          "taxExemptionCertificate": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaxExemptionCertificate"
+            }
+          },
+          "treatmentExemption": {
+            "$ref": "#/components/schemas/TreatmentExemption"
+          },
+          "case": {
+            "$ref": "#/components/schemas/CaseRef"
+          }
+        },
+        "description": "Skipped properties: id, href"
+      },
+      "TimePeriod": {
+        "required": [
+          "startDateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "startDateTime": {
+            "type": "string",
+            "description": "Start Date. Format: yyyy-mm-ddThh:nn:ss, SV_MAPPING:Cust_Acct.EffectiveStartDate_T",
+            "format": "date-time"
+          },
+          "endDateTime": {
+            "type": "string",
+            "description": "The effective end date. Format: yyyy-mm-ddThh:nn:ss, SV_MAPPING:Cust_Acct.EffectiveEndDate_T",
+            "format": "date-time"
+          }
+        },
+        "description": "validFor container supports start/end date and time for the attribute."
+      },
+      "PartyRef": {
+        "required": [
+          "id",
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "@referredType": {
+            "type": "string",
+            "description": "This is type of related party which it reffers, possible values individual, organization, customer. SV_MAPPING: perestapi.REFERRED_TYPE",
+            "x-refdata-source": "RT-perestapi.REFERRED_TYPE"
+          },
+          "id": {
+            "type": "string",
+            "description": "Contact Id, SV_MAPPING:contact.ObjectKey (Primary) or SV_MAPPING:contact.ObjectKey (Secondary) or Customer id, SV_MAPPING:Cust_Acct.ObjectKey"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the party - <http://<TREREST_HOSTNAME>:<TREREST_PORT>/<Party TreREST URL>/<contact.ObjectKey>customer - <http://<TREREST_HOSTNAME>:<TREREST_PORT>/<customer TreREST URL>/<SV_MAPPING:Cust_Acct.ObjectKey>"
+          },
+          "name": {
+            "type": "string",
+            "description": "Contact display name, SV_MAPPING:contact.Display_Name or customer display name SV_MAPPING:Cust_Acct.CustAcctName_X"
+          },
+          "associationType": {
+            "type": "string",
+            "description": "Primary | Secondary | Parent | Child. SV_MAPPING: perestapi.RELATED_PARTY_ROLE",
+            "x-refdata-source": "RT-perestapi.RELATED_PARTY_ROLE"
+          },
+          "role": {
+            "type": "string",
+            "description": "Role of this contact with this customer (Account Owner, User, Member)"
+          },
+          "individualIdentification": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndividualIdentification"
+            }
+          },
+          "partyCharacteristic": {
+            "type": "array",
+            "description": "Characteristic name supported: PersonalVatNumber | CorporateVatNumber | ContactRole | StaffGrade | ISOCountry | ISOCountryCode | ISONumericCode. Characteristic value supported: PersonalVatNumber -> SV_MAPPING:Contact.General10_X | CorporateVatNumber -> SV_MAPPING:Contact.General10_X | ContactRole -> SV_MAPPING:perestapi.imp.CONTACT_ROLE | StaffGrade -> SV_MAPPING:Contact.StaffGrade_R | ISOCountry -> SV_MAPPING: CB cam.daNationalityISOCountryMap.ISO Country | ISOCountryCode -> SV_MAPPING: CB cam.daNationalityISOCountryMap.ISO Country Code | ISONumericCode -> SV_MAPPING: CB cam.daNationalityISOCountryMap.ISO Numeric Code. Characteristic value type supported: string",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            },
+            "x-refdata-source": "||RT-perestapi.imp.CONTACT_ROLE"
+          },
+          "contactMedium": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactMedium"
+            }
+          },
+          "op": {
+            "type": "string",
+            "description": "add | replace | remove. SV_MAPPING: perestapi.OPERATION",
+            "x-refdata-source": "RT-perestapi.OPERATION"
+          }
+        },
+        "description": "Party reference. A party represents an organization or an individual."
+      },
+      "Characteristic": {
+        "required": [
+          "name",
+          "value",
+          "valueType"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the characteristic."
+          },
+          "valueType": {
+            "type": "string",
+            "description": "The Data Type of the value provided."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the characteristic provided as a string.The value of this attribute is depending on the corresponding name attribute value which indirectly determines the correct internal field to map."
+          }
+        },
+        "description": "Describes a given characteristic of an object or entity through a name/value pair."
+      },
+      "AccountRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Primary account id, SV_MAPPING:Cust_Acct.PrimaryAcctID_I"
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "Primary account number, SV_MAPPING:Cust_Acct.PrimaryAcctNum_X"
+          },
+          "accountDisplayName": {
+            "type": "string",
+            "description": "Formatted account number, SV_MAPPING:Account.IMP_AccountDisplayName_X"
+          },
+          "accountBalance": {
+            "type": "string",
+            "description": "Account Balance of the Customer. ACCOUNT_BALANCE, SV_MAPPING:Cust_Acct.PrimAcctBal_C"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the account - <http://<TREREST_HOSTNAME>:<TREREST_PORT>/<Account TreREST URL>/<SV_MAPPING:Cust_Acct.PrimaryAcctNum_X>. Not implemented yet."
+          },
+          "accountType": {
+            "type": "string",
+            "description": "Complete account type name. Example: \"Prepaid  (JAM)\". SV_MAPPING: ACCOUNT_TRE_V.ACCOUNT_TYPE_DISPLAY_NAME",
+            "x-refdata-source": "CM-Acct_Num_Type"
+          },
+          "accountTypeDisplayName": {
+            "type": "string",
+            "description": "Truncated account type name. Example: \"Prepaid\""
+          },
+          "creditLimit": {
+            "type": "string",
+            "description": "Credit Limit, SV_MAPPING:Account.CreditLimit_C"
+          },
+          "availableCredit": {
+            "type": "string",
+            "description": "AVAILABLE_CREDIT, SV_MAPPING:Account.AvailableCredit_C"
+          },
+          "billStructure": {
+            "$ref": "#/components/schemas/BillStructure"
+          },
+          "paymentPlan": {
+            "$ref": "#/components/schemas/PaymentPlan"
+          }
+        },
+        "description": "Customer primary account"
+      },
+      "BillStructure": {
+        "type": "object",
+        "properties": {
+          "cycleSpecification": {
+            "$ref": "#/components/schemas/CycleSpecification"
+          },
+          "format": {
+            "type": "array",
+            "description": "The bill invoice format.",
+            "items": {
+              "$ref": "#/components/schemas/Format"
+            }
+          }
+        },
+        "description": "The bill structure that associated to the customer."
+      },
+      "CycleSpecification": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Invocice/Bill cycle this customer is assigned to, SV_MAPPING:Cust_Acct.InvoiceCycle_R"
+          },
+          "preferredCurrency": {
+            "type": "string",
+            "description": "Preferred Currency, SV_MAPPING:Cust_Acct.Currency_R",
+            "x-refdata-source": "CM-Currency"
+          },
+          "reportLevel": {
+            "type": "string",
+            "description": "Report Level of the cutomer (Invoice/Statement), SV_MAPPING:Cust_Acct.ReportLevel_R",
+            "x-refdata-source": "RT-REPORT_LEVEL"
+          },
+          "treatmentExempt": {
+            "type": "string",
+            "description": "Treatment Exemption, SV_MAPPING:Cust_Acct.IMP_TreatmentExempt_B"
+          },
+          "suppressBilling": {
+            "type": "string",
+            "description": "Suppress Billing Flag, SV_MAPPING:Cust_Acct.SuppressBilling_B, Possible value true and false"
+          },
+          "suppressCycles": {
+            "type": "string",
+            "description": "Suppress for number of Cycles, SV_MAPPING:Cust_Acct.SuppressCycles_I"
+          },
+          "suppressUntilDate": {
+            "type": "string",
+            "description": "Bill suppress date, SV_MAPPING:Cust_Acct.SuppressDate_T"
+          }
+        },
+        "description": "The customer bill cycle."
+      },
+      "Format": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Invoice format name, SV_MAPPING:CustAcctInvoiceFormat.InvoiceFormat_R",
+            "x-refdata-source": "CM-InvoiceFormat"
+          },
+          "presentationMedia": {
+            "$ref": "#/components/schemas/PresentationMedia"
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Characteristic name supported: sendInvoiceTo | itemized | addressChoice | op | seqnr. Characteristic value supported: CustAcctInvoiceFormat.Contact_R, CustAcctInvoiceFormat.InvoiceItemised_R, CustAcctInvoiceFormat.AddressChoice_R, perestapi.OPERATION (op) and CustAcctInvoiceFormat.SequenceNum_I. Characteristic value type supported: string. For PATCH request, the combination of op and seqnr characteristics are mandatory values.They indicate the type of action (add/replace/remove) to perform on an identified invoice format entity, as well as all other attribute values under the format attribute object e.g.: name, presentationMedia and the list of other characteristic values.For GET request, the op characteristic will not be returned.For POST request, the op and seqnr characteristics will not be used.",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            },
+            "x-refdata-source": "|RT-INVXML.INVOICE_ITEMISED|RT-ADDRESS_CHOICE|RT-perestapi.OPERATION|"
+          }
+        },
+        "description": "The bill invoice format."
+      },
+      "PresentationMedia": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Invoice Delivery, SV_MAPPING:CustAcctInvoiceFormat.InvoiceDelivery_R",
+            "x-refdata-source": "RT-INVXML.INVOICE_DELIVERY"
+          }
+        },
+        "description": "The bill invoice presentation media."
+      },
+      "PaymentPlan": {
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "type": "string",
+            "description": "Payment method, SV_MAPPING:Cust_Acct.PayMethod_R",
+            "x-refdata-source": "RT-PAYMENT_METHOD"
+          },
+          "paymentLocation": {
+            "type": "string",
+            "description": "Payment location, SV_MAPPING:Cust_Acct.PaymentLocation_R",
+            "x-refdata-source": "RT-PAYMENT_LOCATION"
+          },
+          "autoPay": {
+            "type": "string",
+            "description": "Describes the customer is registered for auto pay or not, SV_MAPPING:RT-YES_NO",
+            "x-refdata-source": "RT-YES_NO",
+            "enum": [
+              "Yes",
+              "No"
+            ]
+          }
+        },
+        "description": "The payment plan that associated to the account."
+      },
+      "CreditProfile": {
+        "type": "object",
+        "properties": {
+          "creditRiskRating": {
+            "type": "string",
+            "description": "Credit rating, SV_MAPPING:Cust_Acct.CreditRating_R",
+            "x-refdata-source": "RT-TREATMENT_CREDIT_CLASS"
+          },
+          "creditLimit": {
+            "type": "string",
+            "description": "CREDIT_LIMIT, SV_MAPPING:Cust_Acct.CreditLimit_C"
+          },
+          "creditLimitCurrency": {
+            "type": "string",
+            "description": "Credit limit Currency, SV_MAPPING:Cust_Acct.CreditLimitCurrency_R",
+            "x-refdata-source": "CM-Currency"
+          },
+          "expectedRevenue": {
+            "type": "string",
+            "description": "Expected revenue, SV_MAPPING:Cust_Acct.ExptRevAmt_C"
+          },
+          "expectedRevenueCurrency": {
+            "type": "string",
+            "description": "Expected revenue currency, SV_MAPPING:Cust_Acct.ExptRevCurrency_R",
+            "x-refdata-source": "CM-Currency"
+          },
+          "creditComments": {
+            "type": "string",
+            "description": "Credit comments, SV_MAPPING:Cust_Acct.CreditComments_X"
+          },
+          "taxClass": {
+            "type": "string",
+            "description": "Tax class, SV_MAPPING:Cust_Acct.TaxClass_R",
+            "x-refdata-source": "RT-TAX_CLASS"
+          },
+          "creditScore": {
+            "type": "string",
+            "description": "Credit score, SV_MAPPING:Cust_Acct.CreditScore_X"
+          },
+          "creditCheckAuthorization": {
+            "type": "boolean",
+            "description": "Authorized to perform a credit check for this customer, SV_MAPPING:Cust_Acct.IMP_CreditCheckAuth_B"
+          },
+          "creditCheckApproved": {
+            "type": "string",
+            "description": "Was the credit check successful, SV_MAPPING:Cust_Acct.IMP_CreditCheckApproved_R"
+          },
+          "creditCheckDate": {
+            "type": "string",
+            "description": "Date when the credit check happened, SV_MAPPING:Cust_Acct.IMP_CreditCheckDate_T"
+          },
+          "previousRevenue": {
+            "type": "string",
+            "description": "previous revenue, SV_MAPPING:Cust_Acct.TurnoverAmount_C"
+          },
+          "previousRevenueCurrency": {
+            "type": "string",
+            "description": "previous revenue currency, SV_MAPPING:Cust_Acct.TurnoverCurrency_R"
+          }
+        },
+        "description": "Credit profile for the party."
+      },
+      "PaymentMethodRef": {
+        "required": [
+          "@type",
+          "details"
+        ],
+        "type": "object",
+        "properties": {
+          "@type": {
+            "type": "string",
+            "description": "Payment method type i.e.: bankAccountDebit | bankCard. SV_MAPPING: perestapi.PAYMENT_METHOD_TYPE RT",
+            "enum": [
+              "bankAccountDebit",
+              "bankCard"
+            ],
+            "x-refdata-source": "RT-perestapi.PAYMENT_METHOD_TYPE"
+          },
+          "details": {
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BankCardType"
+              },
+              {
+                "$ref": "#/components/schemas/BankAccountDebitType"
+              }
+            ],
+            "properties": {},
+            "description": "If @type is bankAccountDebit then the details attribute object values will be derived from BankAccountDebitType object type. If @type is bankCard then the details attribute object values will be derived from BankCardType object type"
+          }
+        },
+        "description": "PaymentMethod container supports the Payment Method values for the customer creation. BankAccountDebit and BankCard are supported through this Container, each payment type has its own hash container to hold their respective values.\nNOTE: Only one Payment type will be supported at a time. If Payment Type is Bank Account Debit, then Bank Card details can be skipped"
+      },
+      "BankAccountDebitType": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "string",
+            "description": "Account number, SV_MAPPING:Cust_Acct.BankAcctNum_X"
+          },
+          "BIC": {
+            "type": "string",
+            "description": "Business Identifier Code/SWIFT Code, SV_MAPPING:Cust_Acct.Bank_R",
+            "x-refdata-source": "RT-BANK"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Owner Account, SV_MAPPING:Cust_Acct.BankAcctName_X"
+          },
+          "paymentLimit": {
+            "type": "string",
+            "description": "Payment limit, SV_MAPPING:Cust_Acct.BankAcctReference_X"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the Bank Account. BANK_ACCOUNT_STATUS_CODE, SV_MAPPING:Cust_Acct.BankAcctStatus_R",
+            "x-refdata-source": "RT-BANK_ACCOUNT_STATUS"
+          }
+        },
+        "description": "Details of a bank account"
+      },
+      "BankCardType": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Brand Name (e.g Visa, Mastercard), SV_MAPPING:Cust_Acct.CreditCardCompany_R",
+            "x-refdata-source": "RT-CARD_TYPE"
+          },
+          "cardNumber": {
+            "type": "string",
+            "description": "Credit Card number, SV_MAPPING:Cust_Acct.CreditCardNumber_X"
+          },
+          "expirationDate": {
+            "type": "string",
+            "description": "Credit Card expiry date, SV_MAPPING:Cust_Acct.CreditCardExpiry_X",
+            "format": "date-time"
+          },
+          "nameOnCard": {
+            "type": "string",
+            "description": "Name on the credit card, SV_MAPPING:Cust_Acct.CreditCardName_X"
+          },
+          "cvv": {
+            "type": "string",
+            "description": "Name on the credit card, SV_MAPPING:Cust_Acct.CreditCardSecurity_X"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the Card. CARD_STATUS_CODE, SV_MAPPING:Cust_Acct.CreditCardStatus_R",
+            "x-refdata-source": "RT-CARD_STATUS"
+          }
+        },
+        "description": "Details of a bank card"
+      },
+      "IndividualIdentification": {
+        "type": "object",
+        "properties": {
+          "identificationId": {
+            "type": "string",
+            "description": "SV_MAPPING: NationalId ->Contact.Ul_National_Id_X"
+          },
+          "identificationType": {
+            "type": "string",
+            "description": "NationalId "
+          }
+        },
+        "description": "Represents our registration of information used as proof of identity by an individual (national identity card)"
+      },
+      "ContactMedium": {
+        "required": [
+          "characteristic",
+          "mediumType"
+        ],
+        "type": "object",
+        "properties": {
+          "mediumType": {
+            "type": "string",
+            "description": "Type of the contact medium i.e.: PostalAddress | SiteAddress | HomeNumber | WorkNumber | MobileNumber. SV_MAPPING: perestapi.MEDIUM_TYPE RT"
+          },
+          "characteristic": {
+            "$ref": "#/components/schemas/MediumCharacteristic"
+          }
+        },
+        "description": "Indicates the contact medium that could be used to contact the party."
+      },
+      "MediumCharacteristic": {
+        "type": "object",
+        "properties": {
+          "street1": {
+            "type": "string",
+            "description": "Line 1, SV_MAPPING: Cust_Acct.PostalLine1_X | Cust_Acct.SiteLine1_X"
+          },
+          "street2": {
+            "type": "string",
+            "description": "Line 2, SV_MAPPING: Cust_Acct.PostalLine2_X | Cust_Acct.SiteLine2_X"
+          },
+          "suburb": {
+            "type": "string",
+            "description": "Suburban, SV_MAPPING: Cust_Acct.PostalSubDistrict_R | Cust_Acct.SiteSubDistrict_R"
+          },
+          "city": {
+            "type": "string",
+            "description": "City, SV_MAPPING: Cust_Acct.PostalCity_R | Cust_Acct.SiteCity_R"
+          },
+          "postCode": {
+            "type": "string",
+            "description": "Post Code, SV_MAPPING: Cust_Acct.PostalPostCode_X | Cust_Acct.SitePostCode_X"
+          },
+          "stateOrProvince": {
+            "type": "string",
+            "description": "State, SV_MAPPING: Cust_Acct.PostalDistrict_R | Cust_Acct.SiteDistrict_R"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country, SV_MAPPING: Cust_Acct.IMP_PostalCountry_R | Cust_Acct.IMP_SiteCountry_R"
+          },
+          "addressLine1": {
+            "type": "string",
+            "description": "Address line 1, SV_MAPPING: Cust_Acct.PostalLine7_X | Cust_Acct.SiteLine7_X"
+          },
+          "geocode": {
+            "type": "string",
+            "description": "GPS Code, SV_MAPPING: Cust_Acct.PostalGeocode_X | Cust_Acct.SiteGeocode_X"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "These are the phone numbers of the primary contact of customer. HomeNumber->SV_MAPPING:Contact.HomePhone_X,WorkNumber->SV_MAPPING:Contact.WorkPhone_X, MobileNumber->SV_MAPPING:Contact.MobilePhone_X"
+          }
+        },
+        "description": "Describes the contact medium characteristics that could be used to contact a party"
+      },
+      "TaxExemptionCertificate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Certificate, SV_MAPPING: CustAcctList.ResultFact01_X"
+          },
+          "validFor": {
+            "$ref": "#/components/schemas/TimePeriod"
+          },
+          "taxDefinition": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaxDefinition"
+            }
+          }
+        },
+        "description": "A tax exemption certificate represents a tax exemption granted to a customer by a tax jurisdiction which may be a city, state, country."
+      },
+      "TaxDefinition": {
+        "type": "object",
+        "properties": {
+          "taxType": {
+            "type": "string",
+            "description": "Tax Association Code, SV_MAPPING: CustAcctList.IndexValue01_X"
+          }
+        },
+        "description": "Reference of a tax definition."
+      },
+      "TaxRegistration": {
+        "type": "object",
+        "properties": {
+          "taxRegistrationNumber": {
+            "type": "string",
+            "description": "Tax registration number, SV_MAPPING: CustAcctList.IndexValue01_X"
+          },
+          "description": {
+            "type": "string",
+            "description": "Tax registration description, SV_MAPPING: CustAcctList.ResultFact01_X"
+          }
+        },
+        "description": "Tax Registration Numbers."
+      },
+      "TreatmentExemption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Treatment exemption derived attribute id, SV_MAPPING: CustAcctList.CustListID_I"
+          },
+          "exemption": {
+            "type": "string",
+            "description": "Treatment exemption flag, SV_MAPPING: CustAcctList.IndexValue01_X",
+            "x-refdata-source": "RT-BOOLEAN"
+          },
+          "description": {
+            "type": "string",
+            "description": "Treatment exemption description, SV_MAPPING: CustAcctList.Description_X"
+          }
+        },
+        "description": "Customer treatment exemption."
+      },
+      "ObjectKey": {
+        "type": "integer",
+        "description": "All object keys matching search criteria returned in the response body. Array of objectKey"
+      },
+      "CaseRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the Case, SV_MAPPING:Case.ObjectKey"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the case - <http://<TREREST_HOSTNAME>:<TREREST_PORT>/<case TreREST URL>/<SV_MAPPING:Case.ObjectKey>"
+          },
+          "status": {
+            "type": "string",
+            "description": "The Status of Case, Possible Values New/Open/Closed. SV_MAPPING:Case.Status"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the case, SV_MAPPING:Case.Name"
+          }
+        },
+        "description": "The Case data structure. Case details in case of POST and PATCH customer. This is not supported by GET customer"
+      },
+      "Error": {
+        "required": [
+          "code",
+          "reason"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Application relevant detail, defined in the API or a common list."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Explanation of the reason for the error which can be shown to a client user."
+          },
+          "message": {
+            "type": "string",
+            "description": "More details and corrective actions related to the error which can be shown to a client user."
+          },
+          "status": {
+            "type": "string",
+            "description": "HTTP Error code extension"
+          },
+          "referenceError": {
+            "type": "string",
+            "description": "URI of documentation describing the error.",
+            "format": "uri"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class."
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name."
+          }
+        },
+        "description": "Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)"
+      }
+    }
+  }
+}

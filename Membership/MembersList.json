@@ -1,0 +1,403 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "MembersList",
+    "description": "Common MembersList API",
+    "version": "10.52.1"
+  },
+  "paths": {
+    "/members/": {
+      "get": {
+        "tags": [
+          "member"
+        ],
+        "summary": "Get the list of Members associated with search criteria",
+        "description": "Returns a list of member object.\nSearch can be performed using Member Last Name, Member Number or by Member Date of Birth. \nAdditional search fields can be included as needed by the configuration of the portal.\n",
+        "operationId": "members_list",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/AcceptHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/AuthorizationHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/RefererHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/UserAgentHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/StandardHeaders/10.0.1/#/components/parameters/ForwardedForHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/UserNameHeader/10.0.1#/components/parameters/UserNameHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/WebSessionIdHeader/10.0.1#/components/parameters/WebSessionIdHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/CorrelationIdHeader/10.0.1#/components/parameters/CorrelationIdHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/IdentitiesHeader/10.0.3#/components/parameters/IdentitiesHeader"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/orderingParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageParam"
+          },
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/PaginationQueryParameters/10.3.1#/components/parameters/pageSizeParam"
+          },
+          {
+            "name": "first_name",
+            "in": "query",
+            "description": "Member's first name to be used for search by first name. Partial searches can be implemented by Payer.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "last_name",
+            "in": "query",
+            "description": "Member's last name to be used for search by last name.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "member_number",
+            "in": "query",
+            "description": "Unique member identifier associated with the member.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "medicare_number",
+            "in": "query",
+            "description": "This parameter filters by the Medicare beneficiary's identification number.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "birth_date",
+            "in": "query",
+            "description": "Members date of birth in YYYY-MM-DD format.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "date_of_birth",
+            "in": "query",
+            "deprecated": true,
+            "description": "*** DEPRECATED. Use birth_date parameter\nMembers date of birth in YYYY-MM-DD format.\n",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "phone_number",
+            "in": "query",
+            "description": "Members phone number in xxx-xxx-xxxx format.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "market_segment",
+            "in": "query",
+            "description": "Filter by Market segment. Market Segment refers to the type of health insurance plan\n(e.g., Medicare, Commercial Small Group, Large Group, and Individual & Family, etc.)\n",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/MarketSegmentEnum/10.0.1#/components/schemas/MarketSegment"
+            }
+          },
+          {
+            "name": "line_of_business",
+            "in": "query",
+            "description": "Line of business based search e.g. Medical, Dental, Vision etc.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "member_display_identifier",
+            "in": "query",
+            "description": "Returns claims based on member_display identifier.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "member_name",
+            "in": "query",
+            "description": "Name searches against name fields including first, middle, last, and all name fields.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "minLength": 3
+            }
+          },
+          {
+            "name": "ssn",
+            "in": "query",
+            "description": "Member's SSN.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "minLength": 9
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Member's email.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address_city",
+            "in": "query",
+            "description": "Member's permanent address's city.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address_state",
+            "in": "query",
+            "description": "Member's permanent address's state.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address_zip",
+            "in": "query",
+            "description": "Member's permanent address's zip code.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "minLength": 5
+            }
+          },
+          {
+            "name": "subscriber_number",
+            "in": "query",
+            "description": "Unique Subscriber identifier. This corresponds to the Member.subscriber_number field. \nThis parameter is mainly used to get all the members of the house-hold returned.\n$ref: 'https://api.swaggerhub.com/domains/Zipari-Core-Services/MemberModel/10.49.1#/components/schemas/Member/properties/subscriber_number'\n",
+            "required": false,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "employment_status",
+            "in": "query",
+            "description": "This parameter filters by the member's employment status. It allows match on multiple employment statuses.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/EmploymentStatusEnum/10.0.2#/components/schemas/EmploymentStatus"
+              }
+            }
+          },
+          {
+            "name": "employee_class_name",
+            "in": "query",
+            "description": "This parameter filters by the employee class that a group member is part of. It allows match on multiple classes.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "is_group_employee",
+            "in": "query",
+            "description": "This parameter is used to get all the employees, subscribers as well as dependents (in case an employee is also a dependent of another employee).",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "relationship_to_subscriber",
+            "in": "query",
+            "description": "This parameter filters by the member's relationship to subscriber. Use 'self' to get subscribers only. It allows match on multiple values for this field.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/RelationshipToSubscriberEnum/10.1.1#/components/schemas/RelationshipToSubscriber"
+              }
+            }
+          },
+          {
+            "name": "company_name",
+            "in": "query",
+            "description": "This parameter filters by the member's company name. This can be used to get members of a certain company by the company name. Depending on the implementation requirement, it can support partial match like, starts-with or contains.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "group_number",
+            "in": "query",
+            "description": "This parameter filters by the Group ID (group_number). This can be used to get members of a certain company by the Group ID. Depending on the implementation requirement, it can support partial match like, starts-with or contains.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "group_id",
+            "in": "query",
+            "description": "This parameter filters by the internal unique identifier of a group (group_id). This parameter is normally used to list the members of a company/group where the internal key is known from a previous call.",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subgroup_id",
+            "in": "query",
+            "description": "This parameter filters by the internal unique identifier of a subgroup (group_id under a parent group).",
+            "required": false,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of member objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "count",
+                    "results"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer",
+                      "description": "Count representing the total number of objects available to be returned in the results array."
+                    },
+                    "next": {
+                      "type": "integer",
+                      "description": "Query identifier defined by the api developer for getting the next set of records."
+                    },
+                    "previous": {
+                      "type": "integer",
+                      "description": "Query identifier defined by the api developer for getting the previous set of records."
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/MemberModel/10.49.1#/components/schemas/Member"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

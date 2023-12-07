@@ -1,0 +1,88 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1",
+    "title": "",
+    "description": "Employee Search API"
+  },
+  "paths": {
+    "/employee/": {
+      "get": {
+        "tags": [
+          "EmployeeAPI"
+        ],
+        "summary": "API to search employees",
+        "operationId": "searchEmployee",
+        "description": "You can search for an employee in the system\n",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "employeeNo",
+            "description": "Employee Number to search in the system",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Employee": {
+        "type": "object",
+        "required": [
+          "empNo",
+          "employeeName",
+          "employeeAge",
+          "employeeJoiningDate"
+        ],
+        "properties": {
+          "empNo": {
+            "type": "string",
+            "format": "uuid",
+            "example": "emp-01"
+          },
+          "employeeName": {
+            "type": "string",
+            "example": "Test Name"
+          },
+          "employeeAge": {
+            "type": "number",
+            "example": 19
+          },
+          "employeeJoiningDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2015-01-01"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/MDURAIPANDIAN_1/Employee/1"
+    }
+  ]
+}

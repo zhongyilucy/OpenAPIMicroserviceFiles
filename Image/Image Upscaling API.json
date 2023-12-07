@@ -1,0 +1,63 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Image Upscaling API",
+    "description": "API's for image upscaling.",
+    "version": "0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.double4.ai"
+    }
+  ],
+  "paths": {
+    "/upscale": {
+      "get": {
+        "description": "API for image upscaling.",
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "https://gcbimages.storage.googleapis.com/segmentation_images/nonhybrid/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB/E09CB207-4E55-D0F2-CBE1-576F8B56E7BB_revised_anchor_hybrid.jpg"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns image stream."
+          }
+        },
+        "servers": [
+          {
+            "url": "https://api.double4.ai"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://api.double4.ai"
+        }
+      ]
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    },
+    {
+      "bearerAuth": []
+    }
+  ]
+}

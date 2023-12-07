@@ -1,0 +1,89 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/Z5313062/F10A_PIKACHU/1.0.0"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "Invoice API",
+    "description": "The API returns invoices for users."
+  },
+  "tags": [
+    {
+      "name": "Invoice",
+      "description": "E-Invoice"
+    }
+  ],
+  "paths": {
+    "/invoice/render": {
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "description": "Returns the invoice",
+        "operationId": "renderInvoice",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "language",
+            "description": "Language of the invoice",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "template",
+            "description": "Template of the invoice",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned the invoice successfully",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns an error due to invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Malformed XML"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

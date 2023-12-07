@@ -1,0 +1,448 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "4.0.0-dynamic-fraud-warnings",
+    "title": "Get suspicious-transactions",
+    "description": "This API detects suspicious transactions that might related to frauding."
+  },
+  "paths": {
+    "/suspicious-transactions/{txId}/dialog": {
+      "get": {
+        "tags": [
+          "suspicious-transactions"
+        ],
+        "parameters": [
+          {
+            "name": "txId",
+            "in": "path",
+            "required": true,
+            "description": "to find correlated [remediation-plan / alert], from which we retrieve user's vulnerability group?",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getSuspiciousTransactionDialog",
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DeeplinkRedirection"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SimpleWarningRiskyTransactionScreen"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CircleWarningRiskyTransactionScreen"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SimpleConfirmationRiskyTransactionScreen"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RiskAgreementConfirmationRiskyTransactionScreen"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CancelRiskyTransactionScreen"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DeeplinkRedirection": {
+        "type": "object",
+        "required": [
+          "type",
+          "deeplink"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "DEEPLINK_REDIRECTION"
+            ]
+          },
+          "deeplink": {
+            "type": "string"
+          }
+        }
+      },
+      "RiskyTransactionScreen": {
+        "type": "object",
+        "required": [
+          "title",
+          "buttons"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Beware this payment might be a scam"
+          },
+          "titleIconType": {
+            "type": "string",
+            "enum": [
+              "SHIELD"
+            ]
+          },
+          "buttons": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/ActionButton"
+            }
+          }
+        }
+      },
+      "SimpleWarningRiskyTransactionScreen": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RiskyTransactionScreen"
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "subtitle",
+              "imageType"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "SIMPLE_WARNING"
+                ]
+              },
+              "subtitle": {
+                "type": "string"
+              },
+              "imageType": {
+                "type": "string",
+                "enum": [
+                  "WARNING_SIGN"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "CircleWarningRiskyTransactionScreen": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RiskyTransactionScreen"
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "subtitle",
+              "riskHeader",
+              "riskValue",
+              "riskSubtitle"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "CIRCLE_WARNING"
+                ]
+              },
+              "subtitle": {
+                "type": "string"
+              },
+              "riskHeader": {
+                "type": "string",
+                "example": "Your transfer is riskier than"
+              },
+              "riskValue": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "riskSubtitle": {
+                "type": "string",
+                "example": "of all transactions on Revolut"
+              }
+            }
+          }
+        ]
+      },
+      "SimpleConfirmationRiskyTransactionScreen": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RiskyTransactionScreen"
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "subtitle",
+              "riskHeader",
+              "riskValue",
+              "riskSubtitle"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "SIMPLE_CONFIRMATION"
+                ]
+              },
+              "tips": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "guide": {
+                "type": "string",
+                "description": "html containing links to scam guide"
+              }
+            }
+          }
+        ]
+      },
+      "RiskAgreementConfirmationRiskyTransactionScreen": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RiskyTransactionScreen"
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "transaction",
+              "agreementDescription"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "RISK_AGREEMENT"
+                ]
+              },
+              "transaction": {
+                "$ref": "#/components/schemas/TransactionCell"
+              },
+              "agreementDescription": {
+                "type": "string",
+                "example": "Revolut has warned me..."
+              }
+            }
+          }
+        ]
+      },
+      "CancelRiskyTransactionScreen": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RiskyTransactionScreen"
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
+              "transaction"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "CANCEL"
+                ]
+              },
+              "subtitle": {
+                "type": "string",
+                "example": "Help us by sharing your opinion"
+              },
+              "transaction": {
+                "$ref": "#/components/schemas/TransactionCell"
+              },
+              "questionType": {
+                "$ref": "#/components/schemas/QuestionType"
+              },
+              "answers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Answer"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "QuestionType": {
+        "type": "string",
+        "enum": [
+          "CANCEL_REASON"
+        ]
+      },
+      "Answer": {
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "COMPLICATED_PROCESS"
+          },
+          "title": {
+            "type": "string",
+            "example": "Process is too complicated"
+          }
+        }
+      },
+      "TransactionCell": {
+        "type": "object",
+        "required": [
+          "initials",
+          "title",
+          "subtitle",
+          "amount"
+        ],
+        "properties": {
+          "initials": {
+            "type": "string",
+            "description": "JS"
+          },
+          "title": {
+            "type": "string",
+            "example": "To John Smith"
+          },
+          "creationDate": {
+            "type": "number",
+            "description": "epoch milli"
+          },
+          "amount": {
+            "type": "string",
+            "example": "-£4,000"
+          }
+        }
+      },
+      "ActionButton": {
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "action"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "PRIMARY",
+              "SECONDARY"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "example": "Continue to questions"
+          },
+          "action": {
+            "$ref": "#/components/schemas/Action"
+          }
+        }
+      },
+      "Action": {
+        "type": "object",
+        "description": "only one of [screen, deepLink, request] will be present",
+        "properties": {
+          "deepLink": {
+            "type": "string"
+          },
+          "screen": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SimpleWarningRiskyTransactionScreen"
+              },
+              {
+                "$ref": "#/components/schemas/CircleWarningRiskyTransactionScreen"
+              },
+              {
+                "$ref": "#/components/schemas/SimpleConfirmationRiskyTransactionScreen"
+              },
+              {
+                "$ref": "#/components/schemas/RiskAgreementConfirmationRiskyTransactionScreen"
+              },
+              {
+                "$ref": "#/components/schemas/CancelRiskyTransactionScreen"
+              }
+            ]
+          },
+          "request": {
+            "type": "object",
+            "description": "close the flow on success",
+            "required": [
+              "method",
+              "path",
+              "successDialog"
+            ],
+            "properties": {
+              "method": {
+                "type": "string",
+                "enum": [
+                  "POST",
+                  "PUT",
+                  "PATCH",
+                  "DELETE"
+                ]
+              },
+              "path": {
+                "type": "string",
+                "example": "/suspicious-transactions/0f2d36fe7/confirm"
+              },
+              "successDialog": {
+                "$ref": "#/components/schemas/RequestSuccessDialog"
+              }
+            }
+          }
+        }
+      },
+      "RequestSuccessDialog": {
+        "type": "object",
+        "description": "close the flow when finishes",
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "html content, that defines amount color",
+            "example": "You’ve sent <font style=\"color: #0666EB\">£4,000</font> to John Smith"
+          },
+          "subtitle": {
+            "type": "string",
+            "example": "Your payment to John Smith has been cancelled"
+          },
+          "button": {
+            "type": "object",
+            "required": [
+              "title",
+              "deeplink"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "example": "Review payment"
+              },
+              "deeplink": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

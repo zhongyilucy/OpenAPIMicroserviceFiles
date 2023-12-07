@@ -1,0 +1,46 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "3.0.0",
+    "title": "Train Routes API",
+    "description": "An API that provides real-time information on train routes"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/2021CT93047_1/PublicTransit/3.0.0"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://3e4d-103-147-208-112.in.ngrok.io"
+    }
+  ],
+  "paths": {
+    "/train/routes": {
+      "get": {
+        "summary": "Get a list of all train routes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "delay": {
+                      "type": "string",
+                      "description": "The list of all train routes"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "train"
+        ]
+      }
+    }
+  }  
+}

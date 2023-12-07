@@ -1,0 +1,1488 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Communication Management API",
+    "description": "This is Swagger UI environment generated for Communication Messages Management specification",
+    "version": "1.8"
+  },
+  
+  "tags": [
+    {
+      "name": "communicationMessage"
+    }
+  ],
+  "paths": {
+    "/communicationMessage": {
+      "get": {
+        "tags": [
+          "communicationMessage"
+        ],
+        "summary": "List or find CommunicationMessage objects",
+        "description": "This operation list or find CommunicationMessage entities",
+        "operationId": "listCommunicationMessage",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to be provided in response",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Requested index for start of resources to be provided in response",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Requested number of resources to be provided in response",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Total-Count": {
+                "description": "Total number of items matching criteria",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "X-Result-Count": {
+                "description": "Actual number of items returned in the response body",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommunicationMessage"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "communicationMessage"
+        ],
+        "summary": "Creates a CommunicationMessage",
+        "description": "This operation creates a CommunicationMessage entity.",
+        "operationId": "createCommunicationMessage",
+        "requestBody": {
+          "description": "The CommunicationMessage to be created",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/CommunicationMessage_Create"
+              },
+              "examples": {
+                "Email Sample": {
+                  "value": {
+                    "subject": "SUBJECT : the latest promotion for you",
+                    "scheduledSendTime": "2023-04-28T00:00:00+01:00",
+                    "state": "initial",
+                    "description": "NEW_This is communication message for promotion",
+                    "content": "Template 1",
+                    "messageType": "Email",
+                    "mimeType": "text/html",
+                    "characteristic": [
+                      {
+                        "name": "CUSTOMER_NAME",
+                        "value": "Mr. Jones",
+                        "valueType": "string"
+                      }
+                    ],
+                    "attachment": [
+                      {
+                        "url": "https://serverlocation/files/1",
+                        "name": "File_XYZ_001"
+                      }
+                    ],
+                    "sender": {
+                      "id": "10099",
+                      "appUserId": "12",
+                      "name": "ABC Company",
+                      "email": "raghav1@email.com",
+                      "phoneNumber": "18762680363",
+                      "party": {
+                        "href": "https://serverlocation/tmf-api/partyManagement/v4/individual/1",
+                        "role": "customer",
+                        "name": "John White",
+                        "@referredType": "customer",
+                        "id": "107496"
+                      }
+                    },
+                    "receiver": [
+                      {
+                        "id": "10234",
+                        "appUserId": "12",
+                        "name": "Customer",
+                        "phoneNumber": "18764455817",
+                        "email": "raghav@gmail.com",
+                        "party": {
+                          "href": "https://serverlocation/tmf-api/partyManagement/v4/individual/1",
+                          "role": "customer",
+                          "name": "John White",
+                          "@type": "customer",
+                          "id": "107496"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "SMS Sample": {
+                  "value": {
+                    "state": "initial",
+                    "description": "Example SMS message",
+                    "content": "SMS_EXAMPLE_NOTIFICATION",
+                    "messageType": "SMS",
+                    "characteristic": [
+                      {
+                        "name": "PARAMETER_1",
+                        "value": "Parameter 1 value",
+                        "valueType": "string"
+                      }
+                    ],
+                    "receiver": [
+                      {
+                        "id": "10234",
+                        "appUserId": "12",
+                        "name": "Customer",
+                        "phoneNumber": "18764455817",
+                        "email": "raghav@gmail.com",
+                        "party": {
+                          "href": "https://serverlocation/tmf-api/partyManagement/v4/individual/1",
+                          "role": "customer",
+                          "name": "John White",
+                          "@type": "customer",
+                          "id": "107496"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "No messageType Sample": {
+                  "value": {
+                    "subject": "SUBJECT : the latest promotion for you",
+                    "scheduledSendTime": "2023-05-17T02:11:00+01:00",
+                    "state": "initial",
+                    "description": "NEW_This is communication message for promotion",
+                    "content": "Template 1",
+                    "mimeType": "text/html",
+                    "characteristic": [
+                      {
+                        "name": "CUSTOMER_NAME",
+                        "value": "Mr. Jones",
+                        "valueType": "string"
+                      }
+                    ],
+                    "attachment": [
+                      {
+                        "url": "https: //serverlocation/files/1",
+                        "name": "File_XYZ_001"
+                      }
+                    ],
+                    "sender": {
+                      "id": "10099",
+                      "appUserId": "12",
+                      "name": "ABC Company",
+                      "email": "namrata1@email.com",
+                      "phoneNumber": "10086",
+                      "party": {
+                        "href": "https: //serverlocation/tmf-api/partyManagement/v4/individual/1",
+                        "role": "customer",
+                        "name": "John White",
+                        "@referredType": "customer",
+                        "id": "30009661"
+                      }
+                    },
+                    "receiver": [
+                      {
+                        "id": "10235",
+                        "appUserId": "12",
+                        "name": "Customer",
+                        "phoneNumber": "008613811112222",
+                        "email": "namrata@gmail.com",
+                        "party": {
+                          "href": "https: //serverlocation/tmf-api/partyManagement/v4/individual/1",
+                          "role": "customer",
+                          "name": "John White",
+                          "@type": "customer",
+                          "id": "30008687"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationMessage"
+                },
+                "examples": {
+                  "Sample Response 1": {
+                    "value": {
+                      "id": 203,
+                      "state": "SUCCESS",
+                      "dateSent": "2023-04-28T09:44:41",
+                      "characteristic": [
+                        {
+                          "name": "CUSTOMER_NAME",
+                          "value": "Mr. Jones",
+                          "valueType": "string"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will include information about error code and short description of error. The error in the response will be indicative of the first occurrence of the problem seen in the flow of processing. The processing stops at the first occurrence of the error. For further details of the error, refer to the JSONResponse?{} hash.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customized for Unitel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\nSystem errors will need to be investigated by Operations team. For any errors caused by incorrect data, the sender may send the request again with correct data.\n\n| S. No. | Error Code | Error Message | Purpose |\n|--------|------------|---------------|---------|\n| 1 | E84108 | PERESTAPI_ENTITY_NOT_FOUND_OR_NO_ACCESS | To validate provided contact/customer/case/action details |\n| 2 | E84106 | PERESTAPI_ELEMENT_MISSING | To check mandatory element is passed or not |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "communicationMessage"
+      }
+    },
+    "/communicationMessage/{id}": {
+      "get": {
+        "tags": [
+          "communicationMessage"
+        ],
+        "summary": "Retrieves a CommunicationMessage by ID",
+        "description": "This operation retrieves a CommunicationMessage entity. Attribute selection is enabled for all first level attributes.",
+        "operationId": "retrieveCommunicationMessage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifier of the CommunicationMessage",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to provide in response",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationMessage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "communicationMessage"
+        ],
+        "summary": "Deletes a CommunicationMessage",
+        "description": "This operation deletes a CommunicationMessage entity.",
+        "operationId": "deleteCommunicationMessage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifier of the CommunicationMessage",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "communicationMessage"
+        ],
+        "summary": "Updates partially a CommunicationMessage",
+        "description": "This operation updates partially a CommunicationMessage entity.",
+        "operationId": "patchCommunicationMessage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifier of the CommunicationMessage",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The CommunicationMessage to be updated",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/CommunicationMessage_Update"
+              },
+              "examples": {
+                "Sample Request 1": {
+                  "value": {
+                    "sendTime": "2020-12-12T00:00:00+01:00",
+                    "state": "failed",
+                    "characteristic": [
+                      {
+                        "name": "errorMessage",
+                        "value": "Invalid Email ID Passed ",
+                        "valueType": "string"
+                      }
+                    ]
+                  }
+                },
+                "Sample Request 2": {
+                  "value": {
+                    "sendTime": "2020-12-12T07:35:00+01:00",
+                    "state": "completed"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationMessage"
+                },
+                "examples": {
+                  "Sample Response 1": {
+                    "value": {
+                      "id": "659001",
+                      "state": "failed",
+                      "characteristic": [
+                        {
+                          "value": "Invalid Email ID Passed "
+                        }
+                      ],
+                      "sendTime": "2020-12-12T00:00:00+01:00"
+                    }
+                  },
+                  "Sample Response 2": {
+                    "value": {
+                      "id": "FA525F20ACFF9CA3E053293413ACBCE7",
+                      "state": "completed",
+                      "sendTime": "2020-12-12T07:35:00+01:00"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request\n\nIf the processing is not successful, the response will include information about error code and short description of error. The error in the response will be indicative of the first occurrence of the problem seen in the flow of processing. The processing stops at the first occurrence of the error. For further details of the error, refer to the JSONResponse?{} hash.\n\nThe error cases listed in this section assume that the incoming request has passed schema validation. This list shows the out of the box error messages and their corresponding error codes. Once the API code gets called into Singleview low level APIs there may be additional errors, but they will appear in the same format of error code and error message. Please refer to the Singleview licensed production documentation for specific details on any additional error message. Besides, any error messages customized for Unitel will be added here in the subsequent version of the EICD, during the design grooming stage.\n\nSystem errors will need to be investigated by Operations team. For any errors caused by incorrect data, the sender may send the request again with correct data.\n\n| S. No. | Error Code | Error Message | Purpose |\n|--------|------------|---------------|---------|\n| 1 | E84108 | PERESTAPI_ENTITY_NOT_FOUND_OR_NO_ACCESS | To validate provided contact/customer/case/action details |\n| 2 | E84106 | PERESTAPI_ELEMENT_MISSING | To check mandatory element is passed or not |\n",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "communicationMessage"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Any": {
+        "type": "object",
+        "description": "Any structure"
+      },
+      "Attachment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this particular attachment"
+          },
+          "href": {
+            "type": "string",
+            "description": "URI for this Attachment"
+          },
+          "attachmentType": {
+            "type": "string",
+            "description": "Attachment type such as video, picture"
+          },
+          "content": {
+            "type": "string",
+            "description": "The actual contents of the attachment object, if embedded, encoded as base64"
+          },
+          "description": {
+            "type": "string",
+            "description": "A narrative text describing the content of the attachment"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "Attachment mime type such as extension file for video, picture and document"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the attachment"
+          },
+          "url": {
+            "type": "string",
+            "description": "Uniform Resource Locator, is a web page address (a subset of URI)"
+          },
+          "size": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "validFor": {
+            "$ref": "#/components/schemas/TimePeriod"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          }
+        },
+        "description": "Complements the description of an element (for instance a product) through video, pictures..."
+      },
+      "Characteristic": {
+        "required": [
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the characteristic"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the characteristic"
+          },
+          "valueType": {
+            "type": "string",
+            "description": "Data type of the value of the characteristic"
+          },
+          "characteristicRelationship": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CharacteristicRelationship"
+            }
+          },
+          "value": {
+            "$ref": "#/components/schemas/Any"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          }
+        },
+        "description": "Describes a given characteristic of an object or entity through a name/value pair."
+      },
+      "CharacteristicRelationship": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the characteristic"
+          },
+          "relationshipType": {
+            "type": "string",
+            "description": "The type of relationship"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          }
+        },
+        "description": "Another Characteristic that is related to the current Characteristic;"
+      },
+      "CommunicationMessage": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of Communication Message"
+          },
+          "href": {
+            "type": "string",
+            "description": "Hypertext Reference of the Communication Message"
+          },
+          "content": {
+            "type": "string",
+            "description": "The content of the communication message in format of \"Template Name\"."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description for the whole object"
+          },
+          "logFlag": {
+            "type": "boolean"
+          },
+          "messageType": {
+            "type": "string",
+            "enum": [
+              "SMS",
+              "Email",
+              "Push app",
+              "USSD"
+            ],
+            "description": "The type of message, such as: SMS, Email, Mobile app push notification, as per TMF. Customized for Digicel to send this as \"NotificationServer\"."
+          },
+          "priority": {
+            "type": "string",
+            "description": "The priority of the communication message.\nSmall number means higher priority."
+          },
+          "scheduledSendTime": {
+            "type": "string",
+            "description": "The scheduled time for sending the communication message",
+            "format": "date-time"
+          },
+          "sendTime": {
+            "type": "string",
+            "description": "The time of sending communication message",
+            "format": "date-time"
+          },
+          "dateSent": {
+            "type": "string",
+            "description": "The time of completion of sending communication message",
+            "format": "date-time"
+          },
+          "subject": {
+            "type": "string",
+            "description": "The title of the message, necessary for the email and mobile app push"
+          },
+          "tryTimes": {
+            "type": "integer",
+            "description": "How many times do you want to retry the delivery of this message?"
+          },
+          "attachment": {
+            "type": "array",
+            "description": "Any attachment associated with this message",
+            "items": {
+              "$ref": "#/components/schemas/Attachment"
+            }
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Any additional characteristic(s) of this message",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            }
+          },
+          "receiver": {
+            "type": "array",
+            "description": "The receiver(s) of this message",
+            "items": {
+              "$ref": "#/components/schemas/Receiver"
+            }
+          },
+          "sender": {
+            "$ref": "#/components/schemas/Sender"
+          },
+          "state": {
+            "$ref": "#/components/schemas/CommunicationMessageStateType"
+          },
+          "case": {
+            "$ref": "#/components/schemas/CaseRef"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          }
+        },
+        "description": "Communication message means a notification approach in the format of a message which can be dispatched (sent) to the certain user by the system with the content which can be felt and understood by the recipient. The user can be either a final customer or a customer service agent. The message can reach the customer in different interaction channels, including: email, short message, mobile app notification (push)."
+      },
+      "CommunicationMessage_Create": {
+        "required": [
+          "content",
+          "receiver",
+          "sender"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": " This is not required for the POST operation. Singleview will generate unique IDs for all notifications."
+          },
+          "content": {
+            "type": "string",
+            "description": "The content of the communication message in format of \"Template Name\"."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description for the whole object"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the communication message."
+          },
+          "logFlag": {
+            "type": "boolean"
+          },
+          "messageType": {
+            "type": "string",
+            "enum": [
+              "SMS",
+              "Email",
+              "Push app",
+              "USSD"
+            ],
+            "description": "The type of message. Customized for Digicel to send this as \"NotificationServer\". If the input parameter \"messageType\" is populated with one of the 4 supported delivery types, then only that delivery method will be supported in the outgoing message to the dispatcher."
+          },
+          "priority": {
+            "type": "string",
+            "description": "The priority of the communication message.\nSmall number means higher priority."
+          },
+          "scheduledSendTime": {
+            "type": "string",
+            "description": "The scheduled time for sending the communication message",
+            "format": "date-time"
+          },
+          "sendTime": {
+            "type": "string",
+            "description": "The time of sending communication message",
+            "format": "date-time"
+          },
+          "sendTimeComplete": {
+            "type": "string",
+            "description": "The time of completion of sending communication message",
+            "format": "date-time"
+          },
+          "subject": {
+            "type": "string",
+            "description": "The title of the message, necessary for the email and mobile app push"
+          },
+          "tryTimes": {
+            "type": "integer",
+            "description": "How many times do you want to retry the delivery of this message?"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "communication message mimeType"
+          },
+          "attachment": {
+            "type": "array",
+            "description": "Any attachment associated with this message",
+            "items": {
+              "$ref": "#/components/schemas/Attachment"
+            }
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Any additional characteristic(s) of this message",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            }
+          },
+          "receiver": {
+            "minItems": 1,
+            "type": "array",
+            "description": "The receiver(s) of this message",
+            "items": {
+              "$ref": "#/components/schemas/Receiver"
+            }
+          },
+          "sender": {
+            "$ref": "#/components/schemas/Sender"
+          },
+          "state": {
+            "$ref": "#/components/schemas/CommunicationMessageStateType"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          }
+        },
+        "description": "Communication message means a notification approach in the format of a message which can be dispatched (sent) to the certain user by the system with the content which can be felt and understood by the recipient. The user can be either a final customer or a customer service agent. The message can reach the customer in different interaction channels, including: email, short message, mobile app notification (push).\nSkipped properties: id,href"
+      },
+      "CommunicationMessage_Update": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "The content of the communication message in format of \"Template Name\"."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description for the whole object"
+          },
+          "logFlag": {
+            "type": "boolean"
+          },
+          "messageType": {
+            "type": "string",
+            "enum": [
+              "SMS",
+              "Email",
+              "Push app",
+              "USSD"
+            ],
+            "description": "The type of message, such as: SMS, Email, Mobile app push notification, as per TMF. Customized for Digicel to send this as \"NotificationServer\"."
+          },
+          "priority": {
+            "type": "string",
+            "description": "The priority of the communication message.\nSmall number means higher priority."
+          },
+          "scheduledSendTime": {
+            "type": "string",
+            "description": "The scheduled time for sending the communication message",
+            "format": "date-time"
+          },
+          "sendTime": {
+            "type": "string",
+            "description": "The time of sending communication message",
+            "format": "date-time"
+          },
+          "sendTimeComplete": {
+            "type": "string",
+            "description": "The time of completion of sending communication message",
+            "format": "date-time"
+          },
+          "subject": {
+            "type": "string",
+            "description": "The title of the message, necessary for the email and mobile app push"
+          },
+          "tryTimes": {
+            "type": "integer",
+            "description": "How many times do you want to retry the delivery of this message?"
+          },
+          "attachment": {
+            "type": "array",
+            "description": "Any attachment associated with this message",
+            "items": {
+              "$ref": "#/components/schemas/Attachment"
+            }
+          },
+          "characteristic": {
+            "type": "array",
+            "description": "Any additional characteristic(s) of this message",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            }
+          },
+          "receiver": {
+            "type": "array",
+            "description": "The receiver(s) of this message",
+            "items": {
+              "$ref": "#/components/schemas/Receiver"
+            }
+          },
+          "sender": {
+            "$ref": "#/components/schemas/Sender"
+          },
+          "state": {
+            "$ref": "#/components/schemas/CommunicationMessageStateType"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          }
+        },
+        "description": "Communication message means a notification approach in the format of a message which can be dispatched (sent) to the certain user by the system with the content which can be felt and understood by the recipient. The user can be either a final customer or a customer service agent. The message can reach the customer in different interaction channels, including: email, short message, mobile app notification (push).\nSkipped properties: id,href"
+      },
+      "CaseRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "case id, SV_MAPPING:Case.ObjectKey"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the case - <http://<HOSTNAME>:<PORT>/<Case URL>/<Case.ObjectKey>"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the case. SV_MAPPING:Case.Name"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the case. SV_MAPPING:Case.Status"
+          }
+        },
+        "description": "Case Details"
+      },
+      "CommunicationMessageStateType": {
+        "type": "string",
+        "description": "Communication message state type",
+        "enum": [
+          "initial",
+          "inProgress",
+          "completed",
+          "cancelled",
+          "failed"
+        ]
+      },
+      "EntityRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of a related entity."
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the related entity."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the related entity."
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance when needed for disambiguation."
+          }
+        },
+        "description": "Entity reference schema to be use for all entityRef class."
+      },
+      "Quantity": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Numeric value in a given unit",
+            "format": "float",
+            "default": 1
+          },
+          "units": {
+            "type": "string",
+            "description": "Unit"
+          }
+        },
+        "description": "An amount in a given unit"
+      },
+      "Receiver": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the receiver"
+          },
+          "appUserId": {
+            "type": "string",
+            "description": "ID of the mobile app user"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the receiver, if the communication type is email"
+          },
+          "ip": {
+            "type": "string",
+            "description": "IP address of the receiver"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the receiver"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number of the receiver, if the communication type is SMS."
+          },
+          "party": {
+            "$ref": "#/components/schemas/RelatedParty"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          }
+        },
+        "description": "Receivers of the communication message."
+      },
+      "RelatedParty": {
+        "required": [
+          "@referredType",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of a related entity."
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the related entity."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the related entity."
+          },
+          "role": {
+            "type": "string",
+            "description": "Role played by the related party"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance when needed for disambiguation."
+          }
+        },
+        "description": "Related Entity reference. A related party defines party or party role linked to a specific entity."
+      },
+      "Sender": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the sender"
+          },
+          "appUserId": {
+            "type": "string",
+            "description": "ID of the mobile app user"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the sender, if the communication type is email"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the sender"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number of the sender, if the communication type is SMS."
+          },
+          "party": {
+            "$ref": "#/components/schemas/RelatedParty"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          }
+        },
+        "description": "Sender of the communication message."
+      },
+      "TimePeriod": {
+        "type": "object",
+        "properties": {
+          "endDateTime": {
+            "type": "string",
+            "description": "End of the time period, using IETC-RFC-3339 format",
+            "format": "date-time"
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "Start of the time period, using IETC-RFC-3339 format. If you define a start, you must also define an end",
+            "format": "date-time"
+          }
+        },
+        "description": "A period of time, either as a deadline (endDateTime only) a startDateTime only, or both"
+      },
+      "Error": {
+        "required": [
+          "code",
+          "reason"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Application relevant detail, defined in the API or a common list."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Explanation of the reason for the error which can be shown to a client user."
+          },
+          "message": {
+            "type": "string",
+            "description": "More details and corrective actions related to the error which can be shown to a client user."
+          },
+          "status": {
+            "type": "string",
+            "description": "HTTP Error code extension"
+          },
+          "referenceError": {
+            "type": "string",
+            "description": "URI of documentation describing the error.",
+            "format": "uri"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class."
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name."
+          }
+        },
+        "description": "Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)"
+      }
+    }
+  }
+}

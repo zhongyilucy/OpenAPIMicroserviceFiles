@@ -1,0 +1,67 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "0.1",
+    "title": "Travel Expense Claim",
+    "description": "Expense Claim API store your travel expenses"
+  },
+  "servers": [
+    {
+      "url": "http://{hostname}:{port}/api/v0.1",
+      "description": "Development server",
+      "variables": {
+        "hostname": {
+          "default": "localhost"
+        },
+        "port": {
+          "default": "8080"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/expenses": {
+      "summary": "Expenses in the system",
+      "description": "List of operations with expenses",
+      "get": {
+        "summary": "Get all expenses",
+        "description": "Returns a list of all expenses",
+        "operationId": "getExpenses",
+        "responses": {
+          "200": {
+            "description": "Successfully returned all Expenses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Represent an expense entry",
+                  "properties": {
+                    "expenseId": {
+                      "type": "number",
+                      "description": "Unique ID of the course"
+                    },
+                    "expenseTitle": {
+                      "type": "string",
+                      "description": "Name of the expense"
+                    },
+                    "expensePrice": {
+                      "type": "number",
+                      "description": "The price of an expense"
+                    }
+                  },
+                  "example": {
+                    "expenseId": 1,
+                    "expenseTitle": "Car from Amsterdam to Rotterdam"
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Incorrect input"
+          }
+        }
+      }
+    }
+  }
+}

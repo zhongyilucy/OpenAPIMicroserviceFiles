@@ -1,0 +1,222 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "This is the API for applications.",
+    "version": "0.0.1",
+    "title": "Applications API",
+    "contact": {
+      "name": "Hans",
+      "email": "hans@company.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Applications",
+      "description": "An application is the most important part of our domain. It represents the \n  intent of a customer to get a loan."
+    }
+  ],
+  "paths": {
+    "/applications": {
+      "get": {
+        "tags": [
+          "Applications"
+        ],
+        "summary": "searches applications",
+        "operationId": "getApplication",
+        "description": "By passing in the appropriate options, you can search for\n  available applications in the system.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "description": "pass an optional application id for finding a certain application",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "pass an optional application status for finding all applications in that status",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ApplicationResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "failed to get application, the application id was not provided / not a valid UUID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Application400ErrorNotValidId"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "failed to get the application, the application id doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Application404Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Applications"
+        ],
+        "summary": "Create an application",
+        "operationId": "addApplication",
+        "description": "Adds an application to the system",
+        "responses": {
+          "201": {
+            "description": "application received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "duplicate application id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Application400ErrorDuplicateId"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplication"
+              }
+            }
+          },
+          "description": "application item to add",
+          "required": true
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateApplication": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "372c3849-a01b-4eb3-8c18-6f32f0b588ef"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Doe"
+          }
+        },
+        "required": [
+          "id",
+          "first_name",
+          "last_name"
+        ]
+      },
+      "ApplicationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "372c3849-a01b-4eb3-8c18-6f32f0b588ef"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "new",
+              "pending",
+              "completed",
+              "rejected"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "first_name",
+          "last_name",
+          "status"
+        ]
+      },
+      "Application400ErrorNotValidId": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "failed to get application, the application id was not provided / not a valid UUID"
+          }
+        }
+      },
+      "Application400ErrorDuplicateId": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "the application id is already used"
+          }
+        }
+      },
+      "Application404Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "failed to get application, the application id doesn't exist"
+          }
+        }
+      }
+    }
+  }
+}

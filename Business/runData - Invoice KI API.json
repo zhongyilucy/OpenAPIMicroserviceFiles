@@ -1,0 +1,369 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "This API allows you to interact with invoice data. With it, you have the capability to either retrieve detailed information for a specific invoice or create a new invoice. Please note, after a new invoice is created, it typically takes between 2 to 3 minutes before it's available for retrieval. This delay is attributed to the model knowledge integration (KI) process.",
+    "version": "1.0.0",
+    "title": "runData - Invoice KI API",
+    "contact": {
+      "email": "admin@dimetrics.io",
+      "url": "https://dimetrics.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/Dimetrics.io/InvoiceOcr/1.0.0"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/ADMIN_199/InvoiceOcr/1.0.0"
+    }
+  ],
+  "paths": {
+    "/objectId/{identifier}": {
+      "servers": [
+        {
+          "url": "https://prod-243.westeurope.logic.azure.com/workflows/e215cdd6f3c648bcabb10933566ee800/triggers/manual/paths/invoke"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Retrieves an invoice by its ID",
+        "description": "This endpoint is used to get a specific object by providing the object's identifier.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "identifier",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Identifier of the object"
+          },
+          {
+            "in": "query",
+            "name": "api-version",
+            "schema": {
+              "type": "string",
+              "default": "2016-06-01",
+              "description": "Version of the API"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sp",
+            "schema": {
+              "type": "string",
+              "default": "/triggers/manual/run",
+              "description": "SharePoint path"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sv",
+            "schema": {
+              "type": "string",
+              "default": "1.0",
+              "description": "SharePoint version"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sig",
+            "schema": {
+              "type": "string",
+              "description": "Signature for authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, returns the ocr result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "ID of the object"
+                    },
+                    "messageId": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Message ID of MS Teams"
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": [
+                        "finish",
+                        "processing"
+                      ],
+                      "description": "State of the process, can be 'finish' or 'processing'"
+                    },
+                    "result": {
+                      "type": "object",
+                      "nullable": true,
+                      "additionalProperties": true,
+                      "description": "Result of the OCR process, can be null or any object. If not null, may contain following properties.",
+                      "properties": {
+                        "keyValuePairs": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The key-value pairs from the invoice information extraction process."
+                        },
+                        "billingAddress": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The billing address from the invoice."
+                        },
+                        "billingAddressRecipient": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The recipient of the billing address from the invoice."
+                        },
+                        "customerAddress": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The customer's address from the invoice."
+                        },
+                        "customerAddressRecipient": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The recipient of the customer's address from the invoice."
+                        },
+                        "customerId": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The customer's ID from the invoice."
+                        },
+                        "customerName": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The customer's name from the invoice."
+                        },
+                        "dueDate": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The due date from the invoice."
+                        },
+                        "invoiceDate": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The date of the invoice."
+                        },
+                        "invoiceTotal": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The total amount of the invoice."
+                        },
+                        "previousUnpaidBallance": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The previous unpaid balance from the invoice."
+                        },
+                        "purchaseOrder": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The purchase order from the invoice."
+                        },
+                        "remittanceAddress": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The remittance address from the invoice."
+                        },
+                        "serviceAddress": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The service address from the invoice."
+                        },
+                        "serviceEndDate": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The service end date from the invoice."
+                        },
+                        "shippingAddress": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The shipping address from the invoice."
+                        },
+                        "shippingAddressRecipient": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The recipient of the shipping address from the invoice."
+                        },
+                        "subTotal": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The subtotal from the invoice."
+                        },
+                        "totalTax": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The total tax from the invoice."
+                        },
+                        "vendorAddress": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The vendor's address from the invoice."
+                        },
+                        "paymentTerms": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The payment terms from the invoice."
+                        },
+                        "vendorTaxId": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The vendor's tax ID from the invoice."
+                        },
+                        "customerTaxId": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The customer's tax ID from the invoice."
+                        },
+                        "invoiceId": {
+                          "type": "object",
+                          "nullable": true,
+                          "additionalProperties": true,
+                          "description": "The ID of the invoice."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    },
+    "/": {
+      "servers": [
+        {
+          "url": "https://prod-107.westeurope.logic.azure.com:443/workflows/4b3f0f0adf594b6eb8c86ca72cff0877/triggers/manual/paths/invoke"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Invoices"
+        ],
+        "summary": "Creates a new invoice",
+        "description": "This endpoint is used to create a new invoice.",
+        "requestBody": {
+          "description": "Invoice to be created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "ID of the object"
+                  },
+                  "file": {
+                    "type": "string",
+                    "description": "File associated with the object"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "api-version",
+            "schema": {
+              "type": "string",
+              "default": "2016-06-01",
+              "description": "Version of the API"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sp",
+            "schema": {
+              "type": "string",
+              "default": "/triggers/manual/run",
+              "description": "SharePoint path"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sv",
+            "schema": {
+              "type": "string",
+              "default": "1.0",
+              "description": "SharePoint version"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sig",
+            "schema": {
+              "type": "string",
+              "description": "Signature for authorization"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Object created successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Server error"
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  }
+}

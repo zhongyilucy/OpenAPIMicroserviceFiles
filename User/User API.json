@@ -1,0 +1,2065 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "User API",
+    "description": "Create, update, and retrieve users in the system. ",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.blackdiamondwealthplatform.com/user-api"
+    }
+  ],
+  "paths": {
+    "/User": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User",
+        "description": "Get a filtered or non-filtered list of Users",
+        "operationId": "get-user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Id of User",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username of User",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "firstname",
+            "in": "query",
+            "description": "Firstname of User",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lastname",
+            "in": "query",
+            "description": "Lastname of User",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email of User",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "description": "Active flag of User",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "invited",
+            "in": "query",
+            "description": "Invited flag of User",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "established",
+            "in": "query",
+            "description": "Established flag of User",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "locked",
+            "in": "query",
+            "description": "Locked flag of User",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "allAccounts",
+            "in": "query",
+            "description": "AllAccounts flag of User",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "userType",
+            "in": "query",
+            "description": "User Type",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "primaryRelationship",
+            "in": "query",
+            "description": "PrimaryRelationship of User",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "number of results returned",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "starting position on query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 0,
+                    "uniqueId": "string",
+                    "username": "string",
+                    "firstName": "string",
+                    "lastName": "string",
+                    "email": "string",
+                    "userType": "FirmUser",
+                    "active": true,
+                    "established": true,
+                    "locked": true,
+                    "invited": true,
+                    "status": "Created",
+                    "allAccounts": true,
+                    "roleId": 0,
+                    "clientProfileId": "string",
+                    "contactData": {
+                      "address1": "string",
+                      "address2": "string",
+                      "city": "string",
+                      "state": "string",
+                      "zipCode": "string",
+                      "phone": "string",
+                      "title": "string",
+                      "externalLink": "string",
+                      "externalLinkDisplayName": "string",
+                      "sync": true
+                    },
+                    "integrations": {
+                      "moneyGuideProAdvisor": 0,
+                      "riskalyzeAdvisor": 0,
+                      "byAllAdvisor": 0
+                    },
+                    "primaryTeamId": "string",
+                    "primaryRelationship": "string",
+                    "teams": [
+                      "string"
+                    ],
+                    "accounts": [
+                      "string"
+                    ],
+                    "accountExclusions": [
+                      "string"
+                    ],
+                    "repCodes": [
+                      0
+                    ],
+                    "visibleRelationships": [
+                      "string"
+                    ],
+                    "hiddenPortfolios": [
+                      "string"
+                    ],
+                    "modifiedBy": "string",
+                    "modifiedDate": "string",
+                    "expirationDate": "string",
+                    "hidden": true,
+                    "createdBy": 0,
+                    "createdDate": "string",
+                    "imageUrl": "string"
+                  }
+                ]
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 0,
+                    "uniqueId": "string",
+                    "username": "string",
+                    "firstName": "string",
+                    "lastName": "string",
+                    "email": "string",
+                    "userType": "FirmUser",
+                    "active": true,
+                    "established": true,
+                    "locked": true,
+                    "invited": true,
+                    "status": "Created",
+                    "allAccounts": true,
+                    "roleId": 0,
+                    "clientProfileId": "string",
+                    "contactData": {
+                      "address1": "string",
+                      "address2": "string",
+                      "city": "string",
+                      "state": "string",
+                      "zipCode": "string",
+                      "phone": "string",
+                      "title": "string",
+                      "externalLink": "string",
+                      "externalLinkDisplayName": "string",
+                      "sync": true
+                    },
+                    "integrations": {
+                      "moneyGuideProAdvisor": 0,
+                      "riskalyzeAdvisor": 0,
+                      "byAllAdvisor": 0
+                    },
+                    "primaryTeamId": "string",
+                    "primaryRelationship": "string",
+                    "teams": [
+                      "string"
+                    ],
+                    "accounts": [
+                      "string"
+                    ],
+                    "accountExclusions": [
+                      "string"
+                    ],
+                    "repCodes": [
+                      0
+                    ],
+                    "visibleRelationships": [
+                      "string"
+                    ],
+                    "hiddenPortfolios": [
+                      "string"
+                    ],
+                    "modifiedBy": "string",
+                    "modifiedDate": "string",
+                    "expirationDate": "string",
+                    "hidden": true,
+                    "createdBy": 0,
+                    "createdDate": "string",
+                    "imageUrl": "string"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Creates a User",
+        "description": "Creates a User",
+        "operationId": "post-user",
+        "parameters": [
+          {
+            "name": "includeAccounts",
+            "in": "query",
+            "description": "Include account assignments",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeAccountExclusions",
+            "in": "query",
+            "description": "Include account exclusions",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeTeams",
+            "in": "query",
+            "description": "Include team assignments",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeRepCodes",
+            "in": "query",
+            "description": "Include repcode assignments",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeHiddenPortfolios",
+            "in": "query",
+            "description": "Include portfolio visibility",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeIntegrations",
+            "in": "query",
+            "description": "Include User Integrations",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeClientProfile",
+            "in": "query",
+            "description": "Include Client Profile Assignments",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              },
+              "example": {
+                "id": 0,
+                "uniqueId": "string",
+                "username": "string",
+                "firstName": "string",
+                "lastName": "string",
+                "email": "string",
+                "userType": "FirmUser",
+                "active": true,
+                "established": true,
+                "locked": true,
+                "invited": true,
+                "status": "Created",
+                "allAccounts": true,
+                "roleId": 0,
+                "clientProfileId": "string",
+                "contactData": {
+                  "address1": "string",
+                  "address2": "string",
+                  "city": "string",
+                  "state": "string",
+                  "zipCode": "string",
+                  "phone": "string",
+                  "title": "string",
+                  "externalLink": "string",
+                  "externalLinkDisplayName": "string",
+                  "sync": true
+                },
+                "integrations": {
+                  "moneyGuideProAdvisor": 0,
+                  "riskalyzeAdvisor": 0,
+                  "byAllAdvisor": 0
+                },
+                "primaryTeamId": "string",
+                "primaryRelationship": "string",
+                "teams": [
+                  "string"
+                ],
+                "accounts": [
+                  "string"
+                ],
+                "accountExclusions": [
+                  "string"
+                ],
+                "repCodes": [
+                  "string"
+                ],
+                "visibleRelationships": [
+                  "string"
+                ],
+                "hiddenPortfolios": [
+                  "string"
+                ],
+                "modifiedBy": "string",
+                "modifiedDate": "string",
+                "expirationDate": "string",
+                "hidden": true,
+                "createdBy": 0,
+                "createdDate": "string",
+                "imageUrl": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "string",
+                  "title": "string",
+                  "status": 0,
+                  "detail": "string",
+                  "instance": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "string",
+                  "title": "string",
+                  "status": 0,
+                  "detail": "string",
+                  "instance": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/User/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User by ID",
+        "description": "Gets a user by id",
+        "operationId": "get-user-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Format - int32. Format - int32. Format - int32.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "includeAccounts",
+            "in": "query",
+            "description": "Include account assignments and exclusions",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeTeams",
+            "in": "query",
+            "description": "Include team assignments",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeRepCodes",
+            "in": "query",
+            "description": "Include repcode assignments",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeHiddenPortfolios",
+            "in": "query",
+            "description": "Include portfolio visibility",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                },
+                "example": {
+                  "id": 0,
+                  "uniqueId": "string",
+                  "username": "string",
+                  "firstName": "string",
+                  "lastName": "string",
+                  "email": "string",
+                  "userType": "FirmUser",
+                  "active": true,
+                  "established": true,
+                  "locked": true,
+                  "invited": true,
+                  "status": "Created",
+                  "allAccounts": true,
+                  "roleId": 0,
+                  "clientProfileId": "string",
+                  "contactData": {
+                    "address1": "string",
+                    "address2": "string",
+                    "city": "string",
+                    "state": "string",
+                    "zipCode": "string",
+                    "phone": "string",
+                    "title": "string",
+                    "externalLink": "string",
+                    "externalLinkDisplayName": "string",
+                    "sync": true
+                  },
+                  "integrations": {
+                    "moneyGuideProAdvisor": 0,
+                    "riskalyzeAdvisor": 0,
+                    "byAllAdvisor": 0
+                  },
+                  "primaryTeamId": "string",
+                  "primaryRelationship": "string",
+                  "teams": [
+                    "string"
+                  ],
+                  "accounts": [
+                    "string"
+                  ],
+                  "accountExclusions": [
+                    "string"
+                  ],
+                  "repCodes": [
+                    0
+                  ],
+                  "visibleRelationships": [
+                    "string"
+                  ],
+                  "hiddenPortfolios": [
+                    "string"
+                  ],
+                  "modifiedBy": "string",
+                  "modifiedDate": "string",
+                  "expirationDate": "string",
+                  "hidden": true,
+                  "createdBy": 0,
+                  "createdDate": "string",
+                  "imageUrl": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                },
+                "example": {
+                  "id": 0,
+                  "uniqueId": "string",
+                  "username": "string",
+                  "firstName": "string",
+                  "lastName": "string",
+                  "email": "string",
+                  "userType": "FirmUser",
+                  "active": true,
+                  "established": true,
+                  "locked": true,
+                  "invited": true,
+                  "status": "Created",
+                  "allAccounts": true,
+                  "roleId": 0,
+                  "clientProfileId": "string",
+                  "contactData": {
+                    "address1": "string",
+                    "address2": "string",
+                    "city": "string",
+                    "state": "string",
+                    "zipCode": "string",
+                    "phone": "string",
+                    "title": "string",
+                    "externalLink": "string",
+                    "externalLinkDisplayName": "string",
+                    "sync": true
+                  },
+                  "integrations": {
+                    "moneyGuideProAdvisor": 0,
+                    "riskalyzeAdvisor": 0,
+                    "byAllAdvisor": 0
+                  },
+                  "primaryTeamId": "string",
+                  "primaryRelationship": "string",
+                  "teams": [
+                    "string"
+                  ],
+                  "accounts": [
+                    "string"
+                  ],
+                  "accountExclusions": [
+                    "string"
+                  ],
+                  "repCodes": [
+                    0
+                  ],
+                  "visibleRelationships": [
+                    "string"
+                  ],
+                  "hiddenPortfolios": [
+                    "string"
+                  ],
+                  "modifiedBy": "string",
+                  "modifiedDate": "string",
+                  "expirationDate": "string",
+                  "hidden": true,
+                  "createdBy": 0,
+                  "createdDate": "string",
+                  "imageUrl": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "string",
+                  "title": "string",
+                  "status": 0,
+                  "detail": "string",
+                  "instance": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "string",
+                  "title": "string",
+                  "status": 0,
+                  "detail": "string",
+                  "instance": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "string",
+                  "title": "string",
+                  "status": 0,
+                  "detail": "string",
+                  "instance": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "string",
+                  "title": "string",
+                  "status": 0,
+                  "detail": "string",
+                  "instance": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Updates a User",
+        "description": "Updates a user",
+        "operationId": "put-user-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Format - int32. Format - int32. Format - int32.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "includeAccounts",
+            "in": "query",
+            "description": "Include account assignments and exclusions",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeTeams",
+            "in": "query",
+            "description": "Include team assignments",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeRepCodes",
+            "in": "query",
+            "description": "Include repcode assignments",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeHiddenPortfolios",
+            "in": "query",
+            "description": "Include portfolio visibility",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              },
+              "example": {
+                "id": 0,
+                "uniqueId": "string",
+                "username": "string",
+                "firstName": "string",
+                "lastName": "string",
+                "email": "string",
+                "userType": "FirmUser",
+                "active": true,
+                "established": true,
+                "locked": true,
+                "invited": true,
+                "status": "Created",
+                "allAccounts": true,
+                "roleId": 0,
+                "clientProfileId": "string",
+                "contactData": {
+                  "address1": "string",
+                  "address2": "string",
+                  "city": "string",
+                  "state": "string",
+                  "zipCode": "string",
+                  "phone": "string",
+                  "title": "string",
+                  "externalLink": "string",
+                  "externalLinkDisplayName": "string",
+                  "sync": true
+                },
+                "integrations": {
+                  "moneyGuideProAdvisor": 0,
+                  "riskalyzeAdvisor": 0,
+                  "byAllAdvisor": 0
+                },
+                "primaryTeamId": "string",
+                "primaryRelationship": "string",
+                "teams": [
+                  "string"
+                ],
+                "accounts": [
+                  "string"
+                ],
+                "accountExclusions": [
+                  "string"
+                ],
+                "repCodes": [
+                  0
+                ],
+                "visibleRelationships": [
+                  "string"
+                ],
+                "hiddenPortfolios": [
+                  "string"
+                ],
+                "modifiedBy": "string",
+                "modifiedDate": "string",
+                "expirationDate": "string",
+                "hidden": true,
+                "createdBy": 0,
+                "createdDate": "string",
+                "imageUrl": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              },
+              "example": {
+                "id": 0,
+                "uniqueId": "string",
+                "username": "string",
+                "firstName": "string",
+                "lastName": "string",
+                "email": "string",
+                "userType": "FirmUser",
+                "active": true,
+                "established": true,
+                "locked": true,
+                "invited": true,
+                "status": "Created",
+                "allAccounts": true,
+                "roleId": 0,
+                "clientProfileId": "string",
+                "contactData": {
+                  "address1": "string",
+                  "address2": "string",
+                  "city": "string",
+                  "state": "string",
+                  "zipCode": "string",
+                  "phone": "string",
+                  "title": "string",
+                  "externalLink": "string",
+                  "externalLinkDisplayName": "string",
+                  "sync": true
+                },
+                "integrations": {
+                  "moneyGuideProAdvisor": 0,
+                  "riskalyzeAdvisor": 0,
+                  "byAllAdvisor": 0
+                },
+                "primaryTeamId": "string",
+                "primaryRelationship": "string",
+                "teams": [
+                  "string"
+                ],
+                "accounts": [
+                  "string"
+                ],
+                "accountExclusions": [
+                  "string"
+                ],
+                "repCodes": [
+                  0
+                ],
+                "visibleRelationships": [
+                  "string"
+                ],
+                "hiddenPortfolios": [
+                  "string"
+                ],
+                "modifiedBy": "string",
+                "modifiedDate": "string",
+                "expirationDate": "string",
+                "hidden": true,
+                "createdBy": 0,
+                "createdDate": "string",
+                "imageUrl": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDto"
+              },
+              "example": {
+                "id": 0,
+                "uniqueId": "string",
+                "username": "string",
+                "firstName": "string",
+                "lastName": "string",
+                "email": "string",
+                "userType": "FirmUser",
+                "active": true,
+                "established": true,
+                "locked": true,
+                "invited": true,
+                "status": "Created",
+                "allAccounts": true,
+                "roleId": 0,
+                "clientProfileId": "string",
+                "contactData": {
+                  "address1": "string",
+                  "address2": "string",
+                  "city": "string",
+                  "state": "string",
+                  "zipCode": "string",
+                  "phone": "string",
+                  "title": "string",
+                  "externalLink": "string",
+                  "externalLinkDisplayName": "string",
+                  "sync": true
+                },
+                "integrations": {
+                  "moneyGuideProAdvisor": 0,
+                  "riskalyzeAdvisor": 0,
+                  "byAllAdvisor": 0
+                },
+                "primaryTeamId": "string",
+                "primaryRelationship": "string",
+                "teams": [
+                  "string"
+                ],
+                "accounts": [
+                  "string"
+                ],
+                "accountExclusions": [
+                  "string"
+                ],
+                "repCodes": [
+                  0
+                ],
+                "visibleRelationships": [
+                  "string"
+                ],
+                "hiddenPortfolios": [
+                  "string"
+                ],
+                "modifiedBy": "string",
+                "modifiedDate": "string",
+                "expirationDate": "string",
+                "hidden": true,
+                "createdBy": 0,
+                "createdDate": "string",
+                "imageUrl": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "string",
+                  "title": "string",
+                  "status": 0,
+                  "detail": "string",
+                  "instance": "string"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "string",
+                  "title": "string",
+                  "status": 0,
+                  "detail": "string",
+                  "instance": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "string",
+                  "title": "string",
+                  "status": 0,
+                  "detail": "string",
+                  "instance": "string"
+                }
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                },
+                "example": {
+                  "type": "string",
+                  "title": "string",
+                  "status": 0,
+                  "detail": "string",
+                  "instance": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete a User",
+        "description": "/User/{id} - DELETE",
+        "operationId": "delete-user-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Format - int32. Format - int32. Format - int32.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserIntegrationsDto": {
+        "type": "object",
+        "properties": {
+          "moneyGuideProAdvisor": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "riskalyzeAdvisor": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "byAllAdvisor": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "uniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "userType": {
+            "$ref": "#/components/schemas/UserType"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "established": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "invited": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/UserStatus"
+          },
+          "allAccounts": {
+            "type": "boolean",
+            "description": "Allows the user to access all accounts"
+          },
+          "primaryTeamId": {
+            "type": "string",
+            "nullable": true
+          },
+          "primaryRelationship": {
+            "type": "string",
+            "nullable": true
+          },
+          "expirationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "hidden": {
+            "type": "boolean"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactInfo": {
+            "$ref": "#/components/schemas/UserDetailContactInfo"
+          },
+          "integrations": {
+            "$ref": "#/components/schemas/UserDetailIntegrations"
+          },
+          "role": {
+            "$ref": "#/components/schemas/UserDetailRole"
+          },
+          "clientProfile": {
+            "$ref": "#/components/schemas/UserDetailClientProfile"
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDetailAccount"
+            },
+            "nullable": true
+          },
+          "accountCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ownedAccounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDetailAccount"
+            },
+            "nullable": true
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDetailContact"
+            },
+            "nullable": true
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDetailTeam"
+            },
+            "nullable": true
+          },
+          "portfolios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDetailPortfolio"
+            },
+            "nullable": true
+          },
+          "financialTeamTemplates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDetailFinancialTeamTemplate"
+            },
+            "nullable": true
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDetailRelationship"
+            },
+            "nullable": true
+          },
+          "repCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDetailRepCode"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailRepCode": {
+        "type": "object",
+        "properties": {
+          "repCodeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "internalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "repName": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataFormatId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isDirectAssigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "viaTeam": {
+            "type": "string",
+            "description": "If the rep code is assigned via team, what is the external id of the team that it is assigned through?",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailRelationship": {
+        "type": "object",
+        "properties": {
+          "relationshipId": {
+            "type": "string",
+            "nullable": true
+          },
+          "internalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailFinancialTeamTemplate": {
+        "type": "object",
+        "properties": {
+          "financialTeamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "internalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "teamId": {
+            "type": "string",
+            "nullable": true
+          },
+          "teamInternalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "memberName": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberTitle": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailPortfolio": {
+        "type": "object",
+        "properties": {
+          "portfolioId": {
+            "type": "string",
+            "nullable": true
+          },
+          "internalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "teamId": {
+            "type": "string",
+            "nullable": true
+          },
+          "teamInternalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "showClient": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "adminOnly": {
+            "type": "boolean"
+          },
+          "hidden": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "visible": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailTeam": {
+        "type": "object",
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "nullable": true
+          },
+          "internalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "isSystem": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailContact": {
+        "type": "object",
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "internalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "teamId": {
+            "type": "string",
+            "nullable": true
+          },
+          "teamInternalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "salutation": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "suffix": {
+            "type": "string",
+            "nullable": true
+          },
+          "nickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "gender": {
+            "type": "string",
+            "nullable": true
+          },
+          "income": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "retirementAge": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "actualRetirementDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailAccount": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountInternalId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isDirectAssigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailClientProfile": {
+        "type": "object",
+        "properties": {
+          "clientProfileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailRole": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailIntegrations": {
+        "type": "object",
+        "properties": {
+          "moneyGuideProAdvisor": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "riskalyzeAdvisor": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "byAllAdvisor": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailContactInfo": {
+        "type": "object",
+        "properties": {
+          "address1": {
+            "type": "string",
+            "nullable": true
+          },
+          "address2": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "externalLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "externalLinkDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "sync": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailExposures": {
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Get users that have exposure to the specified accounts",
+            "nullable": true
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Get users that have exposure to the specified relationships",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDetailAssociations": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "boolean"
+          },
+          "contactInfo": {
+            "type": "boolean",
+            "description": "This is user.contactInfo for Firm Users"
+          },
+          "integrations": {
+            "type": "boolean"
+          },
+          "accounts": {
+            "type": "boolean"
+          },
+          "accountCount": {
+            "type": "boolean"
+          },
+          "ownedAccounts": {
+            "type": "boolean",
+            "description": "Accounts Owned by the Contact associated to the user"
+          },
+          "contacts": {
+            "type": "boolean",
+            "description": "Contacts"
+          },
+          "relationships": {
+            "type": "boolean"
+          },
+          "teams": {
+            "type": "boolean"
+          },
+          "portfolios": {
+            "type": "boolean"
+          },
+          "financialTeamTemplates": {
+            "type": "boolean"
+          },
+          "roles": {
+            "type": "boolean"
+          },
+          "clientProfiles": {
+            "type": "boolean"
+          },
+          "repCodes": {
+            "type": "boolean"
+          },
+          "onlyAccessibleItems": {
+            "type": "boolean",
+            "description": "Only include items which the current user has access to"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateAccountHolderCommand": {
+        "type": "object",
+        "properties": {
+          "contactId": {
+            "type": "string",
+            "nullable": true
+          },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "primaryRelationshipId": {
+            "type": "string",
+            "nullable": true
+          },
+          "primaryTeamId": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientProfileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "integrations": {
+            "$ref": "#/components/schemas/UserIntegrationsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ClientSortField": {
+        "enum": [
+          "Id",
+          "Firstname",
+          "Lastname",
+          "Username",
+          "Email",
+          "Status",
+          "Accounts",
+          "Team",
+          "Profile"
+        ],
+        "type": "string"
+      },
+      "UserType": {
+        "enum": [
+          "FirmUser",
+          "ClientUser",
+          "InternalEmployee",
+          "InternalSystem"
+        ],
+        "type": "string",
+        "description": "Categorizes broad levels of system access and experience\r\n - FirmUser: Financial Advisors and Other Staff\r\n - ClientUser: An end-user of the Client Experience\r\n - AccountHolder: Alias for ClientUser\r\n - InternalEmployee: Black Diamond Employees\r\n - InternalSystem: Internal System Processes (non-interactive)"
+      },
+      "UserStatus": {
+        "enum": [
+          "Created",
+          "Active",
+          "Invited",
+          "Locked",
+          "Inactive"
+        ],
+        "type": "string",
+        "description": "What state is the user in?"
+      },
+      "UserContactDataDto": {
+        "type": "object",
+        "properties": {
+          "address1": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          },
+          "address2": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "maxLength": 40,
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "maxLength": 30,
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "maxLength": 10,
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          },
+          "externalLink": {
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "externalLinkDisplayName": {
+            "maxLength": 50,
+            "type": "string",
+            "nullable": true
+          },
+          "sync": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDto": {
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The user identifier (auto-generated)",
+            "format": "int32"
+          },
+          "uniqueId": {
+            "type": "string",
+            "description": "The globally unique identifier for the user (auto-generated)",
+            "format": "uuid"
+          },
+          "username": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "A unique field used to log in"
+          },
+          "firstName": {
+            "maxLength": 64,
+            "type": "string",
+            "description": "Also known as given name"
+          },
+          "lastName": {
+            "maxLength": 64,
+            "type": "string",
+            "description": "Also known as family name"
+          },
+          "email": {
+            "maxLength": 255,
+            "type": "string",
+            "description": "The user's primary email address",
+            "format": "email"
+          },
+          "userType": {
+            "$ref": "#/components/schemas/UserType"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Is the user able to access the system"
+          },
+          "established": {
+            "type": "boolean",
+            "description": "Has the user logged in at least once"
+          },
+          "locked": {
+            "type": "boolean",
+            "description": "Denotes user is temporarily blocked from accessing the system"
+          },
+          "invited": {
+            "type": "boolean",
+            "description": "Denotes a new-user invitation has been sent to the user"
+          },
+          "status": {
+            "$ref": "#/components/schemas/UserStatus"
+          },
+          "allAccounts": {
+            "type": "boolean",
+            "description": "Allows the user to access all accounts"
+          },
+          "roleId": {
+            "type": "integer",
+            "description": "The primary assigned role for the user",
+            "format": "int32",
+            "nullable": true
+          },
+          "clientProfileId": {
+            "type": "string",
+            "description": "Client profile ID",
+            "nullable": true
+          },
+          "contactData": {
+            "$ref": "#/components/schemas/UserContactDataDto"
+          },
+          "integrations": {
+            "$ref": "#/components/schemas/UserIntegrationsDto"
+          },
+          "primaryTeamId": {
+            "type": "string",
+            "nullable": true
+          },
+          "primaryRelationship": {
+            "type": "string",
+            "nullable": true
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "accountExclusions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "repCodes": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "visibleRelationships": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "hiddenPortfolios": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "modifiedBy": {
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expirationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "hidden": {
+            "type": "boolean"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Test",
+      "description": "Test Endpoints"
+    },
+    {
+      "name": "Command",
+      "description": "Resources resulting in non-restful side-effects"
+    },
+    {
+      "name": "Query",
+      "description": "Resources resulting in non domain-specific queries"
+    },
+    {
+      "name": "User",
+      "description": "Endpoints Dealing with User Management"
+    }
+  ]
+}

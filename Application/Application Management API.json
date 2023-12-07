@@ -1,0 +1,898 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Application Management API",
+    "description": "Service to manage applications inside the system",
+    "contact": {
+      "name": "mimik technology inc.",
+      "url": "https://developers.mimik.com/",
+      "email": "support.sdk@mimik.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "2.0.0"
+  },
+  "tags": [
+    {
+      "name": "Admin",
+      "description": "Admin user calls"
+    },
+    {
+      "name": "System",
+      "description": "Server to server calls"
+    },
+    {
+      "name": "Edge",
+      "description": "edge calls"
+    }
+  ],
+  "paths": {
+    "/applications": {
+      "get": {
+        "tags": [
+          "Admin",
+          "Edge"
+        ],
+        "summary": "List all the registered applications",
+        "description": "By passing in the appropriate options, you can search for available applications in the system.",
+        "operationId": "searchApplications",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The start date for defining the interval in which the application was registered",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The end date for defining the interval in which the application was registered",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "The external id of the appliciation. All the versions will be returned",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the applications with matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Application"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "SystemSecurity": [
+              "read:apps"
+            ]
+          },
+          {
+            "AdminSecurity": [
+              "read:apps"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "applicationController"
+      },
+      "post": {
+        "tags": [
+          "Admin",
+          "System"
+        ],
+        "summary": "Register an application",
+        "description": "Register an application into the system.<p>A new version of the application is considered to be a new resource with the same `externalId` but a different `version`. <p>If a list of services is associated with the application, the services need to exist for the creation of the application request to succeed.<p>When the service is registered the list of services is replacing the list serviceIds.",
+        "operationId": "createApplication",
+        "requestBody": {
+          "description": "The information to create an application",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewApplication"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "The created application",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Application"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AdminSecurity": [
+              "create:app"
+            ]
+          },
+          {
+            "SystemSecurity": [
+              "create:app"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "applicationController"
+      }
+    },
+    "/applications/{id}": {
+      "get": {
+        "tags": [
+          "Admin",
+          "System",
+          "Edge"
+        ],
+        "summary": "Get application",
+        "description": "Get the application associated with the given id.",
+        "operationId": "getApplication",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the application",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The application with the given id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Application"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AdminSecurity": [
+              "read:app"
+            ]
+          },
+          {
+            "SystemSecurity": [
+              "read:app"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "applicationController"
+      },
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Delete application",
+        "description": "Delete the application associated with given id.<p>A check for application assignement to devices is made. If an association exist the request will return an `unprocessable` error.",
+        "operationId": "deleteApplication",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the application",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The id of the deleted application",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AdminSecurity": [
+              "delete:app"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "applicationController"
+      }
+    },
+    "/applications/{id}/devices": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Get devices associated to application",
+        "description": "Get all the devices associated to the given application.<p>The response will also contains the association details and an optional errors if some of the requests to get the device have failed.",
+        "operationId": "getAssociationDevicesApplication",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the application",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Defines the number of devices to return in a given page, should the call want data returned using pagination.",
+            "required": true,
+            "schema": {
+              "maximum": 100,
+              "minimum": 10,
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "name": "startAfter",
+            "in": "query",
+            "description": "Defines the id of the last record from previous page.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of associated devices, a list of corresponding associations and an optional list of errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": null
+                    },
+                    "associations": {
+                      "type": "array",
+                      "items": null
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Error"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AdminSecurity": [
+              "read:associatedapp"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "applicationController"
+      },
+      "post": {
+        "tags": [
+          "Admin",
+          "System"
+        ],
+        "summary": "Create association application to devices",
+        "description": "Associate the application with the given id to a list of devices using the associated `nodeId`. This operation will also trigger the service assocation for all the services that are part of the list of services in the application definition.<p>This request triggers sending a notification to each device via the notification service.<p>Since it is a many operation requests if all the fails an `unprocessable` error will be returned, otherwise a `created` response will returned with an optional errors property if some the request have failed.<p>Warnings can be added to the response to indicated that the association may create inconsistencies ofr other applications.<p>Since the creation of an application association trigger the creation of service assocations errorServices can be added if the creation of the service association generated an error.",
+        "operationId": "createAssociationDevicesApplication",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the application",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A list of devices by their nodeId to be associated with the service with the given id",
+          "content": {
+            "application/json": {
+              "schema": {
+                "maxItems": 10,
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "A list of associated devices, a list of corresponding associations and an optional list of errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": null
+                    },
+                    "associations": {
+                      "type": "array",
+                      "items": null
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Error"
+                      }
+                    },
+                    "serviceErrors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "422": {
+            "$ref": "#/components/responses/422"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "AdminSecurity": [
+              "create:associatedapp"
+            ]
+          },
+          {
+            "SystemSecurity": [
+              "create:associatedapp"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "applicationController"
+      }
+    },
+    "/applications/{id}/devices/{nodeId}": {
+      "put": {
+        "tags": [
+          "Edge"
+        ],
+        "summary": "Update the association status",
+        "description": "Update the association from `pending` to `completed`.<p>The `externalId` will be used to check any other associations with the same externalId and to delete them since the device is not associated with previous versions of the application.",
+        "operationId": "updateAssociationDeviceApplication",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the application",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "The nodeId of the device",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "update that needs to be posted",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusUpdateInfo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The updated association",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ApplicationAssociation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "SystemSecurity": [
+              "update:associatedapp"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "applicationController"
+      },
+      "delete": {
+        "tags": [
+          "Edge"
+        ],
+        "summary": "Delete the associated device",
+        "description": "Delete the associated device from the given application. This operation will not delete the service from the list of services in the application definition.",
+        "operationId": "deleteAssociationDeviceApplication",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the application",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "The nodeId of the device",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The node id and id of the application",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "The id of the application",
+                          "format": "uuid"
+                        },
+                        "nodeId": {
+                          "type": "string",
+                          "description": "The nodeId of the device"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "SystemSecurity": [
+              "delete:associatedapp"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "applicationController"
+      }
+    },
+    "/applications/{id}/services": {
+      "get": {
+        "tags": [
+          "Admin",
+          "Edge"
+        ],
+        "summary": "List all services for a given application",
+        "description": "List all the services for a given application. The application and optional errors will be returned",
+        "operationId": "getApplicationServices",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the application",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the services with matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Service"
+                      }
+                    },
+                    "application": {
+                      "$ref": "#/components/schemas/Application"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Error"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "422": {
+            "$ref": "#/components/responses/422"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "security": [
+          {
+            "AdminSecurity": [
+              "read:appservices"
+            ]
+          },
+          {
+            "SystemSecurity": [
+              "read:appservices"
+            ]
+          }
+        ],
+        "x-swagger-router-controller": "applicationController"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "required": [
+          "message",
+          "statusCode",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "info": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      },
+      "StatusUpdateInfo": {
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "notificationReceived",
+              "cancelledByUser",
+              "failed",
+              "completed",
+              "deployed"
+            ]
+          },
+          "statusReason": {
+            "type": "string",
+            "example": "Any reason that needs to be documented for status"
+          }
+        }
+      },
+      "StatusUpdate": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "postedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        ]
+      },
+      "ApplicationBase": {
+        "required": [
+          "externalId",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "externalId": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Id of the application in referring to other system",
+            "example": "anExternalIdForApplication"
+          },
+          "version": {
+            "type": "string",
+            "description": "Version of the application",
+            "example": "1.0.0"
+          }
+        }
+      },
+      "ApplicationCore": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Name of the application",
+                "example": "A test application"
+              },
+              "description": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Describes what the application is about",
+                "example": "Test application to make the API active"
+              },
+              "payloadReference": {
+                "type": "string",
+                "description": "URL pointing to the payload of the application",
+                "format": "uri",
+                "example": "http://abc.com/1234"
+              }
+            }
+          }
+        ]
+      },
+      "NewApplication": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "serviceIds": {
+                "type": "array",
+                "description": "List of services associated with the application",
+                "items": {
+                  "type": "string",
+                  "description": "Id of the service associated with the application",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Application": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Application Id",
+                "format": "uuid"
+              },
+              "createdAt": {
+                "type": "string",
+                "description": "Time of the registration of the application",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "description": "Time of yhe latest update on the application",
+                "format": "date-time"
+              },
+              "services": {
+                "type": "array",
+                "description": "List of services associated with the application",
+                "items": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ServiceId"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ServiceBase"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "SystemSecurity": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://mimik.auth0.com/auth/token",
+            "scopes": {
+              "create:app": "register an application",
+              "read:apps": "Get all the registered applications",
+              "read:app": "Get the application designated by the id",
+              "create:service": "register a service",
+              "read:services": "Get all the registered services",
+              "read:service": "Get the service designated by the id",
+              "create:associatedapp": "Create an association device with app",
+              "create:associatedservice": "Create an association device with service",
+              "update:associatedapp": "Update the status of an association",
+              "update:associatedservice": "Update the status of an association",
+              "delete:associatedapp": "Delete association between a device and an app",
+              "delete:associatedservice": "Delete association between a device and an service",
+              "create:device": "Create a device",
+              "delete:device": "Delete a device",
+              "read:device": "Get the device with the given deviceId",
+              "read:appservices": "Get the list of services for a given application"
+            }
+          }
+        }
+      },
+      "AdminSecurity": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://mimik.auth0.com/auth/token",
+            "scopes": {
+              "read:system": "Read the system information",
+              "read:apps": "Get all the registered applications",
+              "read:app": "Get the application designated by the id",
+              "create:app": "Create an application",
+              "delete:app": "Delete an application",
+              "read:services": "Get all the registered services",
+              "read:service": "Get the service designated by the id",
+              "create:service": "Create a service",
+              "delete:service": "Delete a service",
+              "read:associatedapp": "Get all the devices associated with app",
+              "read:associatedservice": "Get all the devices associated with service",
+              "create:associatedapp": "Create an association device with app",
+              "create:associatedservice": "Create an association device with service",
+              "delete:associatedapp": "Delete association between a device and an app",
+              "delete:associatedservice": "Delete association between a device and an service",
+              "create:device": "Create a device",
+              "delete:device": "Delete a device",
+              "read:devices": "Get all the registered devices",
+              "read:device": "Get the device with the given deviceId",
+              "read:appservices": "Get the list of services for a given application"
+            }
+          }
+        }
+      }
+    }
+  }
+}

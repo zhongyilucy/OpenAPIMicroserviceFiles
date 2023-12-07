@@ -1,0 +1,85 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "UserRegistrationApi",
+    "description": "Used to create a User Registration"
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/SARAVANAPRASATH/UserRegistration/1.0.0"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create a new user",
+        "description": "Retrieves the user Firstname, Lastname, Mobile number or Email address, Date of birth, Gender and finally set new password and Sign up",
+        "operationId": "createUser",
+        "responses": {
+          "201": {
+            "description": "Create account successfully"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "user": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "pattern": "^(\\+\\d{2})?\\d{10}$"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "age": {
+            "type": "integer"
+          },
+          "Gender": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string",
+            "pattern": "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "mobileNumber",
+          "age",
+          "Gender",
+          "newPassword"
+        ]
+      }
+    }
+  }
+}

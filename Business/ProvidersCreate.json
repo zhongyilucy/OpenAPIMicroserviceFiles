@@ -1,0 +1,75 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "10.49.1",
+    "title": "ProvidersCreate",
+    "description": "Common ProvidersCreate API."
+  },
+  "paths": {
+    "/providers/": {
+      "post": {
+        "tags": [
+          "provider and facility maintenance"
+        ],
+        "operationId": "providers_create",
+        "description": "This API is used to create a Provider.",
+        "parameters": [
+          {
+            "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/IdentitiesHeader/10.0.3#/components/parameters/IdentitiesHeader"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ProviderModel/10.55.1#/components/schemas/Provider"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully posted the provider data to the payer system. Returns Provider object with created IDs etc.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ProviderModel/10.55.1#/components/schemas/Provider"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Provider data sent and will be processed asynchronously.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ConfirmationResponseModel/10.2.1#/components/schemas/ConfirmationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://api.swaggerhub.com/domains/Zipari-Core-Services/ErrorModel/10.0.2#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

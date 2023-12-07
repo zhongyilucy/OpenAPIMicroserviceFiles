@@ -1,0 +1,98 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "Base URL for Register and Login",
+      "url": "http://mrt-k.online/"
+    }
+  ],
+  "info": {
+    "title": "API Documentation for Register",
+    "description": "This is a server that registers new users to the system.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/register": {
+      "post": {
+        "summary": "Registration",
+        "description": "Registers a new user with the provided username and password.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Registration",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "You registered successfully!"
+              }
+            }
+          },
+          "400": {
+            "description": "Failed Registration",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Something went wrong."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 32,
+            "example": "John Doe"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 64,
+            "example": "TheQuickBrownFoxJumpsOverTheLazyDog"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "UserDetails": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "balance": {
+            "type": "number",
+            "example": 200
+          }
+        },
+        "required": [
+          "username",
+          "balance"
+        ]
+      }
+    }
+  }
+}

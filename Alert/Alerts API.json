@@ -1,0 +1,546 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.1",
+    "title": "Alerts API",
+    "description": "Start, update, or cancel an alert, or, Post message to alert chat thread"
+  },
+  "tags": [
+    {
+      "name": "alerts",
+      "description": "Operations related to alerts"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://api.aegixglobal.com/v1",
+      "description": "Production server"
+    },
+    {
+      "url": "https://api.stage.aegixglobal.com/v1",
+      "description": "Staging server"
+    }
+  ],
+  "paths": {
+    "/alert": {
+      "post": {
+        "tags": [
+          "alerts"
+        ],
+        "summary": "Start a new alert",
+        "description": "Initiate a notification to indicate an alert or drill with options",
+        "operationId": "startAlert",
+        "requestBody": {
+          "description": "Alert to be started",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "alert",
+                  "source"
+                ],
+                "properties": {
+                  "alert": {
+                    "$ref": "#/components/schemas/Alert"
+                  },
+                  "source": {
+                    "$ref": "#/components/schemas/AlertSource"
+                  },
+                  "post": {
+                    "$ref": "#/components/schemas/AlertPost"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "media": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Alert started successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Alert"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, alert not created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alert/{alertId}": {
+      "parameters": [
+        {
+          "name": "alertId",
+          "description": "The unique identifier of the alert",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/AlertId"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "alerts"
+        ],
+        "summary": "Describe an alert",
+        "operationId": "describeAlert",
+        "responses": {
+          "200": {
+            "description": "The alert corresponding to the provided `alertId`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Alert"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No alert found for the provided `alertId`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "alerts"
+        ],
+        "summary": "Cancel an alert",
+        "operationId": "cancelAlert",
+        "responses": {
+          "200": {
+            "description": "Alert is cancelled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Alert"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No alert found for the provided `alertId`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "alerts"
+        ],
+        "summary": "Update an alert partially",
+        "description": "Updates the specified fields of an alert by its unique identifier",
+        "operationId": "patchAlert",
+        "requestBody": {
+          "description": "Fields to be updated in the alert",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "urgency": {
+                    "$ref": "#/components/schemas/AlertUrgency"
+                  },
+                  "notification": {
+                    "$ref": "#/components/schemas/AlertNotification"
+                  }
+                },
+                "minProperties": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Alert updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "alertId": {
+                      "type": "integer",
+                      "description": "The unique identifier of the updated alert"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "The updated status of the alert"
+                    },
+                    "note": {
+                      "type": "string",
+                      "description": "The updated note of the alert"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, alert not updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Alert not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alert/{alertId}/post": {
+      "parameters": [
+        {
+          "name": "alertId",
+          "description": "The unique identifier of the alert",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/AlertId"
+          }
+        }
+      ],
+      "post": {
+        "tags": [
+          "alerts"
+        ],
+        "summary": "Post a message on an alert's chat thread",
+        "operationId": "postAlertMessage",
+        "requestBody": {
+          "description": "Alert message to be posted",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlertPost"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "media": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Alert message posted to chat thread",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Alert"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No alert found for the provided `alertId`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AlertId": {
+        "description": "The unique identifier of an alert",
+        "type": "string"
+      },
+      "Alert": {
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [
+              "id"
+            ]
+          },
+          {
+            "required": [
+              "site"
+            ]
+          }
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/AlertId"
+          },
+          "urgency": {
+            "$ref": "#/components/schemas/AlertUrgency"
+          },
+          "site": {
+            "type": "string",
+            "description": "The key of the site for which the alert targets"
+          },
+          "messsage": {
+            "type": "string",
+            "description": "A description of the reason for starting the alert to post to the alert's chat thread."
+          },
+          "startedAt": {
+            "type": "string",
+            "description": "An ISO timestamp of when the alert was started at"
+          },
+          "cancelledAt": {
+            "type": "string",
+            "description": "An ISO timestamp of when the alert was cancelled at"
+          },
+          "notification": {
+            "$ref": "#/components/schemas/AlertNotification"
+          },
+          "status": {
+            "$ref": "#/components/schemas/AlertStatus"
+          }
+        }
+      },
+      "AlertUrgency": {
+        "type": "string",
+        "default": "emergency",
+        "enum": [
+          "emergency",
+          "attention"
+        ]
+      },
+      "AlertNotification": {
+        "type": "object",
+        "properties": {
+          "silent": {
+            "type": "boolean",
+            "default": false
+          },
+          "drill": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "AlertStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "pending",
+              "rejected",
+              "cancelled"
+            ]
+          }
+        }
+      },
+      "AlertPost": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "oneOf": [
+          {
+            "required": [
+              "message"
+            ]
+          },
+          {
+            "required": [
+              "media"
+            ]
+          }
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/AlertId"
+          },
+          "message": {
+            "type": "string",
+            "description": "A text message to post to an alert's chat thread"
+          },
+          "location": {
+            "$ref": "#/components/schemas/GeoLocation"
+          },
+          "media": {
+            "type": "object",
+            "required": [
+              "contentType"
+            ],
+            "properties": {
+              "contentType": {
+                "type": "string",
+                "description": "The content type of the media stream"
+              },
+              "content": {
+                "type": "string",
+                "format": "binary",
+                "description": "The binary stream of the media file"
+              }
+            }
+          }
+        }
+      },
+      "AlertSource": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "description": "A human readable error message",
+            "type": "string"
+          }
+        }
+      },
+      "GeoLocation": {
+        "type": "object",
+        "required": [
+          "lattitude",
+          "longitude"
+        ],
+        "properties": {
+          "lattitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
+}
